@@ -1,0 +1,3 @@
+rootProject.name = 'bori-market'
+include 'service-module'
+

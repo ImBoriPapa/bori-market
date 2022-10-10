@@ -1,0 +1,23 @@
+server:
+  port: 8090
+spring:
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/bori-market-used-trade
+    username: root
+    password: 0209
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true # log
+        show_sql: true
+
+  logging:
+    level:
+      org.hibernate.SQL:
+        type.descriptor.sql: trace
+        SQL: DEBUG
