@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.entity.JwtCode;
-import com.bmarket.securityservice.service.JwtService;
+import com.bmarket.securityservice.domain.entity.JwtCode;
+import com.bmarket.securityservice.domain.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.bmarket.securityservice.entity.JwtHeader.*;
+import static com.bmarket.securityservice.domain.entity.JwtHeader.*;
 
 @Component
 @RequiredArgsConstructor

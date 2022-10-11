@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.utils;
 
-import com.bmarket.securityservice.dto.ResultForm;
+import com.bmarket.securityservice.api.dto.ResultForm;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;

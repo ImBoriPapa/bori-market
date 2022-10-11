@@ -1,9 +1,9 @@
 package com.bmarket.securityservice.exception.advisor;
 
-import com.bmarket.securityservice.controller.external_spec.responseForm.ResponseForm;
+import com.bmarket.securityservice.api.controller.external_spec.responseForm.ResponseForm;
 import com.bmarket.securityservice.exception.ErrorResponse;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.status.ResponseStatus;
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

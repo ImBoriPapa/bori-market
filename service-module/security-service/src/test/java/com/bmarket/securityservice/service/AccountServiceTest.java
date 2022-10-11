@@ -1,11 +1,12 @@
 package com.bmarket.securityservice.service;
 
-import com.bmarket.securityservice.controller.external_spec.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.dto.FindAccountResult;
-import com.bmarket.securityservice.dto.SignupResult;
-import com.bmarket.securityservice.entity.Account;
+import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.domain.service.AccountService;
+import com.bmarket.securityservice.api.dto.FindAccountResult;
+import com.bmarket.securityservice.api.dto.SignupResult;
+import com.bmarket.securityservice.domain.entity.Account;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.repository.AccountRepository;
+import com.bmarket.securityservice.domain.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
