@@ -57,7 +57,7 @@ public class AccountController {
      */
     @PostMapping
     public ResponseEntity signUp(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
-
+        log.info("==============[CONTROLLER] 회원가입 요청=============");
         if (bindingResult.hasErrors()) {
             throw new BasicException(ErrorCode.FAIL_VALIDATION, bindingResult);
         }
@@ -71,7 +71,6 @@ public class AccountController {
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setDate(new Date().getTime());
-
 
         return ResponseEntity
                 .created(linkProvider.getLocationUri(AccountController.class, result))

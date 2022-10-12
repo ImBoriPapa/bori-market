@@ -72,10 +72,7 @@ class AccountTest {
     @DisplayName("sequential uuid unique 확인")
     void sequentialIsUnique() throws Exception{
         //given
-        for(int i=0; i<100000; i++){
-            Account account = new Account();
-            accountRepository.save(account);
-        }
+
         //when
 
         //then

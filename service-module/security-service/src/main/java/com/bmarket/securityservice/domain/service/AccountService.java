@@ -40,7 +40,7 @@ public class AccountService {
      * @return
      */
     public SignupResult signUpProcessing(RequestSignUpForm form) {
-
+        log.info("==============[AccountService] 회원가입  =============");
         Account account = Account.createAccount()
                 .loginId(form.getLoginId())
                 .name(form.getName())
@@ -49,7 +49,7 @@ public class AccountService {
                 .email(form.getEmail())
                 .contact(form.getContact())
                 .authority(Authority.ROLL_USER).build();
-
+        log.info("==============[AccountService] Account save  =============");
         Account save = accountRepository.save(account);
 
         return new SignupResult(save.getId(), save.getClientId(), save.getCreatedAt());
@@ -61,6 +61,7 @@ public class AccountService {
      * @param clientId
      */
     public FindAccountResult findAccountByClientId(String clientId) {
+        log.info("==============[AccountService] findByClientId  =============");
         Account account = accountRepository.findByClientId(clientId)
                 .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
         return new FindAccountResult(account);

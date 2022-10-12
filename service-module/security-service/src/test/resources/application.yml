@@ -1,16 +1,15 @@
-server:
-  port: 8080
+
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
-  token-validation-life: 1800
-  refresh-token-validation-life: 604800
+  token-validation-life: 5
+  refresh-token-validation-life: 10
 
 spring:
 
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/bori-market-account
+    url: jdbc:mariadb://localhost:3306/bori-market-account-test
     username: root
     password: 0209
 

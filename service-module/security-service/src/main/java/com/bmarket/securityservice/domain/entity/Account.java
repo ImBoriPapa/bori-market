@@ -3,6 +3,7 @@ package com.bmarket.securityservice.domain.entity;
 import com.fasterxml.uuid.Generators;
 import lombok.*;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -30,6 +31,8 @@ public class Account {
     private String contact;
     @Enumerated(value = EnumType.STRING)
     private Authority authority;
+
+    private boolean isLogin;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -56,6 +59,7 @@ public class Account {
         this.email = email;
         this.contact = contact;
         this.authority = authority;
+        this.isLogin = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
@@ -74,6 +78,9 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setLogin(boolean isLogin){
+        this.isLogin = isLogin;
+    }
 
 
 }

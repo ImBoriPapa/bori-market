@@ -3,6 +3,7 @@ package com.bmarket.securityservice.domain.service;
 import com.bmarket.securityservice.domain.entity.Account;
 import com.bmarket.securityservice.domain.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserDetailServiceImpl implements UserDetailsService {
 
     private final AccountRepository accountRepository;
@@ -31,12 +33,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     public Authentication generateAuthenticationByClientId(String clientId) {
+        log.info("generateAuthenticationByClientId is call");
         UserDetails userDetails = loadUserByUsername(clientId);
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getUsername(), userDetails.getAuthorities());
     }
 
-    public Authentication generateAuthenticationByAccount(Account account){
-        UserDetails userDetails = generateUser(account);
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getUsername(), userDetails.getAuthorities());
-    }
+
 }

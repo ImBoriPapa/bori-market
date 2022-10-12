@@ -1,5 +1,7 @@
 package com.bmarket.securityservice.cofig;
 
+import com.bmarket.securityservice.filter.CustomAccessDeniedHandler;
+import com.bmarket.securityservice.filter.CustomAuthenticationEntryPoint;
 import com.bmarket.securityservice.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +19,9 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security.httpBasic().disable();
@@ -24,9 +29,15 @@ public class SecurityConfig {
         security.csrf().disable();
         security.formLogin().disable();
         security.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        security.exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/login","/account","/test").permitAll()
+                .authorizeRequests().antMatchers("/login", "/account", "/test").permitAll()
+                .antMatchers("/jwt-test1").authenticated()
+                .antMatchers("/jwt-test1").hasAuthority("ROLL_USER")
+                .antMatchers("/jwt-test2").hasAuthority("ROLL_ADMIN")
                 .anyRequest().authenticated();
         return security.build();
     }

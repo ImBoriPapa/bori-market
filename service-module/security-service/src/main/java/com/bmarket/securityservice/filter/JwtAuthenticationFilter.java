@@ -1,7 +1,10 @@
 package com.bmarket.securityservice.filter;
 
 import com.bmarket.securityservice.domain.entity.JwtCode;
+
 import com.bmarket.securityservice.domain.service.JwtService;
+
+import com.bmarket.securityservice.utils.status.JwtTokenStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -15,8 +18,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.bmarket.securityservice.domain.entity.JwtHeader.*;
+import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
+
 
 @Component
 @RequiredArgsConstructor
@@ -25,51 +31,73 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String jwt = resolveToken(request, AUTHORIZATION_HEADER);
-
-        if (!StringUtils.hasLength(jwt)) {
-            log.info("No valid JWT token found ={}", request.getRequestURI());
-
+        Optional<String> token = resolveToken(request, AUTHORIZATION_HEADER);
+        JwtCode jwtCode;
+        if (token.isEmpty()) {
+            log.info("ACCESS TOKEN 이 없습니다.", request.getRequestURI());
+            request.setAttribute(JWT_TOKEN_STATUS.name(), TOKEN_IS_EMPTY);
         }
 
-        if (jwtService.validateToken(jwt) == JwtCode.ACCESS) {
-            setJwtTokenToContext(jwt);
-            filterChain.doFilter(request, response);
-            return;
-        }
+        if (token.isPresent()) {
+            jwtCode = jwtService.validateToken(token.get());
 
-        if (jwtService.validateToken(jwt) == JwtCode.EXPIRED) {
-            String refresh = resolveToken(request, REFRESH_HEADER);
+            switch (jwtCode) {
+                case ACCESS:
+                    setAuthentication(token.get());
+                    log.info("토큰 인증이 성공했습니다.");
+                    break;
+                case EXPIRED:
+                    token = resolveToken(request, REFRESH_HEADER);
 
-            if (!StringUtils.hasLength(refresh)) {
-                log.info("refresh is null");
-                throw new IllegalArgumentException("NO refresh TOKEN");
+                    log.info("ACCESS TOKEN 이 만료 되었습니다.");
+                    token.ifPresentOrElse((m) -> refreshTokenValidation(request,response, m),
+                            () -> request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_EMPTY)
+                    );
+                    break;
+                case DENIED:
+                    request.setAttribute(JWT_TOKEN_STATUS.name(), TOKEN_IS_DENIED);
+                    log.info("잘못된 토큰입니다.");
+                    break;
             }
-
-            if (jwtService.validateToken(refresh) == JwtCode.ACCESS) {
-                String newRefresh = jwtService.reissueRefreshToken(refresh);
-                Authentication authentication = jwtService.getAuthentication(refresh);
-                String token = jwtService.generateToken(authentication);
-                response.setHeader(AUTHORIZATION_HEADER, token);
-                response.setHeader(REFRESH_HEADER, newRefresh);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
         }
+
+
         filterChain.doFilter(request, response);
     }
 
-    public void setJwtTokenToContext(String jwt) {
+    public void refreshTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) {
+        JwtCode jwtCode = jwtService.validateToken(token);
+        if (jwtCode == JwtCode.ACCESS) {
+            log.info("리프레쉬 토큰 인증이 성공하였습니다.");
+            Authentication authentication = jwtService.getAuthentication(token);
+            String generateToken = jwtService.generateToken(authentication.getName());
+            log.info("ACCESS 토큰 재발급이 성공하였습니다.");
+            String reissueRefreshToken = jwtService.reissueRefreshToken(token);
+            log.info("REFRESH 토큰 재발급이 성공하였습니다.");
+            response.setHeader(AUTHORIZATION_HEADER, JWT_HEADER_PREFIX + generateToken);
+            response.setHeader(REFRESH_HEADER, JWT_HEADER_PREFIX + reissueRefreshToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
+        if (jwtCode == JwtCode.EXPIRED) {
+            log.info("리프레쉬 토큰이 만료되었습니다.");
+            request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_EXPIRED);
+        }
+    }
+
+    public void setAuthentication(String jwt) {
         Authentication authentication = jwtService.getAuthentication(jwt);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public String resolveToken(HttpServletRequest request, String header) {
+    public Optional<String> resolveToken(HttpServletRequest request, String header) {
         String bearerToken = request.getHeader(header);
         if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(JWT_HEADER_PREFIX)) {
-            return bearerToken.substring(7);
+            return Optional.of(bearerToken.substring(7));
         }
-        return null;
+        return Optional.empty();
     }
 }
