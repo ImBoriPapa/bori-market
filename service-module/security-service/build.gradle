@@ -1,6 +1,8 @@
 plugins {
     id 'org.springframework.boot' version '2.7.4'
     id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    // Asciidoctor 플러그인 적용
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'java'
 }
 
@@ -38,7 +40,33 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    //rest docs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
+
+ext {
+    snippetDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    inputs.dir snippetDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from file("build/docs/asciidoc")
+        into file("src/main/resources/static/docs")
+    }
+
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()

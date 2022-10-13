@@ -1,5 +1,9 @@
 package com.bmarket.securityservice.api.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,8 +18,22 @@ import java.net.URI;
 public class TestController {
 
     @GetMapping("/test")
-    public void test(){
+    public ResponseEntity test(){
         log.info("test ok");
+        TestDto dto = TestDto.builder()
+                .name("보리")
+                .age("2")
+                .sex("남아").build();
+        return ResponseEntity.ok().body(dto);
+    }
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TestDto{
+        private String name;
+        private String age;
+        private String sex;
     }
 
     @GetMapping("/jwt-test1")

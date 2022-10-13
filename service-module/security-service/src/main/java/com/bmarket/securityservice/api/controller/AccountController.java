@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -65,7 +67,9 @@ public class AccountController {
         SignupResult result = accountService.signUpProcessing(form);
 
         List links = linkProvider.getLinks(AccountController.class, result);
-        result.add(links);
+        WebMvcLinkBuilder link = WebMvcLinkBuilder.linkTo(AccountController.class);
+        Link selfRel = link.withSelfRel();
+        result.add(selfRel);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));

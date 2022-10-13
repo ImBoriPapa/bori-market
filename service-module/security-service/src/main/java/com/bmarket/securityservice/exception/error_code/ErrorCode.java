@@ -20,6 +20,8 @@ public enum ErrorCode {
     DUPLICATE_EMAIL(3003,"이미 사용중인 이메일은 사용할 수 없습니다."),
     DUPLICATE_CONTACT(3004,"이미 사용중인 전화번호는 사용할 수 없습니다."),
 
+    ACCESS_DENIED(3500, "접근 권한이 없습니다."),
+
     NOT_AUTHENTICATION_REQUEST(4000,"인증되지 않은 접근입니다."),
 
     TOKEN_IS_EMPTY(5000,"인증토큰이 없습니다."),

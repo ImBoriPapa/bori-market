@@ -113,7 +113,7 @@ class JwtAuthenticationFilterTest {
                 .header(AUTHORIZATION_HEADER, login.getToken() + 12)
                 .header(REFRESH_HEADER, login.getRefreshToken() + 31)
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isBadRequest());
+        ).andExpect(status().is3xxRedirection());
         //when
 
         //then
@@ -139,7 +139,7 @@ class JwtAuthenticationFilterTest {
         mockMvc.perform(get("/jwt-test1")
                 .header(AUTHORIZATION_HEADER, login.getToken())
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isForbidden());
+        ).andExpect(status().is3xxRedirection());
         //when
 
         //then

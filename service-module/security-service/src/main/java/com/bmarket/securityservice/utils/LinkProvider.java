@@ -2,6 +2,7 @@ package com.bmarket.securityservice.utils;
 
 import com.bmarket.securityservice.api.dto.ResultForm;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.LinkRelation;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
@@ -42,10 +43,10 @@ public class LinkProvider<T> {
      */
     public List getLinks(Class<T> target, ResultForm form) {
         WebMvcLinkBuilder resource = getResourcesLink(target);
-        Link findOne = resource.slash(form.getClientId()).withRel("GET : 단건 조회");
-        Link list = resource.withSelfRel().withRel("GET : 전체 조회");
-        Link update = resource.slash(form.getClientId()).withRel("PUT : 수정");
-        Link delete = resource.slash(form.getClientId()).withRel("DELETE : 삭제");
+        Link findOne = resource.slash(form.getClientId()).withRel("GET");
+        Link list = resource.withSelfRel().withRel("GET");
+        Link update = resource.slash(form.getClientId()).withRel("PUT");
+        Link delete = resource.slash(form.getClientId()).withRel("DELETE");
         return List.of(findOne, list, update, delete);
     }
 }
