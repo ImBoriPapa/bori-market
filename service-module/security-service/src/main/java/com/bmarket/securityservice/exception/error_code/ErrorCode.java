@@ -6,12 +6,15 @@ import lombok.Getter;
 public enum ErrorCode {
 
     NOT_FOUND_ACCOUNT(1001,"계정을 찾을 수 없습니다."),
-
     THIS_ACCOUNT_IS_LOGOUT(1002,"로그아웃된 계정입니다 다시 로그인해 주세요"),
     FAIL_VALIDATION(2000,"검증에 실패했습니다"),
 
     FAIL_LOGIN(2001,"로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요"),
+    EMPTY_ACCESS_TOKEN(2100,"토큰을 확인할 수 없습니다"),
+    EXPIRED_REFRESH_TOKEN(2101,"리프레시 토큰이 만료 되었습니다. 다시 로그인해 주세요"),
 
+    DENIED_ACCESS_TOKEN(2200,  "잘못된 토큰입니다."),
+    DENIED_REFRESH_TOKEN(2201, "잘못된 토큰입니다."),
     DUPLICATE_LOGIN_ID(3001,"이미 사용중인 아이디는 사용할 수 없습니다."),
     DUPLICATE_NICKNAME(3002,"이미 사용중인 닉네임은 사용할 수 없습니다."),
     DUPLICATE_EMAIL(3003,"이미 사용중인 이메일은 사용할 수 없습니다."),

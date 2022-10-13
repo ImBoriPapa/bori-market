@@ -4,6 +4,8 @@ import com.bmarket.securityservice.domain.entity.JwtCode;
 
 import com.bmarket.securityservice.domain.service.JwtService;
 
+import com.bmarket.securityservice.exception.custom_exception.BasicException;
+import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.utils.status.JwtTokenStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 import static com.bmarket.securityservice.domain.entity.JwtHeader.*;
@@ -30,7 +33,6 @@ import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -53,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     token = resolveToken(request, REFRESH_HEADER);
 
                     log.info("ACCESS TOKEN 이 만료 되었습니다.");
-                    token.ifPresentOrElse((m) -> refreshTokenValidation(request,response, m),
+                    token.ifPresentOrElse((m) -> refreshTokenValidation(request, response, m),
                             () -> request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_EMPTY)
                     );
                     break;
@@ -85,6 +87,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (jwtCode == JwtCode.EXPIRED) {
             log.info("리프레쉬 토큰이 만료되었습니다.");
             request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_EXPIRED);
+        }
+
+        if (jwtCode == JwtCode.DENIED) {
+            log.info("리프레쉬 토큰이 잘못되었습니다.");
+            request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
         }
     }
 

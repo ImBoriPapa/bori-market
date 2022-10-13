@@ -24,6 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String clientId) throws UsernameNotFoundException {
+        log.info("loadUserByUsername 이 호출 되었습니다");
         Account account = accountRepository.findByClientId(clientId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND ACCOUNT"));
         return generateUser(account);
     }

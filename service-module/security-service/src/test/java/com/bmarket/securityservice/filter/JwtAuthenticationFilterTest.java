@@ -1,19 +1,13 @@
 package com.bmarket.securityservice.filter;
 
 import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.dto.FindAccountResult;
 import com.bmarket.securityservice.api.dto.LoginResult;
-import com.bmarket.securityservice.api.dto.SignupResult;
-import com.bmarket.securityservice.domain.entity.Account;
-import com.bmarket.securityservice.domain.entity.JwtCode;
 import com.bmarket.securityservice.domain.repository.AccountRepository;
 import com.bmarket.securityservice.domain.service.AccountService;
 import com.bmarket.securityservice.domain.service.JwtService;
 import com.bmarket.securityservice.domain.service.LoginService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,14 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static com.bmarket.securityservice.domain.entity.JwtHeader.AUTHORIZATION_HEADER;
 import static com.bmarket.securityservice.domain.entity.JwtHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -67,13 +58,13 @@ class JwtAuthenticationFilterTest {
     }
 
     @AfterEach
-    void afterEach(){
+    void afterEach() {
         accountRepository.deleteAll();
     }
 
     @Test
     @DisplayName("인증없이 접근 가능한 경로")
-    void freeAccess() throws Exception{
+    void freeAccess() throws Exception {
         //given
         mockMvc.perform(get("/test"))
                 .andExpect(status().isOk());
@@ -85,12 +76,13 @@ class JwtAuthenticationFilterTest {
 
     @Test
     @DisplayName("인증 토큰이 없는 경우")
-    void emptyAccessToken() throws Exception{
+    void emptyAccessToken() throws Exception {
         //given
         LoginResult login = loginService.login("happy", "happy123");
         mockMvc.perform(get("/jwt-test1")
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isForbidden());
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/exception/empty-token?token=access"));
         //when
 
         //then
@@ -99,7 +91,7 @@ class JwtAuthenticationFilterTest {
 
     @Test
     @DisplayName("인증이 성공한 경우")
-    void successAccessToken() throws Exception{
+    void successAccessToken() throws Exception {
         //given
         LoginResult login = loginService.login("happy", "happy123");
         mockMvc.perform(get("/jwt-test1")
@@ -111,14 +103,15 @@ class JwtAuthenticationFilterTest {
 
         //then
     }
+
     @Test
     @DisplayName("인증이 실패한 경우")
-    void failAccessToken() throws Exception{
+    void failAccessToken() throws Exception {
         //given
         LoginResult login = loginService.login("happy", "happy123");
         mockMvc.perform(get("/jwt-test1")
-                .header(AUTHORIZATION_HEADER, login.getToken()+12)
-                .header(REFRESH_HEADER, login.getRefreshToken()+31)
+                .header(AUTHORIZATION_HEADER, login.getToken() + 12)
+                .header(REFRESH_HEADER, login.getRefreshToken() + 31)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest());
         //when
@@ -130,15 +123,16 @@ class JwtAuthenticationFilterTest {
      * 토큰 유효 시간 5초
      * 6초 대기후 요청
      * REFRESH_HEADER 없음
+     *
      * @throws Exception
      */
     @Test
     @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 없을 경우 ")
-    void expiredAccessToken() throws Exception{
+    void expiredAccessToken() throws Exception {
         //given
         LoginResult login = loginService.login("happy", "happy123");
         for (int i = 1; i <= 6; i++) {
-            log.info("count={}",i);
+            log.info("count={}", i);
             Thread.sleep(1000);
         }
 
@@ -153,19 +147,19 @@ class JwtAuthenticationFilterTest {
 
     @Test
     @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 ACCESS 경우")
-    void successRefreshToken() throws Exception{
+    void successRefreshToken() throws Exception {
         //given
         LoginResult login = loginService.login("happy", "happy123");
         for (int i = 1; i <= 6; i++) {
-            log.info("count={}",i);
+            log.info("count={}", i);
             Thread.sleep(1000);
         }
 
         mockMvc.perform(get("/jwt-test1")
-                .header(AUTHORIZATION_HEADER, login.getToken())
-                .header(REFRESH_HEADER, login.getRefreshToken())
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk())
+                        .header(AUTHORIZATION_HEADER, login.getToken())
+                        .header(REFRESH_HEADER, login.getRefreshToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
                 .andExpect(header().exists(AUTHORIZATION_HEADER))
                 .andExpect(header().exists(REFRESH_HEADER));
         //when
@@ -174,12 +168,12 @@ class JwtAuthenticationFilterTest {
     }
 
     @Test
-    @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 EXPIRED 경우")
-    void expiredRefreshToken() throws Exception{
+    @DisplayName("access 토큰이 만료 되었고 리프레쉬 토큰이 EXPIRED 경우")
+    void expiredRefreshToken() throws Exception {
         //given
         LoginResult login = loginService.login("happy", "happy123");
         for (int i = 1; i <= 15; i++) {
-            log.info("count={}",i);
+            log.info("count={}", i);
             Thread.sleep(1000);
         }
 
@@ -187,7 +181,14 @@ class JwtAuthenticationFilterTest {
                         .header(AUTHORIZATION_HEADER, login.getToken())
                         .header(REFRESH_HEADER, login.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON)
-                ).andExpect(status().isUnauthorized());
+                ).andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/exception/expired-token"));
+
+        mockMvc.perform(get("/exception/expired-token"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/login"));
+
+
 
         //when
 
@@ -204,9 +205,9 @@ class JwtAuthenticationFilterTest {
         //when
 
         mockMvc.perform(get("/jwt-test1")
-                .header(AUTHORIZATION_HEADER, result.getToken())
-                .header(REFRESH_HEADER, result.getRefreshToken())
-                .contentType(MediaType.APPLICATION_JSON))
+                        .header(AUTHORIZATION_HEADER, result.getToken())
+                        .header(REFRESH_HEADER, result.getRefreshToken())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         loginService.logout(result.getClientId());
 
@@ -216,6 +217,6 @@ class JwtAuthenticationFilterTest {
                         () -> jwtService.getAuthentication(result.getToken().substring(7)))
                 .isInstanceOf(BasicException.class);
 
-}
+    }
 
 }
