@@ -10,12 +10,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
 import java.net.URI;
 
 @RestController
 @Slf4j
 public class TestController {
+
+    @GetMapping("/address")
+    public void callExternal(){
+        Flux<Object> stringFlux = WebClient.create()
+                .get()
+                .uri("http://localhost:8085/address")
+                .retrieve()
+                .bodyToFlux(Object.class);
+        stringFlux.subscribe(s -> log.info("result={}",s.toString()));
+        log.info("address result ={}",stringFlux.subscribe().toString());
+
+    }
 
     @GetMapping("/test")
     public ResponseEntity test(){

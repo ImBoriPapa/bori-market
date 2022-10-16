@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -67,13 +66,14 @@ class ApiDocs {
                         ),
                         responseFields(
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("응답 상태"),
-                                fieldWithPath("code").type(JsonFieldType.STRING).description("응답 코드"),
+                                fieldWithPath("code").type(JsonFieldType.NUMBER).description("응답 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-                                fieldWithPath("result").type(JsonFieldType.STRING).description("응답 내용"),
-                                fieldWithPath("result.accountId").type(JsonFieldType.STRING).description("계정 인덱스"),
+                                fieldWithPath("result").type(JsonFieldType.OBJECT).description("응답 내용"),
+                                fieldWithPath("result.accountId").type(JsonFieldType.NUMBER).description("계정 인덱스"),
                                 fieldWithPath("result.clientId").type(JsonFieldType.STRING).description("클라이언트 아이디"),
                                 fieldWithPath("result.createdAt").type(JsonFieldType.STRING).description("계정 생성시간"),
-                                fieldWithPath("result._links.self.href").type(JsonFieldType.STRING).description("계정 생성시간")
+                                fieldWithPath("result.links.[].rel").type(JsonFieldType.STRING).description("알림"),
+                                fieldWithPath("result.links.[].href").type(JsonFieldType.STRING).description("경로")
 
                         )
 

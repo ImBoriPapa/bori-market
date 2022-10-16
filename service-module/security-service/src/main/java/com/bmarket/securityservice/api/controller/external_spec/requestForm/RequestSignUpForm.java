@@ -15,4 +15,5 @@ public class RequestSignUpForm {
     private String password;
     private String email;
     private String contact;
+    private Integer addressCode;
 }

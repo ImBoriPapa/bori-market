@@ -1,9 +1,9 @@
 package com.bmarket.securityservice.entity;
 
 
-import com.bmarket.securityservice.domain.entity.Account;
-import com.bmarket.securityservice.domain.entity.Authority;
-import com.bmarket.securityservice.domain.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.fasterxml.uuid.Generators;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -40,8 +40,6 @@ class AccountTest {
                 .loginId("loginId")
                 .name("tester")
                 .password("test123")
-                .email("test@test.com")
-                .contact("010-2222-2222")
                 .authority(Authority.ROLL_USER).build();
         //when
         Account save = accountRepository.save(account);

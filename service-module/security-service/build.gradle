@@ -58,6 +58,11 @@ asciidoctor {
     dependsOn test
 }
 
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+
 bootJar {
     dependsOn asciidoctor
     copy {

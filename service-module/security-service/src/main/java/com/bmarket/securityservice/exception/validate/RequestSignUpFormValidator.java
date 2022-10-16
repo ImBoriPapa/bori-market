@@ -3,7 +3,7 @@ package com.bmarket.securityservice.exception.validate;
 import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
-import com.bmarket.securityservice.domain.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -28,16 +28,16 @@ public class RequestSignUpFormValidator implements Validator {
             throw new BasicException(ErrorCode.DUPLICATE_LOGIN_ID);
         }
 
-        if (accountRepository.existsByNickname(form.getNickname())) {
-            throw new BasicException(ErrorCode.DUPLICATE_NICKNAME);
-        }
-
-        if (accountRepository.existsByEmail(form.getEmail())) {
-            throw new BasicException(ErrorCode.DUPLICATE_EMAIL);
-        }
-
-        if (accountRepository.existsByContact(form.getContact())) {
-            throw new BasicException(ErrorCode.DUPLICATE_CONTACT);
-        }
+//        if (accountRepository.existsByNickname(form.getNickname())) {
+//            throw new BasicException(ErrorCode.DUPLICATE_NICKNAME);
+//        }
+//
+//        if (accountRepository.existsByEmail(form.getEmail())) {
+//            throw new BasicException(ErrorCode.DUPLICATE_EMAIL);
+//        }
+//
+//        if (accountRepository.existsByContact(form.getContact())) {
+//            throw new BasicException(ErrorCode.DUPLICATE_CONTACT);
+//        }
     }
 }

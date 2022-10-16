@@ -2,10 +2,10 @@ package com.bmarket.securityservice.filter;
 
 import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.api.dto.LoginResult;
-import com.bmarket.securityservice.domain.entity.Account;
-import com.bmarket.securityservice.domain.repository.AccountRepository;
-import com.bmarket.securityservice.domain.service.AccountService;
-import com.bmarket.securityservice.domain.service.LoginService;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.service.AccountService;
+import com.bmarket.securityservice.domain.security.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,11 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static com.bmarket.securityservice.domain.entity.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.domain.entity.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.domain.jwt.JwtHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.domain.jwt.JwtHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j

@@ -17,10 +17,10 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/service-module/maket-service" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/service-module/address-service" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/service-module/maket-service" />
+            <option value="$PROJECT_DIR$/service-module/address-service" />
           </set>
         </option>
       </GradleProjectSettings>
@@ -32,6 +32,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/service-module/security-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/service-module/trade-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/service-module/trade-service" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.api.dto;
 
-import com.bmarket.securityservice.domain.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +24,9 @@ public class FindAccountResult extends ResultForm {
         this.clientId = account.getClientId();
         this.loginId = account.getLoginId();
         this.name = account.getName();
-        this.nickname = account.getNickname();
-        this.email = account.getEmail();
-        this.contact = account.getContact();
+        this.nickname = account.getProfile().getNickname();
+        this.email = account.getProfile().getEmail();
+        this.contact = account.getProfile().getContact();
         this.createdAt = account.getCreatedAt();
         this.updatedAt = account.getUpdatedAt();
     }

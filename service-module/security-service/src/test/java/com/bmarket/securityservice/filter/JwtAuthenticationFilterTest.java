@@ -2,10 +2,10 @@ package com.bmarket.securityservice.filter;
 
 import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.api.dto.LoginResult;
-import com.bmarket.securityservice.domain.repository.AccountRepository;
-import com.bmarket.securityservice.domain.service.AccountService;
-import com.bmarket.securityservice.domain.service.JwtService;
-import com.bmarket.securityservice.domain.service.LoginService;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.service.AccountService;
+import com.bmarket.securityservice.domain.jwt.service.JwtService;
+import com.bmarket.securityservice.domain.security.service.LoginService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -20,8 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.bmarket.securityservice.domain.entity.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.domain.entity.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.domain.jwt.JwtHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.domain.jwt.JwtHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

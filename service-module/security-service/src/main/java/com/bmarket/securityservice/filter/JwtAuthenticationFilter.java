@@ -1,8 +1,8 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.domain.entity.JwtCode;
+import com.bmarket.securityservice.domain.jwt.JwtCode;
 
-import com.bmarket.securityservice.domain.service.JwtService;
+import com.bmarket.securityservice.domain.jwt.service.JwtService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.domain.entity.JwtHeader.*;
+import static com.bmarket.securityservice.domain.jwt.JwtHeader.*;
 import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
 
 

@@ -2,7 +2,7 @@ package com.bmarket.securityservice.api.controller;
 
 import com.bmarket.securityservice.api.controller.external_spec.responseForm.ResponseForm;
 import com.bmarket.securityservice.api.dto.LoginResult;
-import com.bmarket.securityservice.domain.service.LoginService;
+import com.bmarket.securityservice.domain.security.service.LoginService;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

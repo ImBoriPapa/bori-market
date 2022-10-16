@@ -9,7 +9,7 @@ import com.bmarket.securityservice.api.dto.SignupResult;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.exception.validate.RequestSignUpFormValidator;
-import com.bmarket.securityservice.domain.service.AccountService;
+import com.bmarket.securityservice.domain.account.service.AccountService;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import com.bmarket.securityservice.utils.LinkProvider;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -53,23 +55,23 @@ public class AccountController {
 
     /**
      * POST : /ACCOUNT
-     * :회원 가입 요청
+     * :계정 생성 요청
      * @param form
      * @return
      */
     @PostMapping
-    public ResponseEntity signUp(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
+    public ResponseEntity createAccount(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
         log.info("==============[CONTROLLER] 회원가입 요청=============");
         if (bindingResult.hasErrors()) {
             throw new BasicException(ErrorCode.FAIL_VALIDATION, bindingResult);
         }
 
-        SignupResult result = accountService.signUpProcessing(form);
+        Link link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult)).withSelfRel();
 
-        List links = linkProvider.getLinks(AccountController.class, result);
-        WebMvcLinkBuilder link = WebMvcLinkBuilder.linkTo(AccountController.class);
-        Link selfRel = link.withSelfRel();
-        result.add(selfRel);
+
+        SignupResult result = accountService.signUpProcessing(form);
+        result.add(linkProvider.getLinks(AccountController.class, result));
+
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -77,9 +79,11 @@ public class AccountController {
         httpHeaders.setDate(new Date().getTime());
 
         return ResponseEntity
-                .created(linkProvider.getLocationUri(AccountController.class, result))
+                .created(link.toUri())
                 .headers(httpHeaders)
                 .body(new ResponseForm(ResponseStatus.SUCCESS, result));
+
+
     }
 
     /**

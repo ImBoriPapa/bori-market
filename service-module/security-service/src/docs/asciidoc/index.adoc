@@ -1,0 +1,32 @@
+= Bori market REST DOCS
+:toc: left
+:toclevels:
+:doctype: book
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== ACCOUNT
+
+
+[[ACCOUNT_생성]]
+=== ACCOUNT 생성
+==== 요청
+include::{snippets}/account/curl-request.adoc[]
+==== 요청 헤더
+include::{snippets}/account/http-request.adoc[]
+==== 응답
+include::{snippets}/account/http-response.adoc[]
+include::{snippets}/account/request-body.adoc[]
+==== 요청 바디
+include::{snippets}/account/request-fields.adoc[]
+==== 응답 바디
+include::{snippets}/account/response-fields.adoc[]
+
+== TRADE
+
+== CHAT
+
+== ADDRESS
+
+== ADMIN

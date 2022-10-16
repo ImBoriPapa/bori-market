@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.api.dto;
 
-import com.bmarket.securityservice.domain.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Account;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
