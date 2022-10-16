@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 public class MongoConfiguration {
 
     private final MongoMappingContext mongoMappingContext;
+    private final MongoClient mongoClient;
 
     @Bean
     public ReactiveMongoDatabaseFactory reactiveMongoDatabaseFactory(MongoClient mongoClient) {
@@ -32,6 +33,11 @@ public class MongoConfiguration {
         MappingMongoConverter converter = new MappingMongoConverter(ReactiveMongoTemplate.NO_OP_REF_RESOLVER, mongoMappingContext);
         converter.setTypeMapper(new DefaultMongoTypeMapper(null));
         return converter;
+    }
+
+    @Bean
+    ReactiveMongoTemplate reactiveMongoTemplate() {
+        return new ReactiveMongoTemplate(mongoClient, "address");
     }
 
 

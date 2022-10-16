@@ -1,9 +1,6 @@
 package com.bmarket.securityservice.api.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,8 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -21,14 +21,28 @@ public class TestController {
 
     @GetMapping("/address")
     public void callExternal(){
-        Flux<Object> stringFlux = WebClient.create()
+        Mono<Address[]> mono = WebClient.create()
                 .get()
                 .uri("http://localhost:8085/address")
                 .retrieve()
-                .bodyToFlux(Object.class);
-        stringFlux.subscribe(s -> log.info("result={}",s.toString()));
-        log.info("address result ={}",stringFlux.subscribe().toString());
+                .bodyToMono(Address[].class);
+        mono.doOnSuccess(m -> {
+            Arrays.stream(m).forEach(r -> {
+                log.info("city={}", r.getCity());
+                log.info("district={}", r.getDistrict());
+                log.info("town={}", r.getTown());
+            });
+        }).subscribe();
 
+    }
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class TestAddress{
+        private String city;
+        private String district;
+        private String town;
     }
 
     @GetMapping("/test")
