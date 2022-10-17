@@ -1,0 +1,9 @@
+server:
+  port: 8095
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: file-resource-management

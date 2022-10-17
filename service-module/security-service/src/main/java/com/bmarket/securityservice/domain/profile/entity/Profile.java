@@ -28,8 +28,8 @@ public class Profile {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_ID")
     private Map<String, Address> addressMap = new HashMap<>();
-    private String updatedProfileImage;
-    private String storedProfileImage;
+    private String uploadImageName;
+    private String storedImageName;
 
     @Builder(builderMethodName = "createProfile")
     public Profile(String nickname, String email, String contact, Address address) {
@@ -37,9 +37,13 @@ public class Profile {
         this.email = email;
         this.contact = contact;
         this.addressMap.put("first", address);
-        this.storedProfileImage = "기본프로필 이미지";
+        this.storedImageName = "기본프로필 이미지";
     }
 
+    public void upLoadingImage(String uploadImageName,String storedImageName ){
+        this.uploadImageName = uploadImageName;
+        this.storedImageName = storedImageName;
+    }
 
     public void initClientId(String clientId) {
         this.clientId = clientId;

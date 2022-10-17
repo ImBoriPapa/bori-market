@@ -3,6 +3,7 @@ package com.bmarket.securityservice.api.controller.external_spec.requestForm;
 import lombok.*;
 
 
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,4 +17,5 @@ public class RequestSignUpForm {
     private String email;
     private String contact;
     private Integer addressCode;
+
 }
