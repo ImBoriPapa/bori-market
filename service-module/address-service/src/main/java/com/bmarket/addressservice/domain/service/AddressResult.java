@@ -1,16 +1,15 @@
-package com.bmarket.securityservice.api.controller;
+package com.bmarket.addressservice.domain.service;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class Address {
-
+public class AddressResult {
     private String city;
     private String district;
     private String town;
-
+    private Integer addressCode;
 }

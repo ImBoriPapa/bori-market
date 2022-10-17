@@ -1,11 +1,13 @@
 package com.bmarket.securityservice.domain.account.service;
 
+import com.bmarket.securityservice.api.controller.AddressResult;
 import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.api.dto.FindAccountResult;
 import com.bmarket.securityservice.api.dto.AccountListResult;
 import com.bmarket.securityservice.api.dto.SignupResult;
 import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.address.Address;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
@@ -18,9 +20,13 @@ import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 
 @Service
@@ -35,18 +41,31 @@ public class AccountService {
 
     /**
      * 계정 생성
+     * ->getAddress(int addressCode) address-service 에서 주소를 찾아온다.
      * ->Profile.createProfile() 프로필 정보 생성
      * ->Account.createAccount() 계정 정보 생성
      * ->패스워드 인코딩
-     * @param  form -> RequestSignUpForm
+     *
+     * @param form -> RequestSignUpForm
      * @return SignupResult : {clientId,createdAt}
      */
     public SignupResult signUpProcessing(RequestSignUpForm form) {
+
+        AddressResult addressResult = getAddress(form.getAddressCode());
+
+        Address address = Address.createAddress()
+                .addressCode(addressResult.getAddressCode())
+                .city(addressResult.getCity())
+                .district(addressResult.getDistrict())
+                .town(addressResult.getTown())
+                .build();
+
+
         Profile profile = Profile.createProfile()
                 .nickname(form.getNickname())
                 .email(form.getEmail())
                 .contact(form.getContact())
-                .firstAddressCode(form.getAddressCode())
+                .address(address)
                 .build();
         Profile savedProfile = profileRepository.save(profile);
 
@@ -61,6 +80,22 @@ public class AccountService {
         savedAccount.getProfile().initClientId(savedAccount.getClientId());
 
         return new SignupResult(savedAccount.getClientId(), savedAccount.getCreatedAt());
+    }
+
+    /**
+     * address-service 모듈에서 addressCode 로 주소를 찾음
+     *
+     * @param addressCode
+     * @return
+     */
+    private static AddressResult getAddress(int addressCode) {
+        Flux<AddressResult> addressResultFlux = WebClient.create()
+                .get()
+                .uri("http://localhost:8085/addressData/address/" + addressCode)
+                .retrieve()
+                .bodyToFlux(AddressResult.class);
+
+        return addressResultFlux.blockFirst();
     }
 
     /**

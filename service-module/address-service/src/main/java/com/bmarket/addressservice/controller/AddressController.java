@@ -1,18 +1,22 @@
 package com.bmarket.addressservice.controller;
 
+
 import com.bmarket.addressservice.domain.entity.Address;
 import com.bmarket.addressservice.domain.repository.AddressRepository;
+import com.bmarket.addressservice.domain.service.AddressResult;
+import com.bmarket.addressservice.domain.service.AddressService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,28 +24,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AddressController {
 
-    private final AddressRepository addressRepository;
-    private final ReactiveMongoTemplate template;
+    private final AddressService addressService;
 
-    /**
-     * 주소 전체 검색
-     * @return
-     */
-    @GetMapping("/address")
-    public Mono<List<Address>> getAddress() {
-        Mono<List<Address>> listMono = addressRepository.findAll().collectList();
-        return listMono;
+    @GetMapping("/address/hello")
+    public Mono<String> hello() {
+        return Mono.just("hello");
     }
 
-    @GetMapping("/test")
-    public Flux<Address> findOne(@RequestParam String town){
-
-        Flux<Address> byTown = addressRepository.findByTown(town);
-
-        return byTown;
+    @GetMapping("/addressData/address")
+    public Flux<AddressResult> findOne(@RequestParam String town) {
+        if (town.equals("ready")) {
+            return Flux.empty();
+        }
+        log.info("Address is call");
+        return addressService.findByTown(town);
 
     }
 
-
+    @GetMapping("/addressData/address/{addressCode}")
+    public Flux<AddressResult> getAddressByCode(@PathVariable Integer addressCode) {
+        return addressService.findByCode(addressCode);
+    }
 
 }

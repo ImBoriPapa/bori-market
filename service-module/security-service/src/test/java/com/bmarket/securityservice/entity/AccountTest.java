@@ -40,12 +40,13 @@ class AccountTest {
                 .loginId("loginId")
                 .name("tester")
                 .password("test123")
-                .authority(Authority.ROLL_USER).build();
+                .build();
         //when
         Account save = accountRepository.save(account);
         Account findById = accountRepository.findById(save.getId()).get();
         //then
         Assertions.assertThat(findById.getId()).isEqualTo(save.getId());
+
 
     }
 
