@@ -60,7 +60,6 @@ public class AccountService {
                 .town(addressResult.getTown())
                 .build();
 
-
         Profile profile = Profile.createProfile()
                 .nickname(form.getNickname())
                 .email(form.getEmail())

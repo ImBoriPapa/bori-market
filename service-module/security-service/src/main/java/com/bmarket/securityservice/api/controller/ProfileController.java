@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.awt.*;
 import java.util.Optional;
@@ -30,34 +32,17 @@ public class ProfileController {
         Optional<Account> account = accountRepository.findByClientId(clientId);
         Account targetAccount = account.get();
 
-        String originalFilename = image.getOriginalFilename();
-
-        String ext = getExtension(originalFilename);
-
-        String storedName = generateStoredName(ext);
-
-        String fullPath = generatedFullPath(storedName, path);
-
-        targetAccount.getProfile().upLoadingImage(originalFilename,storedName);
-
+        Mono<String> result = WebClient.create("localhost:8095")
+                .put()
+                .accept(MediaType.MULTIPART_FORM_DATA)
+                .bodyValue(image)
+                .retrieve()
+                .bodyToMono(String.class);
+        String block = result.block();
+        log.info("result={}",block);
     }
 
-    private static String generatedFullPath(String storedName,String path) {
-        String fullPath = storedName + path;
-        return fullPath;
-    }
 
-    private static String generateStoredName(String ext) {
-        String uuid = UUID.randomUUID().toString();
-        String storedImageName = uuid + "." + ext;
-        return storedImageName;
-    }
 
-    private static String getExtension(String originalFilename) {
-        int pos = originalFilename.lastIndexOf(".");
 
-        String ext = originalFilename.substring(pos + 1);
-
-        return ext;
-    }
 }
