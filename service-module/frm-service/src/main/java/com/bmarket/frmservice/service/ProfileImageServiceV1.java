@@ -2,6 +2,7 @@ package com.bmarket.frmservice.service;
 
 import com.bmarket.frmservice.domain.ProfileImage;
 import com.bmarket.frmservice.repository.ProfileImageRepository;
+import com.bmarket.frmservice.utils.ImageNameGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,19 +27,17 @@ public class ProfileImageServiceV1 {
 
     @Value("${resource-path.profile-image-path}")
     private String path;
-    @Value("${resource-path.path-pattern}")
-    private String searchPattern;
-
+    private static final String SEARCH_PATTERN = "http://localhost:8095/file/";
     private final ProfileImageRepository profileImageRepository;
-
-    public String save(MultipartFile image) {
+    private final ImageNameGenerator generator;
+    public String save(Long accountId, MultipartFile image) {
         String originalFilename = image.getOriginalFilename();
 
-        String extension = getExtension(originalFilename);
+        String extension = generator.getExtension(originalFilename);
 
-        String storedName = generateStoredName(extension);
+        String storedName = generator.generateStoredName(extension);
 
-        String fullPath = generatedFullPath(path,storedName);
+        String fullPath = generator.generatedFullPath(path, storedName);
 
         try {
             image.transferTo(new File(fullPath));
@@ -47,24 +46,25 @@ public class ProfileImageServiceV1 {
         }
 
         ProfileImage profileImage = ProfileImage.createProfileImage()
+                .accountId(accountId)
                 .uploadImageName(originalFilename)
                 .storedImageName(storedName)
                 .size(image.getSize())
                 .build();
 
         ProfileImage save = profileImageRepository.save(profileImage);
-        String path = searchPattern+save.getStoredImageName();
+        String path = SEARCH_PATTERN + save.getStoredImageName();
         return path;
     }
 
-    public boolean deleteProfileImage(String id){
+    public boolean deleteProfileImage(String id) {
         Optional<ProfileImage> profileImage = profileImageRepository.findById(id);
         ProfileImage image = profileImage.get();
         String storedImageName = image.getStoredImageName();
 
-        File file = new File(generatedFullPath(path, storedImageName));
+        File file = new File(generator.generatedFullPath(path, storedImageName));
 
-        if(file.exists()){
+        if (file.exists()) {
             boolean delete = file.delete();
             profileImageRepository.delete(image);
             return delete;
@@ -72,14 +72,11 @@ public class ProfileImageServiceV1 {
         return false;
     }
 
-    public String updateProfileImage(String id,MultipartFile newImages){
+    public String updateProfileImage(String id, MultipartFile newImages) {
         Optional<ProfileImage> byId = profileImageRepository.findById(id);
         ProfileImage image = byId.get();
         deleteProfileImage(id);
-
-        String save = save(newImages);
-
-        return save;
+        return "";
     }
 
     public byte[] findImage(String imageId) throws IOException {
@@ -87,25 +84,24 @@ public class ProfileImageServiceV1 {
         ProfileImage profileImage = image.get();
         String storedImageName = profileImage.getStoredImageName();
 
-        String fullPath = generatedFullPath(path, storedImageName);
+        String fullPath = generator.generatedFullPath(path, storedImageName);
         byte[] allBytes = Files.readAllBytes(new File(fullPath).toPath());
 
         return allBytes;
     }
 
-    private static String generatedFullPath(String path, String storedName) {
-        return path + storedName;
-
+    public ProfileImage findByAccountId(Long accountId){
+        return profileImageRepository.findByAccountId(accountId).orElseThrow(() -> new IllegalArgumentException("해당 계정 아이디로 이미지를 찾을수 없습니다."));
     }
 
-    private static String generateStoredName(String ext) {
-        String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
+    public String getDefaultImage() {
+        return "http://localhost:8095/file/default/dafault-image";
     }
 
-    private static String getExtension(String originalFilename) {
-        int pos = originalFilename.lastIndexOf(".");
-        return originalFilename.substring(pos + 1);
-    }
+
+
+
+
+
 
 }

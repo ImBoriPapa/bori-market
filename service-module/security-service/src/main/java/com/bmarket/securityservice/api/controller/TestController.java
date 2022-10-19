@@ -2,13 +2,14 @@ package com.bmarket.securityservice.api.controller;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
+import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserter;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,14 +36,34 @@ public class TestController {
         private String town;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity test() {
-        log.info("test ok");
-        TestDto dto = TestDto.builder()
-                .name("보리")
-                .age("2")
-                .sex("남아").build();
-        return ResponseEntity.ok().body(dto);
+    @PostMapping("/image-test")
+    public void imageTest(@RequestPart MultipartFile image){
+
+        Resource resource = image.getResource();
+
+        Mono<String> body = WebClient.create()
+                .post()
+                .uri("http://localhost:8095/frm/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromMultipartData("accountId",1L)
+                        .with("image",resource)
+                )
+                .retrieve()
+                .bodyToMono(String.class);
+
+        String result = body.block();
+        log.info("result={}",result);
+
+    }
+//@RequestPart("image")MultipartFile image
+    @PostMapping("/test")
+    public String test(@RequestPart String test,
+                       @RequestPart MultipartFile image
+    ) {
+        log.info("test={}",test);
+        log.info("test ok={}",image.getOriginalFilename());
+
+        return "ok";
     }
 
     @Data

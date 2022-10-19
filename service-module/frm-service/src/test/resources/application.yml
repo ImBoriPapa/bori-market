@@ -1,0 +1,21 @@
+server:
+  port: 8095
+
+resource-path:
+  url-pattern: http://localhost:8095/file/
+  path-pattern: /file/**
+  location-path: file:///Users/leechoongsub/desktop/msa-project/frm/profile-images/
+  profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/
+
+
+spring:
+  mongodb:
+    embedded:
+      version: 4.0.21
+logging:
+  level:
+    sql: debug
+
+
+
+
