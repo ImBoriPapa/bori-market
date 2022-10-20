@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 
 
 @RestController
@@ -35,9 +33,9 @@ public class ProfileImageController {
         return result;
     }
 
-    @GetMapping("/frm/profile/{imageId}")
-    public ResponseEntity getProfileImage(@PathVariable String imageId) throws IOException {
-        byte[] image = profileImageServiceV1.findImage(imageId);
+    @GetMapping("/frm/profile/{accountId}")
+    public ResponseEntity getProfileImage(@PathVariable Long accountId) throws IOException {
+        byte[] image = profileImageServiceV1.getImageByByte(accountId);
 
         return ResponseEntity.ok().body("test");
 

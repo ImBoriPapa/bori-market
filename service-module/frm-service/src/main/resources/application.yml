@@ -8,6 +8,7 @@ resource-path:
   profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/
 
 
+
 spring:
   data:
     mongodb:

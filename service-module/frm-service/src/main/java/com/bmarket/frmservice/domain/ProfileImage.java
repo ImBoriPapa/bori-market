@@ -25,4 +25,14 @@ public class ProfileImage {
         this.storedImageName = storedImageName;
 
     }
+
+    public void deleteProfileImage(String storedImageName){
+        this.uploadImageName = null;
+        this.storedImageName = storedImageName;
+    }
+
+    public void updateProfileImage(String uploadImageName, String storedImageName) {
+        this.uploadImageName = uploadImageName;
+        this.storedImageName = storedImageName;
+    }
 }

@@ -4,8 +4,8 @@ server:
 resource-path:
   url-pattern: http://localhost:8095/file/
   path-pattern: /file/**
-  location-path: file:///Users/leechoongsub/desktop/msa-project/frm/profile-images/
-  profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/
+  location-path: file:///Users/leechoongsub/desktop/msa-project/frm/profile-images/test/
+  profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/test/
 
 
 spring:

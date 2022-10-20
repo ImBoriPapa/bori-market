@@ -5,20 +5,17 @@ import com.bmarket.frmservice.repository.ProfileImageRepository;
 import com.bmarket.frmservice.utils.ImageNameGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
 
 
 import java.util.Optional;
-import java.util.UUID;
+
+import static com.bmarket.frmservice.utils.Patterns.*;
 
 @Service
 @Slf4j
@@ -26,10 +23,15 @@ import java.util.UUID;
 public class ProfileImageServiceV1 {
 
     @Value("${resource-path.profile-image-path}")
-    private String path;
-    private static final String SEARCH_PATTERN = "http://localhost:8095/file/";
+    private String IMAGE_PATH;
     private final ProfileImageRepository profileImageRepository;
     private final ImageNameGenerator generator;
+
+    /**
+     * @param accountId
+     * @param image
+     * @return
+     */
     public String save(Long accountId, MultipartFile image) {
         String originalFilename = image.getOriginalFilename();
 
@@ -37,7 +39,7 @@ public class ProfileImageServiceV1 {
 
         String storedName = generator.generateStoredName(extension);
 
-        String fullPath = generator.generatedFullPath(path, storedName);
+        String fullPath = generator.generatedFullPath(IMAGE_PATH, storedName);
 
         try {
             image.transferTo(new File(fullPath));
@@ -57,51 +59,73 @@ public class ProfileImageServiceV1 {
         return path;
     }
 
-    public boolean deleteProfileImage(String id) {
-        Optional<ProfileImage> profileImage = profileImageRepository.findById(id);
-        ProfileImage image = profileImage.get();
-        String storedImageName = image.getStoredImageName();
+    public String deleteProfileImage(Long accountId) {
+        ProfileImage profileImage = profileImageRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("프로필 이미지가 존재하지 않습니다."));
 
-        File file = new File(generator.generatedFullPath(path, storedImageName));
-
-        if (file.exists()) {
-            boolean delete = file.delete();
-            profileImageRepository.delete(image);
-            return delete;
-        }
-        return false;
-    }
-
-    public String updateProfileImage(String id, MultipartFile newImages) {
-        Optional<ProfileImage> byId = profileImageRepository.findById(id);
-        ProfileImage image = byId.get();
-        deleteProfileImage(id);
-        return "";
-    }
-
-    public byte[] findImage(String imageId) throws IOException {
-        Optional<ProfileImage> image = profileImageRepository.findById(imageId);
-        ProfileImage profileImage = image.get();
         String storedImageName = profileImage.getStoredImageName();
 
-        String fullPath = generator.generatedFullPath(path, storedImageName);
+        File target = new File(generator.generatedFullPath(IMAGE_PATH, storedImageName));
+
+        if (!target.exists()) {
+            return "delete-fail";
+        }
+        target.delete();
+        profileImage.deleteProfileImage(DEFAULT_IMAGE_NAME);
+        ProfileImage image = profileImageRepository.save(profileImage);
+        return SEARCH_DEFAULT_PATTERN + image.getStoredImageName();
+    }
+
+    public String updateProfileImage(Long accountId, MultipartFile newImages) {
+        ProfileImage profileImage = profileImageRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("프로필 이미지가 존재하지 않습니다."));
+
+        File before = new File(generator.generatedFullPath(IMAGE_PATH, profileImage.getStoredImageName()));
+
+        if (!before.exists()) {
+            throw new IllegalArgumentException("저장된 프로필 이미지가 없습니다.");
+        }
+        before.delete();
+
+        String originalFilename = newImages.getOriginalFilename();
+
+        String extension = generator.getExtension(originalFilename);
+
+        String storedName = generator.generateStoredName(extension);
+
+        String fullPath = generator.generatedFullPath(IMAGE_PATH, storedName);
+
+        try {
+            newImages.transferTo(new File(fullPath));
+        } catch (IOException e) {
+            log.error("error", e);
+        }
+
+        profileImage.updateProfileImage(originalFilename, storedName);
+        ProfileImage save = profileImageRepository.save(profileImage);
+
+        return SEARCH_PATTERN + save.getStoredImageName();
+    }
+
+    public byte[] getImageByByte(Long accountId) throws IOException {
+        ProfileImage image = profileImageRepository.findByAccountId(accountId)
+                .orElseThrow(()->new IllegalArgumentException("이지를 찾을수 없습니다."));
+
+        String storedImageName = image.getStoredImageName();
+
+        String fullPath = generator.generatedFullPath(IMAGE_PATH, storedImageName);
         byte[] allBytes = Files.readAllBytes(new File(fullPath).toPath());
 
         return allBytes;
     }
 
-    public ProfileImage findByAccountId(Long accountId){
+    public ProfileImage findByAccountId(Long accountId) {
         return profileImageRepository.findByAccountId(accountId).orElseThrow(() -> new IllegalArgumentException("해당 계정 아이디로 이미지를 찾을수 없습니다."));
     }
 
-    public String getDefaultImage() {
+    public String findDefaultImage() {
         return "http://localhost:8095/file/default/dafault-image";
     }
-
-
-
-
-
 
 
 }
