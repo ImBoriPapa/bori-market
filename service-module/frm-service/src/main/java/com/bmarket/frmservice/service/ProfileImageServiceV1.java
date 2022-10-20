@@ -107,14 +107,20 @@ public class ProfileImageServiceV1 {
         return SEARCH_PATTERN + save.getStoredImageName();
     }
 
-    public byte[] getImageByByte(Long accountId) throws IOException {
+    public byte[] getImageByByte(Long accountId) {
         ProfileImage image = profileImageRepository.findByAccountId(accountId)
                 .orElseThrow(()->new IllegalArgumentException("이지를 찾을수 없습니다."));
 
         String storedImageName = image.getStoredImageName();
 
         String fullPath = generator.generatedFullPath(IMAGE_PATH, storedImageName);
-        byte[] allBytes = Files.readAllBytes(new File(fullPath).toPath());
+        byte[] allBytes;
+
+        try {
+            allBytes = Files.readAllBytes(new File(fullPath).toPath());
+        }catch (IOException e){
+            throw new IllegalArgumentException("이미지 불러오기 실패");
+        }
 
         return allBytes;
     }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -40,16 +41,16 @@ public class TestController {
     public void imageTest(@RequestPart MultipartFile image){
 
         Resource resource = image.getResource();
-
         Mono<String> body = WebClient.create()
                 .post()
                 .uri("http://localhost:8095/frm/profile")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromMultipartData("accountId",1L)
-                        .with("image",resource)
+                .body(BodyInserters.fromMultipartData("accountId", 1L)
+                        .with("image", resource)
                 )
                 .retrieve()
                 .bodyToMono(String.class);
+
 
         String result = body.block();
         log.info("result={}",result);

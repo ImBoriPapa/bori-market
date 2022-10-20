@@ -17,7 +17,13 @@ public class ProfileImage {
     private String uploadImageName;
     private String storedImageName;
 
-
+    /**
+     * 프로필 이미지 생성
+     * @param accountId
+     * @param uploadImageName
+     * @param storedImageName
+     * @param size
+     */
     @Builder(builderMethodName = "createProfileImage")
     public ProfileImage(Long accountId,String uploadImageName, String storedImageName, Long size) {
         this.accountId = accountId;
@@ -26,11 +32,20 @@ public class ProfileImage {
 
     }
 
-    public void deleteProfileImage(String storedImageName){
+    /**
+     * 프로필 이미지 삭제 요청시 업로드 이미지를 null, 이미지를 default 이미지로 변경
+     * @param
+     */
+    public void deleteProfileImage(String defaultImage){
         this.uploadImageName = null;
-        this.storedImageName = storedImageName;
+        this.storedImageName = defaultImage;
     }
 
+    /**
+     * 프로필 이미지 수정
+     * @param uploadImageName
+     * @param storedImageName
+     */
     public void updateProfileImage(String uploadImageName, String storedImageName) {
         this.uploadImageName = uploadImageName;
         this.storedImageName = storedImageName;
