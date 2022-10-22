@@ -1,30 +1,32 @@
 package com.bmarket.securityservice.api.controller;
 
+
+import com.bmarket.securityservice.domain.account.service.AccountCommandService;
+
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
-import org.springframework.http.client.MultipartBodyBuilder;
-import org.springframework.util.MultiValueMap;
+
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserter;
+
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.ClientResponse;
+
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Flux;
+
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
+
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class TestController {
 
+    private final AccountCommandService accountCommandService;
 
 
     @Data
@@ -38,7 +40,7 @@ public class TestController {
     }
 
     @PostMapping("/image-test")
-    public void imageTest(@RequestPart MultipartFile image){
+    public void imageTest(@RequestPart MultipartFile image) {
 
         Resource resource = image.getResource();
         Mono<String> body = WebClient.create()
@@ -53,18 +55,13 @@ public class TestController {
 
 
         String result = body.block();
-        log.info("result={}",result);
+        log.info("result={}", result);
 
     }
-//@RequestPart("image")MultipartFile image
-    @PostMapping("/test")
-    public String test(@RequestPart String test,
-                       @RequestPart MultipartFile image
-    ) {
-        log.info("test={}",test);
-        log.info("test ok={}",image.getOriginalFilename());
 
-        return "ok";
+    @GetMapping("/test")
+    public void test() {
+
     }
 
     @Data

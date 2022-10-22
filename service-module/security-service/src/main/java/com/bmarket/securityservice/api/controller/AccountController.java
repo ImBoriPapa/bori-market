@@ -6,6 +6,7 @@ import com.bmarket.securityservice.api.controller.external_spec.responseForm.Res
 import com.bmarket.securityservice.api.dto.AccountListResult;
 import com.bmarket.securityservice.api.dto.FindAccountResult;
 import com.bmarket.securityservice.api.dto.SignupResult;
+import com.bmarket.securityservice.domain.account.service.AccountCommandService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.exception.validate.RequestSignUpFormValidator;
@@ -40,6 +41,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class AccountController {
 
     private final AccountService accountService;
+    private final AccountCommandService accountCommandService;
     private final LinkProvider linkProvider;
 
     private final RequestSignUpFormValidator requestSignUpFormValidator;
@@ -69,7 +71,7 @@ public class AccountController {
         Link link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult)).withSelfRel();
 
 
-        SignupResult result = accountService.signUpProcessing(form);
+        SignupResult result = accountCommandService.signUpProcessing(form);
         result.add(linkProvider.getLinks(AccountController.class, result));
 
 

@@ -48,7 +48,7 @@ class CustomAccessDeniedHandlerTest {
                 .nickname("happyMan")
                 .contact("010-2323-1341")
                 .build();
-        accountService.signUpProcessing(signUpForm);
+
     }
 
     @AfterEach

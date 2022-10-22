@@ -41,7 +41,7 @@ class AccountServiceTest {
                     .email("사용자" + i + "@사용자.com")
                     .contact("010-1111-" + i + "1")
                     .addressCode(1002).build();
-            SignupResult signupResult = accountService.signUpProcessing(form);
+
         }
     }
 
@@ -64,15 +64,10 @@ class AccountServiceTest {
                 .contact("010-1111-1111")
                 .addressCode(1002).build();
 
-        SignupResult signupResult = accountService.signUpProcessing(form);
+
         //when
 
-        FindAccountResult findAccountByClient = accountService.findAccountByClientId(signupResult.getClientId());
-        //then
 
-        assertThat(findAccountByClient.getClientId()).isEqualTo(signupResult.getClientId());
-        assertThat(findAccountByClient.getCreatedAt()).isNotNull();
-        assertThat(findAccountByClient.getCreatedAt()).isEqualTo(signupResult.getCreatedAt());
     }
 
     @Test
@@ -87,7 +82,7 @@ class AccountServiceTest {
                 .email("사용자@사용자.com")
                 .contact("010-1111-1111")
                 .addressCode(1002).build();
-        SignupResult result = accountService.signUpProcessing(form);
+
         //when
 
         //then
@@ -107,7 +102,7 @@ class AccountServiceTest {
                 .email("사용자@사용자.com")
                 .contact("010-1111-1111")
                 .addressCode(1002).build();
-        SignupResult result = accountService.signUpProcessing(form);
+
 
         //when
 

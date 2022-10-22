@@ -55,6 +55,7 @@ public class Account {
         this.isLogin = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        profile.initClientId(this.getClientId());
     }
 
     public void updateClientId() {
@@ -64,7 +65,6 @@ public class Account {
     private String generateSequentialUUID() {
         return Generators.timeBasedGenerator().generate().toString();
     }
-
 
     /**
      * Authority 변경
@@ -81,5 +81,8 @@ public class Account {
         this.isLogin = isLogin;
     }
 
+    public void settingProfileClientId(){
+        this.profile.initClientId(this.getClientId());
+    }
 
 }

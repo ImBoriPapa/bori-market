@@ -130,7 +130,7 @@ public class ProfileImageServiceV1 {
     }
 
     public String findDefaultImage() {
-        return "http://localhost:8095/file/default/dafault-image";
+        return SEARCH_DEFAULT_PATTERN + DEFAULT_IMAGE_NAME;
     }
 
 

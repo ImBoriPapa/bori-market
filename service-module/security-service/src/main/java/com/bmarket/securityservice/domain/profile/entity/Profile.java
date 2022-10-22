@@ -1,14 +1,9 @@
 package com.bmarket.securityservice.domain.profile.entity;
 
-import com.bmarket.securityservice.domain.address.Address;
+
 import lombok.*;
 
 import javax.persistence.*;
-
-import java.util.HashMap;
-
-import java.util.Map;
-
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,25 +20,21 @@ public class Profile {
     private String email;
     @Column(unique = true)
     private String contact;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ADDRESS_ID")
-    private Map<String, Address> addressMap = new HashMap<>();
     private String profileImage;
 
     @Builder(builderMethodName = "createProfile")
-    public Profile(String nickname, String email, String contact, Address address) {
+    public Profile(String nickname, String email, String contact ,String profileImage) {
         this.nickname = nickname;
         this.email = email;
         this.contact = contact;
-        this.addressMap.put("first", address);
-        this.profileImage = "기본프로필 이미지";
+        this.profileImage = profileImage;
     }
 
     public void upLoadingImage(String storedImageName ){
         this.profileImage = storedImageName;
     }
-
     public void initClientId(String clientId) {
         this.clientId = clientId;
     }
+
 }
