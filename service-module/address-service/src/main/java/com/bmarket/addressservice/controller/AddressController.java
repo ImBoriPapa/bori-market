@@ -23,27 +23,23 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class AddressController {
-
     private final AddressService addressService;
 
-    @GetMapping("/address/hello")
-    public Mono<String> hello() {
-        return Mono.just("hello");
-    }
-
-    @GetMapping("/addressData/address")
+    @GetMapping("/addressData")
     public Flux<AddressResult> findOne(@RequestParam String town) {
         if (town.equals("ready")) {
             return Flux.empty();
         }
         log.info("Address is call");
         return addressService.findByTown(town);
-
     }
 
-    @GetMapping("/addressData/address/{addressCode}")
+    @GetMapping("/addressData/{addressCode}")
     public Flux<AddressResult> getAddressByCode(@PathVariable Integer addressCode) {
         return addressService.findByCode(addressCode);
     }
+
+
+
 
 }
