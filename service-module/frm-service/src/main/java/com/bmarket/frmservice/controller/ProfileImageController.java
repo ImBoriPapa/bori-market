@@ -20,28 +20,30 @@ import java.util.Map;
 public class ProfileImageController {
 
     private final ProfileImageServiceV1 profileImageServiceV1;
-
+    @GetMapping("/frm/profile/default")
+    private String getDefault(){
+        return profileImageServiceV1.findDefaultImage();
+    }
     /**
      * 프로필 이미지 생성 요청
-     *
      * @param id
      * @param image
      * @return ResponseEntity.ok , ResponseCreateProfileImage : imagePath
      */
     @PostMapping(value = "/frm/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity createProfileImage(@RequestParam(name = "accountId",defaultValue = "0") Long id,
+    public String createProfileImage(@RequestParam(name = "profileId",defaultValue = "0") Long id,
                                              @RequestPart(name = "image") MultipartFile image) {
 
         String save = profileImageServiceV1.save(id, image);
         ResponseCreateProfileImage dto = new ResponseCreateProfileImage(true,save);
-        return ResponseEntity.ok().body(dto);
+        return dto.imagePath;
     }
 
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseCreateProfileImage {
-        private boolean success;
+        private Boolean success;
         private String imagePath;
     }
 
@@ -53,8 +55,17 @@ public class ProfileImageController {
      * @throws
      */
     @GetMapping("/frm/profile/download/{accountId}")
-    public byte[] downloadProfileImage(@PathVariable Long accountId) {
-        return profileImageServiceV1.getImageByByte(accountId);
+    public ResponseEntity downloadProfileImage(@PathVariable Long accountId) {
+        byte[] imageByByte = profileImageServiceV1.getImageByByte(accountId);
+
+        return ResponseEntity.ok().body(new ResponseDownloadProfileImage(true,imageByByte));
+    }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ResponseDownloadProfileImage{
+        private Boolean success;
+        private byte[] imageData;
     }
 
     /**

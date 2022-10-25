@@ -26,7 +26,7 @@ public class Account {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Authority authority;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "PROFILE_ID")
     private Profile profile;
     private boolean isLogin;
@@ -55,7 +55,7 @@ public class Account {
         this.isLogin = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        profile.initClientId(this.getClientId());
+
     }
 
     public void updateClientId() {
@@ -81,8 +81,6 @@ public class Account {
         this.isLogin = isLogin;
     }
 
-    public void settingProfileClientId(){
-        this.profile.initClientId(this.getClientId());
-    }
+
 
 }

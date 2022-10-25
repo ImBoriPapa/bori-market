@@ -86,8 +86,6 @@ public class TestController {
 
     @GetMapping("/redirect1")
     public ResponseEntity test3() {
-
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create("/redirect2"));
         return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT).headers(httpHeaders).body("");

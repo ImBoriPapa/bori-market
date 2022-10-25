@@ -9,8 +9,6 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
     Optional<Account> findByClientId(String clientId);
 
     Optional<Account> findByLoginId(String loginId);
-
-
     boolean existsByLoginId(String loginId);
 
 

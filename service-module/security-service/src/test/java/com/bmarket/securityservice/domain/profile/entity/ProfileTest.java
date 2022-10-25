@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.domain.profile.entity;
 
-import com.bmarket.securityservice.domain.address.repository.AddressRepository;
+
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +16,7 @@ class ProfileTest {
 
     @Autowired
     ProfileRepository profileRepository;
-    @Autowired
-    AddressRepository addressRepository;
+
     @Autowired
     EntityManager em;
 
@@ -25,12 +24,7 @@ class ProfileTest {
     @DisplayName("프로필 생성")
     void createProfile() throws Exception{
 
-        Profile profile = Profile.createProfile()
-                .nickname("ninkname")
-                .email("email")
-                .contact("dsadsa")
-                .profileImage("Fsfa").build();
-        Profile save = profileRepository.save(profile);
+
 
 
     }
