@@ -20,22 +20,25 @@ import java.util.Map;
 public class ProfileImageController {
 
     private final ProfileImageServiceV1 profileImageServiceV1;
+
     @GetMapping("/frm/profile/default")
-    private String getDefault(){
+    private String getDefault() {
         return profileImageServiceV1.findDefaultImage();
     }
+
     /**
      * 프로필 이미지 생성 요청
+     *
      * @param id
      * @param image
      * @return ResponseEntity.ok , ResponseCreateProfileImage : imagePath
      */
     @PostMapping(value = "/frm/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public String createProfileImage(@RequestParam(name = "profileId",defaultValue = "0") Long id,
-                                             @RequestPart(name = "image") MultipartFile image) {
+    public String createProfileImage(@RequestParam(name = "profileId", defaultValue = "0") Long id,
+                                     @RequestPart(name = "image") MultipartFile image) {
 
         String save = profileImageServiceV1.save(id, image);
-        ResponseCreateProfileImage dto = new ResponseCreateProfileImage(true,save);
+        ResponseCreateProfileImage dto = new ResponseCreateProfileImage(true, save);
         return dto.imagePath;
     }
 
@@ -58,12 +61,13 @@ public class ProfileImageController {
     public ResponseEntity downloadProfileImage(@PathVariable Long accountId) {
         byte[] imageByByte = profileImageServiceV1.getImageByByte(accountId);
 
-        return ResponseEntity.ok().body(new ResponseDownloadProfileImage(true,imageByByte));
+        return ResponseEntity.ok().body(new ResponseDownloadProfileImage(true, imageByByte));
     }
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ResponseDownloadProfileImage{
+    public static class ResponseDownloadProfileImage {
         private Boolean success;
         private byte[] imageData;
     }

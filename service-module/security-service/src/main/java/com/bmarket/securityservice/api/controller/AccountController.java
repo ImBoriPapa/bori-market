@@ -74,7 +74,6 @@ public class AccountController {
         SignupResult result = accountCommandService.signUpProcessing(form);
         result.add(linkProvider.getLinks(AccountController.class, result));
 
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);

@@ -6,5 +6,7 @@ import lombok.Getter;
 public enum AddressSearchRange {
     JUST,
     FIVE,
-    TEN,
+    TEN;
+
+
 }
