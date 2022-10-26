@@ -1,17 +1,16 @@
-package com.bmarket.tradeservice.domain;
+package com.bmarket.tradeservice.domain.dto;
 
 import com.bmarket.tradeservice.domain.entity.Category;
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class TradeDto {
-
+public class RequestForm {
     private Long accountId;
     private String nickname;
     private String profileImage;
@@ -23,6 +22,4 @@ public class TradeDto {
     private Category category;
     private Boolean isShare;
     private Boolean isOffer;
-    private List<MultipartFile> images;
-
 }
