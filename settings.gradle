@@ -1,3 +1,5 @@
 rootProject.name = 'bori-market'
 include 'service-module'
+include 'frm-service'
 
+findProject(":service-module:frm-service")?.name = "frm-service"

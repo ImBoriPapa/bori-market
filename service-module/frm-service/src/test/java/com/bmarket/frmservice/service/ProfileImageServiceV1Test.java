@@ -1,7 +1,8 @@
 package com.bmarket.frmservice.service;
 
-import com.bmarket.frmservice.domain.ProfileImage;
-import com.bmarket.frmservice.repository.ProfileImageRepository;
+import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
+import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceV1;
+import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
 import com.bmarket.frmservice.utils.ImageNameGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 import static com.bmarket.frmservice.utils.Patterns.*;
 import static org.assertj.core.api.Assertions.*;

@@ -1,7 +1,7 @@
-package com.bmarket.frmservice.service;
+package com.bmarket.frmservice.domain.profile.service;
 
-import com.bmarket.frmservice.domain.ProfileImage;
-import com.bmarket.frmservice.repository.ProfileImageRepository;
+import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
+import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
 import com.bmarket.frmservice.utils.ImageNameGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-
-import java.util.Optional;
 
 import static com.bmarket.frmservice.utils.Patterns.*;
 

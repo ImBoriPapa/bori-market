@@ -1,8 +1,7 @@
 package com.bmarket.frmservice.domain;
 
-import com.bmarket.frmservice.repository.ProfileImageRepository;
-
-import org.assertj.core.api.Assertions;
+import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
+import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import java.util.Optional;
 
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataMongoTest
 class ProfileImageTest {

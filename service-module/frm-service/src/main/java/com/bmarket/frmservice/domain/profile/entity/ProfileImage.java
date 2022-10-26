@@ -1,4 +1,4 @@
-package com.bmarket.frmservice.domain;
+package com.bmarket.frmservice.domain.profile.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

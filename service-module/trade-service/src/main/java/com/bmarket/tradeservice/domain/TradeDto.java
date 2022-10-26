@@ -1,9 +1,7 @@
 package com.bmarket.tradeservice.domain;
 
 import com.bmarket.tradeservice.domain.entity.Category;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -11,6 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Builder
 public class TradeDto {
 
     private Long accountId;

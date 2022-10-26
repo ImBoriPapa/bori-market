@@ -1,4 +1,4 @@
-package com.bmarket.frmservice.service;
+package com.bmarket.frmservice.domain.profile.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
