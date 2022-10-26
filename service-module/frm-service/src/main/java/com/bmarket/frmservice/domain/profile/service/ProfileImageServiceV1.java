@@ -2,12 +2,14 @@ package com.bmarket.frmservice.domain.profile.service;
 
 import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
 import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
-import com.bmarket.frmservice.utils.ImageNameGenerator;
+import com.bmarket.frmservice.domain.trade.entity.UploadFile;
+import com.bmarket.frmservice.utils.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +25,7 @@ public class ProfileImageServiceV1 {
     @Value("${resource-path.profile-image-path}")
     private String IMAGE_PATH;
     private final ProfileImageRepository profileImageRepository;
-    private final ImageNameGenerator generator;
+    private final FileManager manager;
 
     /**
      * @param accountId
@@ -31,29 +33,17 @@ public class ProfileImageServiceV1 {
      * @return
      */
     public String save(Long accountId, MultipartFile image) {
-        String originalFilename = image.getOriginalFilename();
-
-        String extension = generator.getExtension(originalFilename);
-
-        String storedName = generator.generateStoredName(extension);
-
-        String fullPath = generator.generatedFullPath(IMAGE_PATH, storedName);
-
-        try {
-            image.transferTo(new File(fullPath));
-        } catch (IOException e) {
-            log.error("error", e);
-        }
+        UploadFile uploadFile = manager.saveFile(IMAGE_PATH, image);
 
         ProfileImage profileImage = ProfileImage.createProfileImage()
                 .accountId(accountId)
-                .uploadImageName(originalFilename)
-                .storedImageName(storedName)
+                .uploadImageName(uploadFile.getUploadName())
+                .storedImageName(uploadFile.getStoredName())
                 .size(image.getSize())
                 .build();
 
         ProfileImage save = profileImageRepository.save(profileImage);
-        String path = SEARCH_PATTERN + save.getStoredImageName();
+        String path = SEARCH_PROFILE_PATTERN + save.getStoredImageName();
         return path;
     }
 
@@ -63,12 +53,8 @@ public class ProfileImageServiceV1 {
 
         String storedImageName = profileImage.getStoredImageName();
 
-        File target = new File(generator.generatedFullPath(IMAGE_PATH, storedImageName));
+        manager.deleteFile(IMAGE_PATH, storedImageName);
 
-        if (!target.exists()) {
-            return "delete-fail";
-        }
-        target.delete();
         profileImage.deleteProfileImage(DEFAULT_IMAGE_NAME);
         ProfileImage image = profileImageRepository.save(profileImage);
         return SEARCH_DEFAULT_PATTERN + image.getStoredImageName();
@@ -78,45 +64,28 @@ public class ProfileImageServiceV1 {
         ProfileImage profileImage = profileImageRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("프로필 이미지가 존재하지 않습니다."));
 
-        File before = new File(generator.generatedFullPath(IMAGE_PATH, profileImage.getStoredImageName()));
+        manager.deleteFile(IMAGE_PATH, profileImage.getStoredImageName());
 
-        if (!before.exists()) {
-            throw new IllegalArgumentException("저장된 프로필 이미지가 없습니다.");
-        }
-        before.delete();
+        UploadFile uploadFile = manager.saveFile(IMAGE_PATH, newImages);
 
-        String originalFilename = newImages.getOriginalFilename();
-
-        String extension = generator.getExtension(originalFilename);
-
-        String storedName = generator.generateStoredName(extension);
-
-        String fullPath = generator.generatedFullPath(IMAGE_PATH, storedName);
-
-        try {
-            newImages.transferTo(new File(fullPath));
-        } catch (IOException e) {
-            log.error("error", e);
-        }
-
-        profileImage.updateProfileImage(originalFilename, storedName);
+        profileImage.updateProfileImage(uploadFile.getUploadName(), uploadFile.getStoredName());
         ProfileImage save = profileImageRepository.save(profileImage);
 
-        return SEARCH_PATTERN + save.getStoredImageName();
+        return SEARCH_PROFILE_PATTERN + save.getStoredImageName();
     }
 
     public byte[] getImageByByte(Long accountId) {
         ProfileImage image = profileImageRepository.findByAccountId(accountId)
-                .orElseThrow(()->new IllegalArgumentException("이지를 찾을수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("이지를 찾을수 없습니다."));
 
         String storedImageName = image.getStoredImageName();
 
-        String fullPath = generator.generatedFullPath(IMAGE_PATH, storedImageName);
+        String fullPath = manager.generatedFullPath(IMAGE_PATH, storedImageName);
         byte[] allBytes;
 
         try {
             allBytes = Files.readAllBytes(new File(fullPath).toPath());
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new IllegalArgumentException("이미지 불러오기 실패");
         }
 

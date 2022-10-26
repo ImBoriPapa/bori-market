@@ -5,20 +5,21 @@ import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeImage;
 import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
 import com.bmarket.tradeservice.domain.repository.TradeRepository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,7 +33,7 @@ public class TradeService {
 
     public Trade createTrade(TradeDto dto) {
 
-        MultipartFile file = dto.getImages().stream().collect(Collectors.toList()).get(0);
+
 
         Trade trade = Trade.createTrade()
                 .accountId(dto.getAccountId())
@@ -46,40 +47,43 @@ public class TradeService {
                 .category(dto.getCategory())
                 .isShare(dto.getIsShare())
                 .isOffer(dto.getIsOffer())
-                .representativeImage(file.getOriginalFilename()).build();
+                .build();
         Trade save = tradeRepository.save(trade);
+
+        Image imagePath = getImagePath(save.getId(), dto.getImages());
 
         ArrayList<TradeImage> images = new ArrayList<>();
 
-        dto.getImages().stream().forEach(m -> {
+        imagePath.getImagePath().stream().forEach(m -> {
             TradeImage tradeImage = TradeImage.createImage()
-                    .imageName(m.getOriginalFilename())
+                    .imageName(m)
                     .trade(trade).build();
-            images.add(tradeImage);
-        });
-        tradeImageRepository.saveAll(images);
-
+            images.add(tradeImage);});
+        List<TradeImage> imageList = tradeImageRepository.saveAll(images);
+        save.updateRepresentativeImage(imageList.get(0).getImageName());
         return save;
     }
 
-    private String getImagePath(Long tradeId, List<MultipartFile> files) {
+    private Image getImagePath(Long tradeId, List<MultipartFile> files) {
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("tradeId", tradeId);
+        files.stream().forEach(m -> builder.part("images", m.getResource()));
 
-        List<Resource> resources = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            resources.add(file.getResource());
-        }
-
-        String profileImage = WebClient.create()
+        Image image = WebClient.create()
                 .post()
-                .uri("http://localhost:8095/frm/profile")
+                .uri("http://localhost:8095/frm/trade")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromMultipartData("tradeId", tradeId)
-                        .with("images", resources))
+                .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()
-                .bodyToMono(String.class)
+                .bodyToMono(Image.class)
                 .block();
+        return image;
+    }
 
-        return profileImage;
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class Image {
+        private List<String> imagePath;
     }
 }

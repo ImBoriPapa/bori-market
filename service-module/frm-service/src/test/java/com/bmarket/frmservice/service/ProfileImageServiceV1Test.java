@@ -3,7 +3,7 @@ package com.bmarket.frmservice.service;
 import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
 import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceV1;
 import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
-import com.bmarket.frmservice.utils.ImageNameGenerator;
+import com.bmarket.frmservice.utils.FileManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ class ProfileImageServiceV1Test {
     @Autowired
     ProfileImageRepository profileImageRepository;
     @Autowired
-    ImageNameGenerator generator;
+    FileManager generator;
 
     @Value("${resource-path.profile-image-path}")
     private String IMAGE_PATH;
@@ -46,7 +46,7 @@ class ProfileImageServiceV1Test {
         //then
         assertThat(findProfile.getAccountId()).isEqualTo(1L);
         assertThat(findProfile.getUploadImageName()).isEqualTo(image.getOriginalFilename());
-        assertThat(SEARCH_PATTERN + findProfile.getStoredImageName()).isEqualTo(save);
+        assertThat(SEARCH_PROFILE_PATTERN + findProfile.getStoredImageName()).isEqualTo(save);
         assertThat(file.exists()).isTrue();
         file.delete();
         assertThat(file.exists()).isFalse();
@@ -91,7 +91,7 @@ class ProfileImageServiceV1Test {
 
         //then
         assertThat(afterUpdate).isNotEqualTo(beforeUpdate);
-        assertThat(afterUpdate).isEqualTo(SEARCH_PATTERN + findAfter.getStoredImageName());
+        assertThat(afterUpdate).isEqualTo(SEARCH_PROFILE_PATTERN + findAfter.getStoredImageName());
         assertThat(findAfter.getUploadImageName()).isEqualTo(newImage.getOriginalFilename());
         assertThat(beforeFile.exists()).isFalse();
         assertThat(afterFile.getName()).isEqualTo(findAfter.getStoredImageName());

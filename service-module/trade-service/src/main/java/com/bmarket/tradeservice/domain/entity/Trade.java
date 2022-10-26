@@ -56,4 +56,8 @@ public class Trade {
         this.status = status;
     }
 
+    public void updateRepresentativeImage(String representativeImage){
+        this.representativeImage = representativeImage;
+    }
+
 }
