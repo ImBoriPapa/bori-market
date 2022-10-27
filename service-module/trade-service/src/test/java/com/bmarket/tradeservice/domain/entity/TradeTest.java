@@ -1,15 +1,16 @@
 package com.bmarket.tradeservice.domain.entity;
 
-import com.bmarket.tradeservice.domain.repository.TradeRepository;
+import com.bmarket.tradeservice.domain.trade.repository.TradeRepository;
+import com.bmarket.tradeservice.domain.trade.entity.Category;
+import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Slf4j
 class TradeTest {

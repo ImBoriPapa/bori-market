@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.entity;
+package com.bmarket.tradeservice.domain.trade.entity;
 
 public enum Category {
 

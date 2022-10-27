@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.entity;
+package com.bmarket.tradeservice.domain.trade.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,6 +18,7 @@ public class Trade {
     private Long accountId;
     private String nickname;
     private String profileImage;
+
     private String title;
     private String context;
     private Integer price;

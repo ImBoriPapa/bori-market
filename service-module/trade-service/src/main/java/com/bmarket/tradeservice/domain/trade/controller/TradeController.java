@@ -1,15 +1,22 @@
-package com.bmarket.tradeservice.domain.controller;
+package com.bmarket.tradeservice.domain.trade.controller;
 
 import com.bmarket.tradeservice.domain.dto.RequestForm;
-import com.bmarket.tradeservice.domain.entity.Category;
-import com.bmarket.tradeservice.domain.entity.Trade;
-import com.bmarket.tradeservice.domain.entity.TradeStatus;
-import com.bmarket.tradeservice.domain.service.TradeCommandService;
+import com.bmarket.tradeservice.domain.trade.entity.Category;
+import com.bmarket.tradeservice.domain.trade.entity.Trade;
+import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.trade.repository.query.AddressSearchCondition;
+import com.bmarket.tradeservice.domain.trade.repository.query.SearchCondition;
+import com.bmarket.tradeservice.domain.trade.repository.query.TradeListDto;
+import com.bmarket.tradeservice.domain.trade.repository.query.TradeQueryRepository;
+import com.bmarket.tradeservice.domain.trade.service.TradeCommandService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +31,7 @@ import java.util.List;
 public class TradeController {
 
     private final TradeCommandService tradeCommandService;
+    private final TradeQueryRepository tradeQueryRepository;
 
     @PostMapping(value = "/internal/trade", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResultForm> createTrade(@RequestPart RequestForm form,
@@ -46,6 +54,21 @@ public class TradeController {
                          @RequestParam int size) {
 
 
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity test(){
+
+        PageRequest request = PageRequest.of(0, 100, Sort.Direction.DESC, "id");
+        SearchCondition condition = SearchCondition.builder()
+                .category(null)
+                .isShare(null)
+                .isOffer(null)
+                .status(null)
+                .addressCode(1001)
+                .addressSearchCondition(AddressSearchCondition.JUST).build();
+        Page<TradeListDto> listDtos = tradeQueryRepository.getTradeWithComplexCondition(request, condition);
+        return ResponseEntity.ok().body(listDtos);
     }
 
     @NoArgsConstructor

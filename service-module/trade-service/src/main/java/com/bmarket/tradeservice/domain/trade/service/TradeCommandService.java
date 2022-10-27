@@ -1,11 +1,11 @@
-package com.bmarket.tradeservice.domain.service;
+package com.bmarket.tradeservice.domain.trade.service;
 
 import com.bmarket.tradeservice.domain.dto.RequestForm;
-import com.bmarket.tradeservice.domain.entity.Trade;
-import com.bmarket.tradeservice.domain.entity.TradeImage;
+import com.bmarket.tradeservice.domain.trade.entity.Trade;
+import com.bmarket.tradeservice.domain.trade.entity.TradeImage;
 import com.bmarket.tradeservice.domain.internal.RequestImageApi;
-import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
-import com.bmarket.tradeservice.domain.repository.TradeRepository;
+import com.bmarket.tradeservice.domain.trade.repository.TradeImageRepository;
+import com.bmarket.tradeservice.domain.trade.repository.TradeRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

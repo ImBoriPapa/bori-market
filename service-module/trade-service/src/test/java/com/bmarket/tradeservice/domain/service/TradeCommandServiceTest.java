@@ -1,11 +1,12 @@
 package com.bmarket.tradeservice.domain.service;
 
 import com.bmarket.tradeservice.domain.dto.RequestForm;
-import com.bmarket.tradeservice.domain.entity.Category;
-import com.bmarket.tradeservice.domain.entity.Trade;
-import com.bmarket.tradeservice.domain.entity.TradeImage;
-import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
-import com.bmarket.tradeservice.domain.repository.TradeRepository;
+import com.bmarket.tradeservice.domain.trade.entity.Category;
+import com.bmarket.tradeservice.domain.trade.entity.Trade;
+import com.bmarket.tradeservice.domain.trade.entity.TradeImage;
+import com.bmarket.tradeservice.domain.trade.repository.TradeImageRepository;
+import com.bmarket.tradeservice.domain.trade.repository.TradeRepository;
+import com.bmarket.tradeservice.domain.trade.service.TradeCommandService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

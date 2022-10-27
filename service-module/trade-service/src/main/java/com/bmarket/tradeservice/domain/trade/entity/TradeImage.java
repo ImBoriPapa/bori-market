@@ -1,7 +1,8 @@
-package com.bmarket.tradeservice.domain.entity;
+package com.bmarket.tradeservice.domain.trade.entity;
 
 
 
+import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
