@@ -18,7 +18,6 @@ public class Trade {
     private Long accountId;
     private String nickname;
     private String profileImage;
-
     private String title;
     private String context;
     private Integer price;

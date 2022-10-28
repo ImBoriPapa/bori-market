@@ -47,8 +47,13 @@ public class TradeController {
     @GetMapping("/test2")
     public void getTrade(SearchCondition condition) {
 
+        log.info("range={}",condition.getRange());
+        log.info("range={}",condition.getRange());
+        log.info("range={}",condition.getRange());
+        log.info("range={}",condition.getRange());
+        log.info("range={}",condition.getRange());
+        log.info("range={}",condition.getRange());
     }
-
 
     @GetMapping("/test")
     public ResponseEntity test(@RequestParam(defaultValue = "10") int size,
