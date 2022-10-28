@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 public class TradeListDto {
-
     private Long id;
     private String title;
     private String townName;

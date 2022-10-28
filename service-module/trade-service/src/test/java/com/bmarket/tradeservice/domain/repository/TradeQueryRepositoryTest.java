@@ -2,16 +2,10 @@ package com.bmarket.tradeservice.domain.repository;
 
 import com.bmarket.tradeservice.domain.trade.repository.TradeImageRepository;
 import com.bmarket.tradeservice.domain.trade.repository.TradeRepository;
-import com.bmarket.tradeservice.domain.trade.repository.query.AddressSearchCondition;
-import com.bmarket.tradeservice.domain.trade.repository.query.SearchCondition;
-import com.bmarket.tradeservice.domain.trade.repository.query.TradeListDto;
-import com.bmarket.tradeservice.domain.trade.repository.query.TradeQueryRepositoryImpl;
+import com.bmarket.tradeservice.domain.trade.repository.query.*;
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -170,17 +164,24 @@ class TradeQueryRepositoryTest {
     @DisplayName("거래 조회 테스트1 AddressCode= 1001 , 40건")
     void searchTest() throws Exception {
         //페이징
-        PageRequest pageRequest = PageRequest.of(0, 30, Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
         SearchCondition condition = SearchCondition.builder()
                 .category(null)
                 .isShare(null)
                 .isOffer(null)
                 .status(null)
                 .addressCode(1001)
-                .addressSearchCondition(AddressSearchCondition.JUST).build();
+                .range(AddressRange.JUST).build();
+        int size = 10;
+        Long tradId = 31L;
 
-        Page<TradeListDto> trade = queryRepository.getTradeWithComplexCondition(pageRequest, condition);
+        ResponseResult<List<TradeListDto>> result = queryRepository.getTradeWithComplexCondition(size,tradId ,condition);
+//        assertThat(result.getSize()).isEqualTo(40);
+
+        log.info("size ={}",result.getSize());
+        log.info("HasNext ={}",result.getHasNext());
+        result.getResult()
+                .forEach(m->log.info("id= {}, title= {}",m.getId(),m.getTitle()));
     }
-
 
 }

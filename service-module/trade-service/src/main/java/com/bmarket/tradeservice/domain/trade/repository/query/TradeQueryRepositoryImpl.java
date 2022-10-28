@@ -1,15 +1,10 @@
 package com.bmarket.tradeservice.domain.trade.repository.query;
 
 import com.bmarket.tradeservice.domain.trade.entity.Category;
-import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,7 +19,8 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<TradeListDto> getTradeWithComplexCondition(Pageable pageable, SearchCondition searchCondition) {
+    public ResponseResult<List<TradeListDto>> getTradeWithComplexCondition(int size , Long tradId, SearchCondition searchCondition) {
+
         List<TradeListDto> list = queryFactory
                 .select(
                         new QTradeListDto(
@@ -37,33 +33,45 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                         )
                 )
                 .from(trade)
-                .where(
+                .where( cursor(tradId),
                         categoryEq(searchCondition.getCategory()),
                         shareEp(searchCondition.getIsShare()),
                         offerEq(searchCondition.getIsOffer()),
                         statusEq(searchCondition.getStatus()),
-                        addressSearchRange(searchCondition.getAddressSearchCondition(), searchCondition.getAddressCode())
+                        addressSearchRange(searchCondition.getRange(), searchCondition.getAddressCode())
                 )
-                .orderBy(trade.createdAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .orderBy(trade.id.desc())
+                .limit(size+1)
                 .fetch();
 
+        boolean hasNext = false;
+        //list 11 > size 10
+        //list.remove(10)4
+        if (list.size() > size) {
+            System.out.println("size="+size);
+            String title = list.remove(size).getTitle();
+            System.out.println("target="+title);
+            hasNext = true;
+        }
 
-        return new PageImpl<>(list, pageable, list.size());
+        return new ResponseResult<>(list.size(), hasNext, list);
     }
 
-    private BooleanExpression addressSearchRange(AddressSearchCondition addressSearchCondition, int addressCode) {
+    private BooleanExpression cursor(Long tradeId) {
+        return tradeId <= 0 ? null : trade.id.lt(tradeId);
+    }
 
-        if (addressSearchCondition == AddressSearchCondition.JUST) {
+    private BooleanExpression addressSearchRange(AddressRange addressRange, int addressCode) {
+
+        if (addressRange == AddressRange.JUST) {
             return trade.addressCode.eq(addressCode);
         }
 
-        if (addressSearchCondition == AddressSearchCondition.FIVE) {
+        if (addressRange == AddressRange.FIVE) {
             return trade.addressCode.between(addressCode - 2, addressCode + 3);
         }
 
-        if (addressSearchCondition == AddressSearchCondition.TEN) {
+        if (addressRange == AddressRange.TEN) {
             return trade.addressCode.between(addressCode - 5, addressCode + 5);
         }
 

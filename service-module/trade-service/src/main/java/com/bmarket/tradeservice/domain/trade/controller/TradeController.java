@@ -4,24 +4,19 @@ import com.bmarket.tradeservice.domain.dto.RequestForm;
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
-import com.bmarket.tradeservice.domain.trade.repository.query.AddressSearchCondition;
-import com.bmarket.tradeservice.domain.trade.repository.query.SearchCondition;
-import com.bmarket.tradeservice.domain.trade.repository.query.TradeListDto;
-import com.bmarket.tradeservice.domain.trade.repository.query.TradeQueryRepository;
+import com.bmarket.tradeservice.domain.trade.repository.query.*;
 import com.bmarket.tradeservice.domain.trade.service.TradeCommandService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,26 +44,38 @@ public class TradeController {
         private LocalDateTime createdAt;
     }
 
-    @GetMapping("/internal/trade")
-    public void getTrade(@RequestParam int page,
-                         @RequestParam int size) {
-
+    @GetMapping("/test2")
+    public void getTrade(SearchCondition condition) {
 
     }
 
-    @GetMapping("/test")
-    public ResponseEntity test(){
 
-        PageRequest request = PageRequest.of(0, 100, Sort.Direction.DESC, "id");
-        SearchCondition condition = SearchCondition.builder()
-                .category(null)
-                .isShare(null)
-                .isOffer(null)
-                .status(null)
-                .addressCode(1001)
-                .addressSearchCondition(AddressSearchCondition.JUST).build();
-        Page<TradeListDto> listDtos = tradeQueryRepository.getTradeWithComplexCondition(request, condition);
-        return ResponseEntity.ok().body(listDtos);
+    @GetMapping("/test")
+    public ResponseEntity test(@RequestParam(defaultValue = "10") int size,
+                               @RequestParam(defaultValue = "0") Long tradeId,
+                               @RequestParam(required = false) Category category,
+                               @RequestParam(required = false) Boolean isShare,
+                               @RequestParam(required = false) Boolean isOffer,
+                               @RequestParam(required = false) TradeStatus status,
+                               @RequestParam(required = false) Integer addressCode,
+                               @RequestParam(required = false) AddressRange range
+    ) {
+        SearchCondition searchCondition = SearchCondition.builder()
+                .category(category)
+                .isShare(isShare)
+                .isOffer(isOffer)
+                .status(status)
+                .addressCode(addressCode)
+                .range(range).build();
+
+        log.info("category={}",searchCondition.getCategory());
+        log.info("share={}",searchCondition.getIsShare());
+        log.info("offer={}",searchCondition.getIsOffer());
+        log.info("status={}",searchCondition.getStatus());
+        log.info("address code={}",searchCondition.getAddressCode());
+
+//        ResponseResult result = tradeQueryRepository.getTradeWithComplexCondition(size, tradeId, searchCondition);
+        return ResponseEntity.ok().body("ok");
     }
 
     @NoArgsConstructor
