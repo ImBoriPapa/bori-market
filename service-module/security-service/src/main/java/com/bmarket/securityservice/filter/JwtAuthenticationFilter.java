@@ -1,15 +1,15 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.domain.jwt.JwtCode;
+import com.bmarket.securityservice.api.security.entity.JwtCode;
 
-import com.bmarket.securityservice.domain.jwt.service.JwtService;
+import com.bmarket.securityservice.api.security.service.JwtService;
 
+import com.bmarket.securityservice.utils.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.domain.jwt.JwtHeader.*;
+import static com.bmarket.securityservice.api.security.entity.JwtHeader.*;
 import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
 
 
@@ -29,10 +29,11 @@ import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Optional<String> token = resolveToken(request, AUTHORIZATION_HEADER);
+        Optional<String> token = jwtUtils.resolveToken(request, AUTHORIZATION_HEADER);
         JwtCode jwtCode;
         if (token.isEmpty()) {
             log.info("ACCESS TOKEN 이 없습니다.", request.getRequestURI());
@@ -40,7 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (token.isPresent()) {
-            jwtCode = jwtService.validateToken(token.get());
+            jwtCode = jwtUtils.validateToken(token.get());
 
             switch (jwtCode) {
                 case ACCESS:
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     log.info("토큰 인증이 성공했습니다.");
                     break;
                 case EXPIRED:
-                    token = resolveToken(request, REFRESH_HEADER);
+                    token = jwtUtils.resolveToken(request, REFRESH_HEADER);
 
                     log.info("ACCESS TOKEN 이 만료 되었습니다.");
                     token.ifPresentOrElse((m) -> refreshTokenValidation(request, response, m),
@@ -61,17 +62,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     break;
             }
         }
-
-
         filterChain.doFilter(request, response);
     }
 
     public void refreshTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) {
-        JwtCode jwtCode = jwtService.validateToken(token);
+        JwtCode jwtCode = jwtUtils.validateToken(token);
         if (jwtCode == JwtCode.ACCESS) {
             log.info("리프레쉬 토큰 인증이 성공하였습니다.");
             Authentication authentication = jwtService.getAuthentication(token);
-            String generateToken = jwtService.generateToken(authentication.getName());
+            String generateToken = jwtUtils.generateToken(authentication.getName());
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
             String reissueRefreshToken = jwtService.reissueRefreshToken(token);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
@@ -96,11 +95,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public Optional<String> resolveToken(HttpServletRequest request, String header) {
-        String bearerToken = request.getHeader(header);
-        if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(JWT_HEADER_PREFIX)) {
-            return Optional.of(bearerToken.substring(7));
-        }
-        return Optional.empty();
-    }
+
 }

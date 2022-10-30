@@ -1,9 +1,9 @@
 package com.bmarket.securityservice.exception.validate;
 
-import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

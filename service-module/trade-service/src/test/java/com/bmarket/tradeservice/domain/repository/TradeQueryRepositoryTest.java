@@ -6,6 +6,8 @@ import com.bmarket.tradeservice.domain.trade.repository.TradeRepository;
 import com.bmarket.tradeservice.domain.trade.repository.query.*;
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeDetailDto;
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +20,8 @@ import org.springframework.data.domain.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bmarket.tradeservice.domain.trade.entity.QTrade.trade;
+import static com.bmarket.tradeservice.domain.trade.entity.QTradeImage.tradeImage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -53,6 +57,7 @@ class TradeQueryRepositoryTest {
                 .isShare(false)
                 .representativeImage("대표이미지.jpg").build();
         Trade save = tradeRepository.save(detailTrade);
+        log.info(" save 의 아이디 ={}",save.getId());
         for (int i = 0; i < 10; i++) {
             TradeImage image = TradeImage.createImage()
                     .imageName("이미지"+i)
@@ -240,6 +245,24 @@ class TradeQueryRepositoryTest {
         log.info("trade id={}",tradeDetail.getCategory());
         tradeDetail.getImagePath().forEach(m->
                 log.info("image path={}",m));
+        //then
+
+    }
+    @Test
+    @DisplayName("조인 테스트")
+    void join() throws Exception{
+        //given
+        List<TradeImage> list = queryFactory
+                .select(tradeImage)
+                .from(tradeImage)
+                .join(tradeImage.trade, trade)
+                .where(trade.id.eq(200L)).fetch();
+        list.forEach(
+                m -> log.info("image name={}", m.getImageName())
+        );
+
+        //when
+
         //then
 
     }

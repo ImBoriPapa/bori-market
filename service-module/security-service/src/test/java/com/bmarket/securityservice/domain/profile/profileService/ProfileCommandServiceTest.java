@@ -1,14 +1,14 @@
 package com.bmarket.securityservice.domain.profile.profileService;
 
 
-import com.bmarket.securityservice.SecurityServiceApplication;
-import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.dto.SignupResult;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
-import com.bmarket.securityservice.domain.account.service.AccountCommandService;
-import com.bmarket.securityservice.domain.profile.entity.Address;
-import com.bmarket.securityservice.domain.profile.entity.Profile;
-import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
+import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.repository.AccountRepository;
+import com.bmarket.securityservice.api.account.service.AccountCommandService;
+import com.bmarket.securityservice.api.profile.service.ProfileCommandService;
+import com.bmarket.securityservice.api.address.Address;
+import com.bmarket.securityservice.api.profile.entity.Profile;
+import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

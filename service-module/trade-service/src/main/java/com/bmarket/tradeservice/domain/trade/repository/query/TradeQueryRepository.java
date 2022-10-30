@@ -1,6 +1,8 @@
 package com.bmarket.tradeservice.domain.trade.repository.query;
 
 
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
+
 import java.util.List;
 
 public interface TradeQueryRepository {

@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.domain.profile.entity;
 
 
-import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
+import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

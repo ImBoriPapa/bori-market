@@ -22,7 +22,7 @@ public class TradeServiceApplication {
 
 
 	}
-//	@PostConstruct
+	@PostConstruct
 	void beforeEach() {
 		List<Trade> trades = new ArrayList<>();
 		/**

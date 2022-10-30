@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.exception.advisor;
 
-import com.bmarket.securityservice.api.controller.external_spec.responseForm.ResponseForm;
+import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.exception.ErrorResponse;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.custom_exception.securiry_ex.FailAuthenticationException;

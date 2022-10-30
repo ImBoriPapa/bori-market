@@ -1,20 +1,17 @@
 package com.bmarket.securityservice.domain.account.service;
 
-import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.dto.SignupResult;
-import com.bmarket.securityservice.domain.account.entity.Account;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
-import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
+import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.entity.Account;
+import com.bmarket.securityservice.api.account.repository.AccountRepository;
+import com.bmarket.securityservice.api.account.service.AccountCommandService;
+import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Slf4j
 class AccountCommandServiceTest {

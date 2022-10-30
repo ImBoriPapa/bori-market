@@ -2,8 +2,9 @@ package com.bmarket.tradeservice.domain.trade.repository.query;
 
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeDetailDto;
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,22 @@ import static com.bmarket.tradeservice.domain.trade.entity.QTradeImage.tradeImag
 public class TradeQueryRepositoryImpl implements TradeQueryRepository {
 
     private final JPAQueryFactory queryFactory;
+
+    public List<TradeListDto> getTradeListByAccountId(Long accountId) {
+        return queryFactory
+                .select(new QTradeListDto(
+                        trade.id,
+                        trade.title,
+                        trade.townName,
+                        trade.price,
+                        trade.representativeImage,
+                        trade.createdAt
+                ))
+                .from(trade)
+                .where(trade.accountId.eq(accountId))
+                .orderBy(trade.id.desc())
+                .fetch();
+    }
 
     public TradeDetailDto getTradeDetail(Long id) {
         TradeDetailDto tradeDetailDto = queryFactory

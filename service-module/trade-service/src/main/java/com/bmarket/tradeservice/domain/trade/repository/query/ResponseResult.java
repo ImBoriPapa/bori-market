@@ -1,5 +1,6 @@
 package com.bmarket.tradeservice.domain.trade.repository.query;
 
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

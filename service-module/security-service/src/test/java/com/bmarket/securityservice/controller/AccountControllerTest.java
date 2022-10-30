@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.controller;
 
-import com.bmarket.securityservice.api.controller.AccountController;
-import com.bmarket.securityservice.api.controller.external_spec.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.AccountController;
+import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;

@@ -1,9 +1,8 @@
 package com.bmarket.securityservice.entity;
 
 
-import com.bmarket.securityservice.domain.account.entity.Account;
-import com.bmarket.securityservice.domain.account.entity.Authority;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.api.account.entity.Account;
+import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.fasterxml.uuid.Generators;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
