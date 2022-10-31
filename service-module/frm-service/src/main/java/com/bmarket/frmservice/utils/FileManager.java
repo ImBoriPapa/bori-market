@@ -1,6 +1,7 @@
 package com.bmarket.frmservice.utils;
 
 import com.bmarket.frmservice.domain.trade.entity.UploadFile;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class FileManager {
 
     private String extension;
@@ -63,11 +65,12 @@ public class FileManager {
         return list;
     }
 
-    public void deleteFile(String path,String storedName){
+    public void deleteFile(String path, String storedName) {
         File target = new File(generatedFullPath(path, storedName));
-        if(!target.exists()){
-            throw new IllegalArgumentException("삭제할 파일이 존재하지 않습니다.");
+        if (target.exists()) {
+            log.info("exists={}",target.exists());
+            target.delete();
         }
-        target.delete();
+        throw new IllegalArgumentException("삭제할 파일이 존재하지 않습니다.");
     }
 }

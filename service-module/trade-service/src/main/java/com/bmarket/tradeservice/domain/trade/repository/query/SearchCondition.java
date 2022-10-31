@@ -17,5 +17,6 @@ public class SearchCondition {
     private Integer addressCode;
     private AddressRange range;
 
+
 }
 

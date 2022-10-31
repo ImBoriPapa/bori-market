@@ -52,4 +52,14 @@ public class TradeImageService {
             this.imagePath = imagePath;
         }
     }
+
+    public void deleteImages(Long tradeId){
+        TradeImage tradeImage = tradeImageRepository.findByTradeId(tradeId).get();
+        List<UploadFile> images = tradeImage.getImages();
+
+        for (UploadFile image : images) {
+            manager.deleteFile(IMAGE_PATH,image.getStoredName());
+        }
+        tradeImageRepository.delete(tradeImage);
+    }
 }

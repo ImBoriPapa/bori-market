@@ -1,9 +1,9 @@
 package com.bmarket.tradeservice.domain.trade.service;
 
-import com.bmarket.tradeservice.domain.dto.RequestForm;
+import com.bmarket.tradeservice.domain.trade.dto.RequestForm;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.bmarket.tradeservice.domain.trade.entity.TradeImage;
-import com.bmarket.tradeservice.domain.internal.RequestImageApi;
+import com.bmarket.tradeservice.domain.trade.internal.RequestImageApi;
 import com.bmarket.tradeservice.domain.trade.repository.TradeImageRepository;
 import com.bmarket.tradeservice.domain.trade.repository.TradeRepository;
 
@@ -54,5 +54,13 @@ public class TradeCommandService {
         List<TradeImage> imageList = tradeImageRepository.saveAll(images);
         newTrade.updateRepresentativeImage(imageList.get(0).getImageName());
         return newTrade;
+    }
+
+    public void deleteTrade(Long accountId){
+        Trade trade = tradeRepository.findByAccountId(accountId).get();
+        tradeRepository.delete(trade);
+        List<TradeImage> byTrade = tradeImageRepository.findByTrade(trade);
+        tradeImageRepository.deleteAll(byTrade);
+
     }
 }

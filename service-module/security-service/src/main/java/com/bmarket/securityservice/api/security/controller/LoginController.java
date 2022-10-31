@@ -1,6 +1,8 @@
 package com.bmarket.securityservice.api.security.controller;
 
 import com.bmarket.securityservice.api.common.ResponseForm;
+import com.bmarket.securityservice.api.security.controller.requestForm.RequestLoginForm;
+import com.bmarket.securityservice.api.security.controller.requestResultForm.LoginResultForm;
 import com.bmarket.securityservice.api.security.service.LoginService;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.Data;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -22,34 +27,17 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity login(@RequestBody RequestLoginForm form) {
 
-        LoginResult result = loginService.login(loginDto.loginId, loginDto.password);
-
+        LoginResult result = loginService.login(form.getLoginId(), form.getPassword());
+        LoginResultForm resultForm = new LoginResultForm(result.getLoginAt());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization",result.getToken());
-        httpHeaders.add("Refresh",result.getRefreshToken());
+        httpHeaders.add(AUTHORIZATION_HEADER, result.getToken());
+        httpHeaders.add(REFRESH_HEADER, result.getRefreshToken());
 
         return ResponseEntity
                 .ok()
                 .headers(httpHeaders)
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS,new LoginValue(result)));
-    }
-
-    @Data
-    public static class LoginDto {
-        private String loginId;
-        private String password;
-    }
-
-    @Data
-    public static class LoginValue {
-        private String clientId;
-        private LocalDateTime loginTime;
-
-        public LoginValue(LoginResult result) {
-            this.clientId = result.getClientId();
-            this.loginTime = result.getLoginAt();
-        }
+                .body(new ResponseForm<>(ResponseStatus.SUCCESS, resultForm));
     }
 }

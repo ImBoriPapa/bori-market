@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.service;
 
 import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.account.service.AccountService;
+import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +20,11 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @Slf4j
-class AccountServiceTest {
+class AccountQueryServiceTest {
     @Autowired
     AccountRepository accountRepository;
     @Autowired
-    AccountService accountService;
+    AccountQueryService accountQueryService;
 
     @BeforeEach
     void beforeEach() {
@@ -105,7 +105,7 @@ class AccountServiceTest {
 
         //then
         assertThatThrownBy(
-                () -> accountService.findAccountByClientId("fsafaf")
+                () -> accountQueryService.findAccountByClientId("fsafaf")
         ).isInstanceOf(BasicException.class);
     }
 

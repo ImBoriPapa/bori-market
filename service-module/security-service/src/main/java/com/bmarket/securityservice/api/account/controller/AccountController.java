@@ -10,7 +10,7 @@ import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.exception.validate.RequestSignUpFormValidator;
-import com.bmarket.securityservice.api.account.service.AccountService;
+import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Slf4j
 public class AccountController {
 
-    private final AccountService accountService;
+    private final AccountQueryService accountQueryService;
     private final AccountCommandService accountCommandService;
 
     private final RequestSignUpFormValidator requestSignUpFormValidator;
@@ -51,7 +51,6 @@ public class AccountController {
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(requestSignUpFormValidator);
     }
-
 
     /**
      * POST : /ACCOUNT
@@ -65,9 +64,7 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             throw new BasicException(ErrorCode.FAIL_VALIDATION, bindingResult);
         }
-
         Link link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult)).withSelfRel();
-
 
         SignupResult result = accountCommandService.signUpProcessing(form);
         result.add(link);
@@ -89,7 +86,7 @@ public class AccountController {
      */
     @GetMapping("/{clientId}")
     public ResponseEntity findAccount(@PathVariable String clientId) {
-        FindAccountResult result = accountService.findAccountByClientId(clientId);
+        FindAccountResult result = accountQueryService.findAccountByClientId(clientId);
 
 
         result.add(linkTo(AccountController.class).withSelfRel());
@@ -111,7 +108,7 @@ public class AccountController {
                                          @RequestParam(defaultValue = DEFAULT_DIRECTION) Sort.Direction direction) {
 
         PageRequest request = PageRequest.of(setPage(page), size, direction, "id");
-        AccountListResult result = accountService.findAllAccount(request);
+        AccountListResult result = accountQueryService.findAllAccount(request);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -122,6 +119,14 @@ public class AccountController {
                 .ok()
                 .headers(httpHeaders)
                 .body(new ResponseForm(ResponseStatus.SUCCESS, result));
+    }
+
+    public void updatePassword(){
+
+    }
+
+    public void deleteAccount(){
+
     }
 
     /**

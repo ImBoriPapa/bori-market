@@ -3,7 +3,7 @@ package com.bmarket.securityservice.exception.advisor;
 import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.exception.ErrorResponse;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.custom_exception.securiry_ex.FailAuthenticationException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.FailAuthenticationException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

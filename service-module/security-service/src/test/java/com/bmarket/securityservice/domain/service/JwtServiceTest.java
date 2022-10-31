@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.domain.service;
 
-import com.bmarket.securityservice.api.security.entity.JwtCode;
+import com.bmarket.securityservice.utils.jwt.JwtCode;
 
 import com.bmarket.securityservice.api.security.service.JwtService;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;

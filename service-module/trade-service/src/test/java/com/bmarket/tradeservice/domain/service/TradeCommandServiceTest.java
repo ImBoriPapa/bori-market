@@ -1,6 +1,6 @@
 package com.bmarket.tradeservice.domain.service;
 
-import com.bmarket.tradeservice.domain.dto.RequestForm;
+import com.bmarket.tradeservice.domain.trade.dto.RequestForm;
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.bmarket.tradeservice.domain.trade.entity.TradeImage;

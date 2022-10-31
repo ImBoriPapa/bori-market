@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -44,7 +46,23 @@ class TradeImageServiceTest {
         assertThat(resultSave.getImagePath().get(1)).isNotEqualTo(file2.getOriginalFilename());
         assertThat(resultSave.getImagePath().get(2)).isNotEqualTo(file3.getOriginalFilename());
 
+    }
 
+    @Test
+    @DisplayName("이미지 삭제 테스트")
+    void successDelete() throws Exception{
+        //given
+        MockMultipartFile file1 = new MockMultipartFile("test1", "test1.jpg", "jpg", "fsafaf".getBytes());
+        MockMultipartFile file2 = new MockMultipartFile("test2", "test2.jpg", "jpg", "fsafaf".getBytes());
+        MockMultipartFile file3 = new MockMultipartFile("test3", "test3.jpg", "jpg", "fsafaf".getBytes());
+        //when
+        List<MultipartFile> files = List.of(file1, file2, file3);
+        TradeImageService.ResultSave resultSave = tradeImageService.saveImage(1L, files);
+        tradeImageService.deleteImages(1L);
+        //then
+        Optional<TradeImage> findTradeImage = tradeImageRepository.findByTradeId(1L);
+
+        assertThat(findTradeImage.isEmpty()).isTrue();
 
     }
 

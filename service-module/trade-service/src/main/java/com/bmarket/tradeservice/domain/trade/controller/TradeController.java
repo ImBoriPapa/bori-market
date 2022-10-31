@@ -1,10 +1,11 @@
 package com.bmarket.tradeservice.domain.trade.controller;
 
-import com.bmarket.tradeservice.domain.dto.RequestForm;
+import com.bmarket.tradeservice.domain.trade.dto.RequestForm;
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.trade.repository.query.*;
+import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeDetailDto;
 import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
 import com.bmarket.tradeservice.domain.trade.service.TradeCommandService;
 import lombok.*;
@@ -42,6 +43,12 @@ public class TradeController {
         private LocalDateTime createdAt;
     }
 
+    @GetMapping("/internal/trade/{tradeId}")
+    public ResponseEntity getTrade(@PathVariable Long tradeId) {
+        TradeDetailDto tradeDetail = tradeQueryRepository.getTradeDetail(tradeId);
+        return ResponseEntity.ok().body(tradeDetail);
+    }
+
     @GetMapping("/internal/trade/{accountId}/sale-history")
     public ResponseEntity getMyTradeList(@PathVariable Long accountId){
         List<TradeListDto> list = tradeQueryRepository.getTradeListByAccountId(accountId);
@@ -53,26 +60,35 @@ public class TradeController {
     }
 
 
-    @GetMapping("/test2")
-    public void getTrade(SearchCondition condition) {
-
-        log.info("range={}",condition.getRange());
-        log.info("range={}",condition.getRange());
-        log.info("range={}",condition.getRange());
-        log.info("range={}",condition.getRange());
-        log.info("range={}",condition.getRange());
-        log.info("range={}",condition.getRange());
-    }
-
     @GetMapping("/test")
+    public void getAllTrade(@RequestParam(defaultValue = "10") int size,
+                            @RequestParam(defaultValue = "0") Long lastIndex,
+                            @RequestParam(required = false) Category category,
+                            @RequestParam(required = false) Boolean isShare,
+                            @RequestParam(required = false) Boolean isOffer,
+                            @RequestParam(required = false) TradeStatus status,
+                            @RequestParam(required = false) Integer addressCode,
+                            @RequestParam(required = false) AddressRange range) {
+        SearchCondition condition = SearchCondition.builder()
+                .category(category)
+                .isShare(isShare)
+                .isOffer(isOffer)
+                .status(status)
+                .addressCode(addressCode)
+                .range(range).build();
+
+        ResponseResult<List<TradeListDto>> result = tradeQueryRepository.getTradeWithComplexCondition(size, lastIndex, condition);
+
+    }
+    @GetMapping("/internal/trade")
     public ResponseEntity test(@RequestParam(defaultValue = "10") int size,
-                               @RequestParam(defaultValue = "0") Long tradeId,
+                               @RequestParam(defaultValue = "0") Long lastIndex,
                                @RequestParam(required = false) Category category,
                                @RequestParam(required = false) Boolean isShare,
                                @RequestParam(required = false) Boolean isOffer,
                                @RequestParam(required = false) TradeStatus status,
-                               @RequestParam(required = false) Integer addressCode,
-                               @RequestParam(required = false) AddressRange range
+                               @RequestParam Integer addressCode,
+                               @RequestParam AddressRange range
     ) {
         SearchCondition searchCondition = SearchCondition.builder()
                 .category(category)
@@ -87,9 +103,10 @@ public class TradeController {
         log.info("offer={}",searchCondition.getIsOffer());
         log.info("status={}",searchCondition.getStatus());
         log.info("address code={}",searchCondition.getAddressCode());
+        log.info("address code={}",searchCondition.getRange());
 
-//        ResponseResult result = tradeQueryRepository.getTradeWithComplexCondition(size, tradeId, searchCondition);
-        return ResponseEntity.ok().body("ok");
+        ResponseResult result = tradeQueryRepository.getTradeWithComplexCondition(size, lastIndex, searchCondition);
+        return ResponseEntity.ok().body(result);
     }
 
     @NoArgsConstructor

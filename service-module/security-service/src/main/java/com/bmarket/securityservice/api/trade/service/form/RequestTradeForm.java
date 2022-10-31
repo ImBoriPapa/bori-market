@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.api.trade.controller.RequestForm;
+package com.bmarket.securityservice.api.trade.service.form;
 
 import com.bmarket.securityservice.api.trade.entity.Category;
 import lombok.AllArgsConstructor;

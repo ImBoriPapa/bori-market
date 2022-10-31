@@ -26,8 +26,8 @@ public class FindAccountResult extends ResultForm {
         this.loginId = account.getLoginId();
         this.name = account.getName();
         this.nickname = account.getProfile().getNickname();
-        this.email = account.getProfile().getEmail();
-        this.contact = account.getProfile().getContact();
+        this.email = account.getEmail();
+        this.contact = account.getContact();
         this.createdAt = account.getCreatedAt();
         this.updatedAt = account.getUpdatedAt();
     }

@@ -148,7 +148,6 @@ public class TradeServiceApplication {
 			trades.add(trade);
 		}
 		tradeRepository.saveAll(trades);
-
 	}
 
 }

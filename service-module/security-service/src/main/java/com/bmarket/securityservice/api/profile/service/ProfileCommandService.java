@@ -38,8 +38,6 @@ public class ProfileCommandService {
 
         Profile profile = Profile.createProfile()
                 .nickname(form.getNickname())
-                .email(form.getEmail())
-                .contact(form.getContact())
                 .profileImage(getDefaultProfileImage())
                 .address(address)
                 .build();
@@ -52,22 +50,9 @@ public class ProfileCommandService {
                 .getProfile().updateNickname(nickname);
     }
 
-    public void updateEmail(String clientId, String email) {
-        accountRepository.findByClientId(clientId)
-                .orElseThrow(() -> new IllegalArgumentException(""))
-                .getProfile().updateEmail(email);
-    }
-
-    public void updateContact(String clientId, String contact) {
-        accountRepository.findByClientId(clientId)
-                .orElseThrow(() -> new IllegalArgumentException(""))
-                .getProfile().updateContact(contact);
-    }
-
     public void updateProfileImage(String clientId, MultipartFile file) {
         Account optional = accountRepository.findByClientId(clientId)
                 .orElseThrow(() -> new IllegalArgumentException(""));
-
         Long id = optional.getProfile().getId();
 
         String profileImage = getProfileImage(id, file);

@@ -46,12 +46,12 @@ public class ProfileController {
 
     @PutMapping("/profile/{clientId}/email")
     public void putEmail(@PathVariable String clientId, @RequestBody RequestProfileForm.UpdateEmail form) {
-        profileCommandService.updateEmail(clientId, form.getEmail());
+
     }
 
     @PutMapping("/profile/{clientId}/contact")
     public void putContact(@PathVariable String clientId, @RequestBody RequestProfileForm.UpdateContact form) {
-        profileCommandService.updateContact(clientId, form.getContact());
+
     }
 
     @PutMapping("/profile/{clientId}/image")

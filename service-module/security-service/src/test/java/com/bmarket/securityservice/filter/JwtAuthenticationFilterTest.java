@@ -3,7 +3,7 @@ package com.bmarket.securityservice.filter;
 import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.account.service.AccountService;
+import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.api.security.service.JwtService;
 import com.bmarket.securityservice.api.security.service.LoginService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
@@ -20,8 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.bmarket.securityservice.api.security.entity.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.api.security.entity.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,7 +36,7 @@ class JwtAuthenticationFilterTest {
     @Autowired
     JwtService jwtService;
     @Autowired
-    AccountService accountService;
+    AccountQueryService accountQueryService;
     @Autowired
     LoginService loginService;
     @Autowired

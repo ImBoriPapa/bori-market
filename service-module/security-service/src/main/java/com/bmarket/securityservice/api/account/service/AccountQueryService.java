@@ -31,7 +31,7 @@ import reactor.core.publisher.Flux;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class AccountService {
+public class AccountQueryService {
 
     private final AccountRepository accountRepository;
     private final ProfileRepository profileRepository;
@@ -53,7 +53,6 @@ public class AccountService {
                 .uri("http://localhost:8085/addressData/address/" + addressCode)
                 .retrieve()
                 .bodyToFlux(AddressResult.class);
-
         return addressResultFlux.blockFirst();
     }
 

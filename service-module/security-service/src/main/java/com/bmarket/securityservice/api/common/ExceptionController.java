@@ -2,11 +2,10 @@ package com.bmarket.securityservice.api.common;
 
 
 import com.bmarket.securityservice.exception.ErrorResponse;
-import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.custom_exception.securiry_ex.CustomAccessDeniedException;
-import com.bmarket.securityservice.exception.custom_exception.securiry_ex.DeniedTokenException;
-import com.bmarket.securityservice.exception.custom_exception.securiry_ex.EmptyTokenException;
-import com.bmarket.securityservice.exception.custom_exception.securiry_ex.ExpiredTokenException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.CustomAccessDeniedException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.DeniedTokenException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.EmptyTokenException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.ExpiredTokenException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import java.net.URI;
-import java.nio.file.AccessDeniedException;
 
 import static com.bmarket.securityservice.utils.url.JwtEntrypointRedirectUrl.*;
 

@@ -16,10 +16,6 @@ public class Profile {
     @Column(name = "PROFILE_ID")
     private Long id;
     private String nickname;
-    @Column(unique = true)
-    private String email;
-    @Column(unique = true)
-    private String contact;
     private String profileImage;
     @Embedded
     private Address address;
@@ -27,34 +23,19 @@ public class Profile {
     AddressSearchRange addressRange;
 
     @Builder(builderMethodName = "createProfile")
-    public Profile(String nickname, String email, String contact, String profileImage, Address address) {
+    public Profile(String nickname , String profileImage, Address address) {
         this.nickname = nickname;
-        this.email = email;
-        this.contact = contact;
         this.profileImage = profileImage;
         this.address = address;
         this.addressRange = AddressSearchRange.JUST;
     }
 
-    public void updateProfile(Profile profile) {
-        this.nickname = profile.getNickname();
-        this.email = profile.getEmail();
-        this.contact = profile.contact;
-        this.profileImage = profile.getProfileImage();
-        this.address = profile.getAddress();
-        this.addressRange = profile.getAddressRange();
-    }
+
 
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 
-    public void updateEmail(String email) {
-        this.email = email;
-    }
-    public void updateContact(String contact) {
-        this.contact = contact;
-    }
     public void updateProfileImage(String storedImageName) {
         this.profileImage = storedImageName;
     }

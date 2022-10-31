@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class UserDetailServiceImpl implements UserDetailsService {
-
+    // TODO: 2022/10/31 로그인->토큰 검증 과정 select 쿼리 리펙토링
     private final AccountRepository accountRepository;
 
     @Override

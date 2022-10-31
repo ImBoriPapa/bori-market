@@ -1,6 +1,5 @@
 package com.bmarket.securityservice.utils.jwt;
 
-import com.bmarket.securityservice.api.security.entity.JwtCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.api.security.entity.JwtHeader.JWT_HEADER_PREFIX;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.JWT_HEADER_PREFIX;
 
 @Component
 @Slf4j

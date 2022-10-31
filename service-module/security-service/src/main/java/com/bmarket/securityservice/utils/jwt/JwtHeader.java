@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.api.security.entity;
+package com.bmarket.securityservice.utils.jwt;
 
 public class JwtHeader {
 

@@ -7,6 +7,8 @@ public enum ErrorCode {
 
     NOT_FOUND_ACCOUNT(1001,"계정을 찾을 수 없습니다."),
     THIS_ACCOUNT_IS_LOGOUT(1002,"로그아웃된 계정입니다 다시 로그인해 주세요"),
+
+    NOT_CORRECT_PASSWORD(1003,"비밀번호가 일치하지 않습니다"),
     FAIL_VALIDATION(2000,"검증에 실패했습니다"),
 
     FAIL_LOGIN(2001,"로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요"),

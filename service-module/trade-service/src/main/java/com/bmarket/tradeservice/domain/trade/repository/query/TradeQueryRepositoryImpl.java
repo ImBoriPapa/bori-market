@@ -39,7 +39,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                 .fetch();
     }
 
-    public TradeDetailDto getTradeDetail(Long id) {
+    public TradeDetailDto getTradeDetail(Long tradeId) {
         TradeDetailDto tradeDetailDto = queryFactory
                 .select(new QTradeDetailDto(
                         trade.id,
@@ -50,13 +50,13 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                         trade.townName
                 ))
                 .from(trade)
-                .where(trade.id.eq(id))
+                .where(trade.id.eq(tradeId))
                 .fetchOne();
 
         List<String> images = queryFactory
                 .select(tradeImage.imageName)
                 .from(tradeImage)
-                .where(tradeImage.trade.id.eq(id))
+                .where(tradeImage.trade.id.eq(tradeId))
                 .fetch();
 
         tradeDetailDto.addImagePath(images);
@@ -64,7 +64,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
     }
 
     @Override
-    public ResponseResult<List<TradeListDto>> getTradeWithComplexCondition(int size, Long tradId, SearchCondition searchCondition) {
+    public ResponseResult<List<TradeListDto>> getTradeWithComplexCondition(int size, Long lastIndex, SearchCondition searchCondition) {
 
         List<TradeListDto> list = queryFactory
                 .select(
@@ -78,7 +78,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                         )
                 )
                 .from(trade)
-                .where(cursor(tradId),
+                .where(cursor(lastIndex),
                         categoryEq(searchCondition.getCategory()),
                         shareEp(searchCondition.getIsShare()),
                         offerEq(searchCondition.getIsOffer()),

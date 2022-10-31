@@ -18,21 +18,31 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, name = "CLIENT_ID")
     private String clientId;
-    @Column(unique = true)
+    @Column(unique = true, name = "LOGIN_ID")
     private String loginId;
+    @Column(name = "USER_NAME")
     private String name;
+    @Column(name = "PASSWORD")
     private String password;
+    @Column(unique = true)
+    private String email;
+    @Column(unique = true)
+    private String contact;
     @Enumerated(value = EnumType.STRING)
+    @Column(name = "AUTHORITY")
     private Authority authority;
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "PROFILE_ID")
     private Profile profile;
+    @Column(name = "IS_LOGIN")
     private boolean isLogin;
+    @Column(name = "CREATED_AT")
     private LocalDateTime createdAt;
+    @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
-
+    @Column(name = "LAST_LOGIN_AT")
     private LocalDateTime lastLoginTime;
 
     /**
@@ -45,23 +55,23 @@ public class Account {
      *                 최초 가입시 Authority =ROLL_USER
      */
     @Builder(builderMethodName = "createAccount")
-    public Account(String loginId, String name, String password, Profile profile) {
+    public Account(String loginId, String name, String password, String email, String contact, Profile profile) {
         this.clientId = generateSequentialUUID();
         this.loginId = loginId;
         this.name = name;
         this.password = password;
+        this.email = email;
+        this.contact = contact;
         this.authority = Authority.ROLL_USER;
         this.profile = profile;
         this.isLogin = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-
     }
 
     public void updateClientId() {
         this.clientId = generateSequentialUUID();
     }
-
     private String generateSequentialUUID() {
         return Generators.timeBasedGenerator().generate().toString();
     }
@@ -81,6 +91,16 @@ public class Account {
         this.isLogin = isLogin;
     }
 
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
+        this.updatedAt = LocalDateTime.now();
+    }
 
+    public void updateEmail(String email) {
+        this.email = email;
+    }
 
+    public void updateContact(String contact) {
+        this.contact = contact;
+    }
 }

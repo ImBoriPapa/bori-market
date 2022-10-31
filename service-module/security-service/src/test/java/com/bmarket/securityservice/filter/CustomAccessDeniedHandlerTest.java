@@ -4,7 +4,7 @@ import com.bmarket.securityservice.api.account.controller.requestForm.RequestSig
 import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.account.service.AccountService;
+import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.api.security.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static com.bmarket.securityservice.api.security.entity.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.api.security.entity.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
@@ -31,7 +31,7 @@ class CustomAccessDeniedHandlerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    AccountService accountService;
+    AccountQueryService accountQueryService;
     @Autowired
     LoginService loginService;
 

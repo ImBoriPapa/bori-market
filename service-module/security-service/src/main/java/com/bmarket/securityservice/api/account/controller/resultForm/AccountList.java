@@ -20,7 +20,7 @@ public class AccountList {
         this.clientId = account.getClientId();
         this.loginId = account.getLoginId();
         this.nickname = account.getProfile().getNickname();
-        this.email = account.getProfile().getEmail();
-        this.contact = account.getProfile().getContact();
+        this.email = account.getEmail();
+        this.contact = account.getContact();
     }
 }

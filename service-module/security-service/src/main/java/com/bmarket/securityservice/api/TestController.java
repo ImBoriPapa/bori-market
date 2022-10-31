@@ -19,6 +19,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @RestController
@@ -60,8 +62,40 @@ public class TestController {
     }
 
     @GetMapping("/test")
-    public void test() {
+    public ResponseEntity test(@RequestParam Long tradeId) {
 
+        ResponseEntity<Test2Dto> block = WebClient.create("http://localhost:8081/internal/trade/" + tradeId)
+                .get()
+                .retrieve()
+                .onStatus(m -> m.is4xxClientError(), r -> Mono.just(new IllegalArgumentException("Error")))
+                .toEntity(Test2Dto.class)
+                .block();
+        return ResponseEntity.ok().body(block.getBody());
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Test2Dto {
+        private Long tradeId;
+        private String nickname;
+        private String title;
+        private String context;
+        private String category;
+        private String townName;
+        private List<String> imagePath;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TestList {
+        private Integer tradeId;
+        private String title;
+        private String townName;
+        private Integer price;
+        private String representativeImage;
+        private LocalDateTime createdAt;
     }
 
     @Data

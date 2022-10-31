@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.api.security.entity.JwtCode;
+import com.bmarket.securityservice.utils.jwt.JwtCode;
 
 import com.bmarket.securityservice.api.security.service.JwtService;
 
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.api.security.entity.JwtHeader.*;
+import static com.bmarket.securityservice.utils.jwt.JwtHeader.*;
 import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
 
 
