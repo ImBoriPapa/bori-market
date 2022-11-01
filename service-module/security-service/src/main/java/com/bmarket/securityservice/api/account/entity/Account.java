@@ -1,19 +1,18 @@
 package com.bmarket.securityservice.api.account.entity;
 
 import com.bmarket.securityservice.api.profile.entity.Profile;
+import com.bmarket.securityservice.api.security.entity.RefreshToken;
 import com.fasterxml.uuid.Generators;
 import lombok.*;
-
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Getter
+@EqualsAndHashCode(of = {"id","clientId"})
+@Table(name = "ACCOUNT",indexes = @Index(name = "idx__name",columnList = "EMAIL"))
 public class Account {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ACCOUNT_ID")
@@ -26,16 +25,19 @@ public class Account {
     private String name;
     @Column(name = "PASSWORD")
     private String password;
-    @Column(unique = true)
+    @Column(unique = true,name = "EMAIL")
     private String email;
     @Column(unique = true)
     private String contact;
     @Enumerated(value = EnumType.STRING)
     @Column(name = "AUTHORITY")
     private Authority authority;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)//일대일 단방향 주 테이블 Account
     @JoinColumn(name = "PROFILE_ID")
     private Profile profile;
+    @OneToOne(fetch = FetchType.LAZY)//일대일 단방향 주 테이블 Account
+    @JoinColumn(name = "REFRESH_TOKEN")
+    private RefreshToken refreshToken;
     @Column(name = "IS_LOGIN")
     private boolean isLogin;
     @Column(name = "CREATED_AT")
@@ -47,12 +49,14 @@ public class Account {
 
     /**
      * 계정 생성
-     *
      * @param loginId  로그안 아이디
      * @param name     사용자 이름
      * @param password 비밀번호
-     *                 clientId 사용자 식별 아이디 -> sequential uuid 주의(@Column(columnDefinition = "BINARY(16)"))
-     *                 최초 가입시 Authority =ROLL_USER
+     * @param contact
+     * @param email
+     * @param profile
+     *        clientId 사용자 식별 아이디 -> sequential uuid 주의(@Column(columnDefinition = "BINARY(16)"))
+     *        최초 가입시 Authority =ROLL_USER
      */
     @Builder(builderMethodName = "createAccount")
     public Account(String loginId, String name, String password, String email, String contact, Profile profile) {
@@ -72,14 +76,13 @@ public class Account {
     public void updateClientId() {
         this.clientId = generateSequentialUUID();
     }
-    private String generateSequentialUUID() {
+    private  String generateSequentialUUID() {
         return Generators.timeBasedGenerator().generate().toString();
     }
 
     /**
      * Authority 변경
      * 계정 수정일자 최신화
-     *
      * @param authority
      */
     public void updateAuthority(Authority authority) {
@@ -87,8 +90,11 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void setLogin(boolean isLogin) {
+    public void loginCheck(boolean isLogin) {
         this.isLogin = isLogin;
+        if(this.isLogin){
+            this.lastLoginTime = LocalDateTime.now();
+        }
     }
 
     public void changePassword(String newPassword) {
@@ -98,9 +104,11 @@ public class Account {
 
     public void updateEmail(String email) {
         this.email = email;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void updateContact(String contact) {
         this.contact = contact;
+        this.updatedAt = LocalDateTime.now();
     }
 }

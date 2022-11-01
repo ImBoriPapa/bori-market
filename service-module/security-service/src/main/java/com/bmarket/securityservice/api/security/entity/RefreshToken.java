@@ -1,34 +1,25 @@
 package com.bmarket.securityservice.api.security.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "REFRESH_TOKEN_ID")
     private Long id;
-    private String clientId;
     private String refreshToken;
-
-    protected RefreshToken(String clientId,String refreshToken){
-        this.clientId = clientId;
+    protected RefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }
-
-    public static RefreshToken createRefreshToken(String clientId,String refreshToken) {
-        return new RefreshToken(clientId,refreshToken);
+    public static RefreshToken createRefreshToken(String refreshToken) {
+        return new RefreshToken(refreshToken);
     }
-
     public void changeRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }

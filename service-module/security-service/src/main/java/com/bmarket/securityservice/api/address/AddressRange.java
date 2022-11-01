@@ -3,7 +3,7 @@ package com.bmarket.securityservice.api.address;
 import lombok.Getter;
 
 @Getter
-public enum AddressSearchRange {
+public enum AddressRange {
     JUST,
     FIVE,
     TEN;

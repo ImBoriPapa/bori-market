@@ -32,7 +32,7 @@ public class LoginService {
         if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new BasicException(ErrorCode.FAIL_LOGIN);
         }
-        account.setLogin(true);
+        account.loginCheck(true);
         String token = "Bearer-"+jwtUtils.generateToken(account.getClientId());
         String refreshToken = "Bearer-"+jwtService.issuedRefreshToken(account.getClientId());
         log.info("===================로그인 과정 종료===================");
@@ -42,6 +42,6 @@ public class LoginService {
     public void logout(String clientId){
         log.info("==============[LoginService] 로그아웃 실행  =============");
         Optional<Account> account = accountRepository.findByClientId(clientId);
-        account.get().setLogin(false);
+        account.get().loginCheck(false);
     }
 }

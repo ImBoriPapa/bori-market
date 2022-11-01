@@ -2,7 +2,7 @@ package com.bmarket.securityservice.api.profile.controller;
 
 import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.api.profile.controller.requestForm.RequestProfileForm;
-import com.bmarket.securityservice.api.address.AddressSearchRange;
+import com.bmarket.securityservice.api.address.AddressRange;
 import com.bmarket.securityservice.api.profile.service.ProfileCommandService;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -61,8 +61,8 @@ public class ProfileController {
     }
 
     @PutMapping("/profile/{clientId}/address-search-range")
-    public void putAddressSearchRange(@PathVariable String clientId, @RequestParam AddressSearchRange addressSearchRange) {
-        profileCommandService.updateAddressSearchRange(clientId, addressSearchRange);
+    public void putAddressSearchRange(@PathVariable String clientId, @RequestParam AddressRange addressRange) {
+        profileCommandService.updateAddressSearchRange(clientId, addressRange);
     }
 
 }

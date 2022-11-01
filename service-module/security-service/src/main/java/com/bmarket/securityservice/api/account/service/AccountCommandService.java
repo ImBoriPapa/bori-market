@@ -48,7 +48,7 @@ public class AccountCommandService {
                 .build();
         Account savedAccount = accountRepository.save(account);
 
-        return new SignupResult(savedAccount.getClientId(), savedAccount.getCreatedAt());
+        return new SignupResult(savedAccount.getId(), savedAccount.getCreatedAt());
     }
 
     // TODO: 2022/10/31 이메일 인증 구현

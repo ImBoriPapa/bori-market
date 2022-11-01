@@ -33,8 +33,8 @@ public class JwtService {
     public String reissueRefreshToken(String refreshToken) throws RuntimeException {
         log.info("==============[JWT_SERVICE] 리프레쉬 토큰 재발급 =============");
         Claims userPk = jwtUtils.getUserPk(refreshToken);
-        RefreshToken tokenInDb = refreshTokenRepository.findByClientId(userPk.getSubject())
-                .orElseThrow(() -> new IllegalArgumentException("REFRESH TOKEN NOT FOUN"));
+        RefreshToken tokenInDb = accountRepository.findByClientId(userPk.getSubject())
+                .orElseThrow(() -> new IllegalArgumentException("REFRESH TOKEN NOT FOUND")).getRefreshToken();
 
         if (tokenInDb.getRefreshToken().equals(refreshToken)) {
             String newRefreshToken = jwtUtils.generateToken(userPk.getSubject());
@@ -49,10 +49,10 @@ public class JwtService {
     public String issuedRefreshToken(String clientId) {
         log.info("==============[JWT_SERVICE] 리프레쉬 토큰 발급 =============");
         String newRefreshToken = jwtUtils.generateRefreshToken(clientId);
-        refreshTokenRepository.findByClientId(clientId).ifPresentOrElse(
-                m -> m.changeRefreshToken(newRefreshToken),
+        accountRepository.findByClientId(clientId).ifPresentOrElse(
+                m -> m.getRefreshToken().changeRefreshToken(newRefreshToken),
                 () -> {
-                    RefreshToken refreshToken = RefreshToken.createRefreshToken(clientId, newRefreshToken);
+                    RefreshToken refreshToken = RefreshToken.createRefreshToken(newRefreshToken);
                     refreshTokenRepository.save(refreshToken);
                 });
         return newRefreshToken;

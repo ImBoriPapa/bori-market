@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.api.trade.service.form;
 
-import com.bmarket.securityservice.api.address.AddressSearchRange;
+import com.bmarket.securityservice.api.address.AddressRange;
 import com.bmarket.securityservice.api.trade.entity.Category;
 import com.bmarket.securityservice.api.trade.entity.TradeStatus;
 import lombok.AllArgsConstructor;
@@ -21,5 +21,5 @@ public class SearchCondition {
     private Boolean isOffer;
     private TradeStatus status;
     private Integer addressCode;
-    private AddressSearchRange range;
+    private AddressRange range;
 }

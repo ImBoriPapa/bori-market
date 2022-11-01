@@ -59,7 +59,7 @@ public class AccountController {
      * @return
      */
     @PostMapping
-    public ResponseEntity createAccount(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
+    public ResponseEntity<ResponseForm> createAccount(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
         log.info("==============[CONTROLLER] 회원가입 요청=============");
         if (bindingResult.hasErrors()) {
             throw new BasicException(ErrorCode.FAIL_VALIDATION, bindingResult);

@@ -5,7 +5,7 @@ import com.bmarket.securityservice.api.account.controller.requestForm.RequestSig
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.address.Address;
-import com.bmarket.securityservice.api.address.AddressSearchRange;
+import com.bmarket.securityservice.api.address.AddressRange;
 import com.bmarket.securityservice.api.profile.entity.Profile;
 
 import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
@@ -66,10 +66,10 @@ public class ProfileCommandService {
                 .getProfile().updateAddress(address);
     }
 
-    public void updateAddressSearchRange(String clientId, AddressSearchRange range) {
+    public void updateAddressSearchRange(String clientId, AddressRange range) {
         accountRepository.findByClientId(clientId)
                 .orElseThrow(() -> new IllegalArgumentException(""))
-                .getProfile().settingAddressSearchRange(range);
+                .getProfile().updateAddressRange(range);
     }
 
     private String getDefaultProfileImage() {

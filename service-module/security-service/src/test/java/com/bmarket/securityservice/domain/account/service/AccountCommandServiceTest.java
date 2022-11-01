@@ -6,6 +6,7 @@ import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
+import com.bmarket.securityservice.api.address.AddressRange;
 import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -14,11 +15,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
+@Transactional
 class AccountCommandServiceTest {
     @Autowired
     AccountCommandService accountCommandService;
@@ -45,22 +48,42 @@ class AccountCommandServiceTest {
                 .district("종로구")
                 .town("암사동")
                 .build();
-        SignupResult signupResult = accountCommandService.signUpProcessing(form);
         //when
-        Account account = accountRepository.findByClientId(signupResult.getClientId()).get();
+        SignupResult signupResult = accountCommandService.signUpProcessing(form);
+        Account findAccount = accountRepository.findById(signupResult.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다"));
+        //then
+        //계정 생성시 반환값 SignupResult : accountId,createdAt
+        assertThat(findAccount.getId()).isEqualTo(signupResult.getAccountId());
+        assertThat(findAccount.getCreatedAt()).isEqualTo(signupResult.getCreatedAt());
+        assertThat(findAccount.getLoginId()).isEqualTo("tester");
+        assertThat(findAccount.getName()).isEqualTo("이테스트");
+        //encoding 된 패스워드 확인
+        assertThat(passwordEncoder.matches("bread1234", findAccount.getPassword())).isTrue();
+        assertThat(findAccount.getEmail()).isEqualTo("bread@bread.com");
+        assertThat(findAccount.getContact()).isEqualTo("010-2222-1234");
+        //최초 가입시 권한은 ROLL_USER
+        assertThat(findAccount.getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(findAccount.getRefreshToken()).isNull();
+        assertThat(findAccount.getProfile().getNickname()).isEqualTo("브레드피트");
+        //최초 가입시 프로필 이미지는 기본이미지로 저장 : http://localhost:8095/file/default/default-profile.jpg
+        assertThat(findAccount.getProfile().getProfileImage()).startsWith("http");
+        assertThat(findAccount.getProfile().getAddress().getAddressCode()).isNotNull();
+        assertThat(findAccount.getProfile().getAddress().getCity()).isEqualTo("서울");
+        assertThat(findAccount.getProfile().getAddress().getDistrict()).isEqualTo("종로구");
+        assertThat(findAccount.getProfile().getAddress().getTown()).isEqualTo("암사동");
+        assertThat(findAccount.getProfile().getAddressRange()).isEqualTo(AddressRange.JUST);
+
+    }
+
+    @Test
+    @DisplayName("계정 수정 테스트")
+    void updateAccountTest() throws Exception{
+        //given
+
+        //when
 
         //then
-        assertThat(signupResult.getClientId()).isEqualTo(account.getClientId());
-        assertThat(signupResult.getCreatedAt()).isEqualTo(account.getCreatedAt());
-        assertThat(account.getId()).isNotNull();
-        assertThat(account.getLoginId()).isEqualTo(form.getLoginId());
-        assertThat(account.getName()).isEqualTo(form.getName());
-        assertThat(passwordEncoder.matches(form.getPassword(), account.getPassword())).isTrue();
-        assertThat(account.getAuthority()).isEqualTo(Authority.ROLL_USER);
-        assertThat(account.getUpdatedAt()).isEqualTo(account.getCreatedAt());
-
-        assertThat(account.getProfile().getNickname()).isEqualTo(form.getNickname());
-
 
     }
 
