@@ -103,11 +103,6 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateAccount(){
-        this.email = "";
-        this.contact = "";
-    }
-
     public void updateEmail(String email) {
         this.email = email;
         this.updatedAt = LocalDateTime.now();

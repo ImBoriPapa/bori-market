@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
+// TODO: 2022/11/02 1차 리펙토링 완
 /**
  *  계정 서비스 로직중 command 에 해당 하는 로직 Transactional 안에서 변경이 일어나야 한다.
  *  create
@@ -52,13 +53,8 @@ public class AccountCommandService {
         return new SignupResult(savedAccount.getId(), savedAccount.getCreatedAt());
     }
 
-    // TODO: 2022/10/31 이메일 인증 구현
-    public void issueTemporaryPassword() {
-    }
-
     /**
      * 비밀 번호 변경 : clientId 로 계정 조회 -> 비밀번호 검증 후 일치시 새 비밀번호를 인코딩후 저장
-     *
      * @param accountId
      * @param password
      * @param newPassword
@@ -71,12 +67,23 @@ public class AccountCommandService {
         account.changePassword(passwordEncoder.encode(newPassword));
     }
 
+    // TODO: 2022/11/02 SMS 인증 구현 공부하기
+    public void updateContact(Long accountId, String contact) {
+        findAccount(accountId)
+                .updateContact(contact);
+    }
 
+    // TODO: 2022/11/02 email 인증 구현 공부하기
+    public void updateEmail(Long accountId, String email) {
+        findAccount(accountId)
+                .updateEmail(email);
+
+    }
 
     // TODO: 2022/11/02 계정 삭제시 계정에 속한, 거래, 파일 삭제 이벤트 추가
-
     /**
      * 계정 삭제
+     *
      * @param accountId
      * @param password
      */
@@ -88,8 +95,10 @@ public class AccountCommandService {
         accountRepository.delete(account);
     }
 
+
     /**
      * 권한 변경
+     *
      * @param adminId
      * @param accountId
      * @param authority
