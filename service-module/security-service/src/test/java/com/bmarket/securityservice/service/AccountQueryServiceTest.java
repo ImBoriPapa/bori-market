@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 @Slf4j
 class AccountQueryServiceTest {
     @Autowired
@@ -38,7 +37,6 @@ class AccountQueryServiceTest {
                     .email("사용자" + i + "@사용자.com")
                     .contact("010-1111-" + i + "1")
                     .addressCode(1002).build();
-
         }
     }
 
@@ -99,13 +97,11 @@ class AccountQueryServiceTest {
                 .email("사용자@사용자.com")
                 .contact("010-1111-1111")
                 .addressCode(1002).build();
-
-
         //when
 
         //then
         assertThatThrownBy(
-                () -> accountQueryService.findAccountByClientId("fsafaf")
+                () -> accountQueryService.findAccountByClientId(1L)
         ).isInstanceOf(BasicException.class);
     }
 

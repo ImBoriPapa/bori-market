@@ -115,6 +115,10 @@ public class AccountCommandService {
                         () -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 
+    public void deleteAccount(Long accountId){
+        accountRepository.deleteById(accountId);
+    }
+
     /**
      * 계정 조회 : 서비스 레이어 안에서만 조회 용도의 단순 계정 조회
      * @param accountId
@@ -137,6 +141,7 @@ public class AccountCommandService {
             throw new PasswordNotCorrectException(ErrorCode.NOT_CORRECT_PASSWORD);
         }
     }
+
 
 
 }

@@ -2,9 +2,9 @@ package com.bmarket.securityservice.api.account.controller;
 
 import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 
-import com.bmarket.securityservice.api.account.controller.resultForm.AccountListResult;
-import com.bmarket.securityservice.api.account.controller.resultForm.FindAccountResult;
+import com.bmarket.securityservice.api.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
 import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
@@ -84,9 +84,9 @@ public class AccountController {
      * GET : /ACCOUNT/{clientId}
      * 계정 단건 조회
      */
-    @GetMapping("/{clientId}")
-    public ResponseEntity findAccount(@PathVariable String clientId) {
-        FindAccountResult result = accountQueryService.findAccountByClientId(clientId);
+    @GetMapping("/{accountId}")
+    public ResponseEntity findAccount(@PathVariable Long accountId) {
+        FindOneAccountResult result = accountQueryService.findAccountByClientId(accountId);
 
 
         result.add(linkTo(AccountController.class).withSelfRel());
