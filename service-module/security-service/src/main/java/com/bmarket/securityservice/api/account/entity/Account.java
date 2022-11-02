@@ -32,15 +32,15 @@ public class Account {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "AUTHORITY")
     private Authority authority;
-    @OneToOne(fetch = FetchType.LAZY)//일대일 단방향 주 테이블 Account
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)//일대일 단방향 주 테이블 Account
     @JoinColumn(name = "PROFILE_ID")
     private Profile profile;
-    @OneToOne(fetch = FetchType.LAZY)//일대일 단방향 주 테이블 Account
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)//일대일 단방향 주 테이블 Account
     @JoinColumn(name = "REFRESH_TOKEN")
     private RefreshToken refreshToken;
     @Column(name = "IS_LOGIN")
     private boolean isLogin;
-    @Column(name = "CREATED_AT")
+    @Column(name = "CREATED_AT",updatable = false)
     private LocalDateTime createdAt;
     @Column(name = "UPDATED_AT")
     private LocalDateTime updatedAt;
@@ -75,6 +75,7 @@ public class Account {
 
     public void updateClientId() {
         this.clientId = generateSequentialUUID();
+        this.updatedAt = LocalDateTime.now();
     }
     private  String generateSequentialUUID() {
         return Generators.timeBasedGenerator().generate().toString();
@@ -100,6 +101,11 @@ public class Account {
     public void changePassword(String newPassword) {
         this.password = newPassword;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateAccount(){
+        this.email = "";
+        this.contact = "";
     }
 
     public void updateEmail(String email) {

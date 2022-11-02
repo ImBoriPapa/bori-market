@@ -2,6 +2,7 @@ package com.bmarket.securityservice.api.account.service;
 
 import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.profile.service.ProfileCommandService;
 
 import com.bmarket.securityservice.api.account.entity.Account;
@@ -52,41 +53,81 @@ public class AccountCommandService {
     }
 
     // TODO: 2022/10/31 이메일 인증 구현
-    public void issueTemporaryPassword(){
+    public void issueTemporaryPassword() {
     }
 
     /**
      * 비밀 번호 변경 : clientId 로 계정 조회 -> 비밀번호 검증 후 일치시 새 비밀번호를 인코딩후 저장
-     * @param clientId
+     *
+     * @param accountId
      * @param password
      * @param newPassword
      */
-    public void changePassword(String clientId, String password, String newPassword) {
-        Account account = accountRepository.findByClientId(clientId)
-                .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+    public void updatePassword(Long accountId, String password, String newPassword) {
+        Account account = findAccount(accountId);
 
         passwordCheck(password, account.getPassword());
 
         account.changePassword(passwordEncoder.encode(newPassword));
     }
 
-    // TODO: 2022/10/31 계정 삭제시 계정에 속한 프로필, 거래, 파일 삭제 이벤트 추가
-    public void deleteAccount(String clientId,String password){
-        Account account = accountRepository.findByClientId(clientId)
-                .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
 
-        passwordCheck(password,account.getPassword());
+
+    // TODO: 2022/11/02 계정 삭제시 계정에 속한, 거래, 파일 삭제 이벤트 추가
+
+    /**
+     * 계정 삭제
+     * @param accountId
+     * @param password
+     */
+    public void deleteAccount(Long accountId, String password) {
+        Account account = findAccount(accountId);
+
+        passwordCheck(password, account.getPassword());
 
         accountRepository.delete(account);
-
     }
 
+    /**
+     * 권한 변경
+     * @param adminId
+     * @param accountId
+     * @param authority
+     */
+    public void changeAuthority(Long adminId, Long accountId, Authority authority) {
+        Account admin = findAccount(adminId);
+
+        if (admin.getAuthority() != Authority.ROLL_ADMIN) {
+            throw new BasicException(ErrorCode.ACCESS_DENIED);
+        }
+
+        accountRepository.findById(accountId)
+                .ifPresentOrElse(user -> user.updateAuthority(authority),
+                        () -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+    }
+
+    /**
+     * 계정 조회 : 서비스 레이어 안에서만 조회 용도의 단순 계정 조회
+     * @param accountId
+     * @return
+     */
+    @Transactional(readOnly = true)
+    protected Account findAccount(Long accountId) {
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+        return account;
+    }
+
+    /**
+     * 비밀번호 일치 확인
+     * @param password
+     * @param encodedPassword
+     */
     private void passwordCheck(String password, String encodedPassword) {
         if (!passwordEncoder.matches(password, encodedPassword)) {
             throw new PasswordNotCorrectException(ErrorCode.NOT_CORRECT_PASSWORD);
         }
     }
-
 
 
 }

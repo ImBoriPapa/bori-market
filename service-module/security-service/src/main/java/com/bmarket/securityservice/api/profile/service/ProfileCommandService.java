@@ -41,7 +41,7 @@ public class ProfileCommandService {
                 .profileImage(getDefaultProfileImage())
                 .address(address)
                 .build();
-        return profileRepository.save(profile);
+        return profile;
     }
 
     public void updateNickname(String clientId, String nickname) {

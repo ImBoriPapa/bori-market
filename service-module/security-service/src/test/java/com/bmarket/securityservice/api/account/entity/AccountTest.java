@@ -50,7 +50,7 @@ class AccountTest {
                 .nickname("nickname")
                 .profileImage("프로필이미지.jpg")
                 .address(address).build();
-        Profile savedProfile = profileRepository.save(profile);
+
 
         Account account = Account.createAccount()
                 .loginId("login")
@@ -64,7 +64,7 @@ class AccountTest {
         //when
         Account findAccount = accountRepository.findById(savedAccount.getId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾지 못했습니다."));
-        Profile findProfile = profileRepository.findById(savedProfile.getId())
+        Profile findProfile = profileRepository.findById(findAccount.getProfile().getId())
                 .orElseThrow(() -> new IllegalArgumentException("프로필을 찾지 못했습니다."));
         //then
         //계정 정보
