@@ -6,8 +6,6 @@ custom-key:
   refresh-token-validation-life: 604800
 
 spring:
-
-
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/bori-market-account
@@ -28,3 +26,5 @@ spring:
         type.descriptor.sql: trace
         SQL: DEBUG
 
+url:
+  default-profile: http://localhost:8095/frm/profile/default

@@ -11,6 +11,7 @@ import com.bmarket.securityservice.api.profile.entity.Profile;
 import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class ProfileCommandService {
     private final ProfileRepository profileRepository;
     private final AccountRepository accountRepository;
 
+    @Value("${url.default-profile}")
+    private  String GET_DEFAULT_IMAGES;
     public Profile createProfile(RequestSignUpForm form) {
 
         Address address = Address.createAddress()
@@ -75,7 +78,7 @@ public class ProfileCommandService {
     private String getDefaultProfileImage() {
         String profileImage = WebClient.create()
                 .get()
-                .uri("http://localhost:8095/frm/profile/default")
+                .uri(GET_DEFAULT_IMAGES)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

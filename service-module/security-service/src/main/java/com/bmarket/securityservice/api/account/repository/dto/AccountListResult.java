@@ -11,13 +11,15 @@ import java.util.List;
 @NoArgsConstructor
 public class AccountListResult extends EntityModel {
 
-    private int currentPage;
-    private int size;
+    private Long offSet;
+    private Integer size;
+    private Long totalCount;
     private List<AccountList> accountLists = new ArrayList<>();
 
-    public AccountListResult(int offSet,int size,List<AccountList> accounts) {
-        this.size = offSet;
-        this.currentPage = size;
+    public AccountListResult(Long offSet,Integer size,Long totalCount,List<AccountList> accounts) {
+        this.offSet = offSet;
+        this.size = size;
+        this.totalCount = totalCount;
         this.accountLists = accounts;
     }
 }

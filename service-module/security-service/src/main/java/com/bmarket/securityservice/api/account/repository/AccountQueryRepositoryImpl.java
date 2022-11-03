@@ -1,13 +1,18 @@
 package com.bmarket.securityservice.api.account.repository;
 
-
+import com.bmarket.securityservice.api.account.entity.Account;
+import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.dto.*;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +37,7 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
                         account.clientId,
                         account.password,
                         account.authority))
+                .from(account)
                 .where(account.clientId.eq(clientId))
                 .fetchOne();
         return Optional.ofNullable(result);
@@ -62,7 +68,8 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
         return Optional.ofNullable(result);
     }
 
-    public AccountListResult findAccountListByPageable(int offSet, int size) {
+    @Override
+    public Page<AccountList> findAccountListByPageable(Pageable pageable, Authority authority) {
         List<AccountList> result = queryFactory
                 .select(new QAccountList(
                         account.id,
@@ -72,12 +79,38 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
                         account.createdAt
                 ))
                 .from(account)
-                .offset(offSet)
-                .limit(size)
+                .where(authorityEq(authority))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .orderBy(account.id.desc())
                 .fetch();
 
-        return new AccountListResult(offSet, result.size(), result);
+        Long totalCount = queryFactory
+                .select(account.count())
+                .from(account)
+                .where(authorityEq(authority))
+                .orderBy(account.id.desc())
+                .fetchOne();
+        return PageableExecutionUtils.getPage(result, pageable, () -> totalCount);
+
+    }
+    @Transactional(readOnly = true)
+    public List<Account> useTransaction() {
+        return queryFactory
+                .selectFrom(account)
+                .from(account)
+                .fetch();
+    }
+
+    public List<Account> donUseTransaction() {
+        return queryFactory
+                .selectFrom(account)
+                .from(account)
+                .fetch();
+    }
+
+    public BooleanExpression authorityEq(Authority authority) {
+        return authority != null ? account.authority.eq(authority) : null;
     }
 
 }

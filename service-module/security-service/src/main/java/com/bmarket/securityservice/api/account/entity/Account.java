@@ -73,6 +73,19 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public Account(String loginId, String name, String password, String email, String contact) {
+        this.clientId = generateSequentialUUID();
+        this.loginId = loginId;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.contact = contact;
+        this.authority = Authority.ROLL_ADMIN;
+        this.isLogin = false;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public void updateClientId() {
         this.clientId = generateSequentialUUID();
         this.updatedAt = LocalDateTime.now();

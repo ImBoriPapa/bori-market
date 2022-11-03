@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeRequests().antMatchers("/login", "/account", "/test","/exception","/exception/**","/api/address","/api/address/*","/image-test","/event","/event/*","/profile/**").permitAll()
                 .antMatchers("/trade","/trade/**").hasAuthority("ROLL_USER")
                 .antMatchers("/redirect1","/redirect2").permitAll()
+                .antMatchers("/test-profile-image").permitAll()
                 .antMatchers("/jwt-test1").authenticated()
                 .antMatchers("/jwt-test1").hasAuthority("ROLL_USER")
                 .antMatchers("/jwt-test2").hasAuthority("ROLL_ADMIN")

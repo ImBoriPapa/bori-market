@@ -3,7 +3,10 @@ package com.bmarket.securityservice.api.account.repository;
 import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
 import com.bmarket.securityservice.api.account.entity.Account;
+import com.bmarket.securityservice.api.account.entity.Authority;
+import com.bmarket.securityservice.api.account.repository.dto.AccountList;
 import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
+import com.bmarket.securityservice.api.account.repository.dto.InfoForLoadByUsername;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -12,11 +15,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StopWatch;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -30,37 +37,29 @@ class AccountQueryRepositoryImplTest {
     AccountCommandService accountCommandService;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    EntityManager em;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void beforeEach() {
-        log.info("============================여기서 부터 before ====================");
-        RequestSignUpForm form = RequestSignUpForm.builder()
-                .loginId("tester")
-                .name("이테스트")
-                .nickname("브레드피트")
-                .password("bread1234")
-                .email("bread@bread.com")
-                .contact("010-2222-1234")
-                .addressCode(1100)
-                .city("서울")
-                .district("종로구")
-                .town("암사동")
-                .build();
-        accountCommandService.signUpProcessing(form);
+        log.info("[TEST DATA INIT] BEGAN");
+        init();
+        log.info("[TEST DATA INIT] FINISH");
     }
 
     @AfterEach
     void afterEach() {
-        log.info("============================여기서 부터 after ====================");
-        Optional<Account> tester = accountRepository.findByLoginId("tester");
-        accountCommandService.deleteAccount(tester.get().getId());
+        log.info("[TEST DATA DELETE]");
+        deleteTestData();
     }
 
     @Test
     @DisplayName("계정 단건 조회 테스트")
     void findOneAccountTest() throws Exception {
         //given
-        Account tester = accountRepository.findByLoginId("tester")
+        Account tester = accountRepository.findByLoginId("tester1")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         log.info("============================여기서 부터 query ====================");
         //when
@@ -85,24 +84,128 @@ class AccountQueryRepositoryImplTest {
     @DisplayName("계정 리스트 조회")
     void findAccountListTest() throws Exception {
         //given
-        List<Long> init = init();
+        log.info("[Test Query]");
+        /**
+         * ROLL_ADMIN 계정  1개
+         * ROLL_USER 계정 100개
+         * 총 101개 계정
+         * 조회 순서는 DESC
+         * 검색 조건은 pageNumber, size, Authority(ROLL_USER,ROLL_ADMIN,NULL)
+         */
+        PageRequest request1 = PageRequest.of(0, 20);
+        PageRequest request2 = PageRequest.of(4, 20);
+        PageRequest request3 = PageRequest.of(0, 20);
+        PageRequest request4 = PageRequest.of(0, 20);
+        //when
+        Page<AccountList> result1 = queryRepository.findAccountListByPageable(request1, Authority.ROLL_USER);
+        Page<AccountList> result2 = queryRepository.findAccountListByPageable(request2, null);
+        Page<AccountList> result3 = queryRepository.findAccountListByPageable(request3, Authority.ROLL_ADMIN);
+        accountCommandService.changeAuthority(1L,50L,Authority.ROLL_ADMIN);
+        accountCommandService.changeAuthority(1L,90L,Authority.ROLL_ADMIN);
+        Page<AccountList> result4 = queryRepository.findAccountListByPageable(request4, Authority.ROLL_ADMIN);
+        //then
 
+        //검색 조건1 : pageNumber=0, size=20,Authority=ROLL_USER
+        assertThat(result1.getNumber()).isEqualTo(0);
+        assertThat(result1.getSize()).isEqualTo(20);
+        assertThat(result1.getTotalPages()).isEqualTo(5);
+        assertThat(result1.getContent().get(0).getAccountId()).isEqualTo(101);
+        assertThat(result1.getContent().get(0).getLoginId()).isEqualTo("tester100");
+        assertThat(result1.getContent().get(0).getEmail()).isEqualTo("bread100@bread.com");
+        assertThat(result1.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(result1.getContent().get(0).getCreatedAt()).isNotNull();
+        //검색 조건2 : pageNumber=4, size=20,Authority=NULL
+        assertThat(result2.getNumber()).isEqualTo(4);
+        assertThat(result2.getSize()).isEqualTo(20);
+        assertThat(result2.getTotalPages()).isEqualTo(6);
+        assertThat(result2.getContent().get(0).getAccountId()).isEqualTo(21);
+        assertThat(result2.getContent().get(0).getLoginId()).isEqualTo("tester20");
+        assertThat(result2.getContent().get(0).getEmail()).isEqualTo("bread20@bread.com");
+        assertThat(result2.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(result2.getContent().get(0).getCreatedAt()).isNotNull();
+        //검색 조건3 : pageNumber=0, size=20,Authority=ROLL_ADMIN
+        assertThat(result3.getNumber()).isEqualTo(0);
+        assertThat(result3.getSize()).isEqualTo(20);
+        assertThat(result3.getTotalPages()).isEqualTo(1);
+        assertThat(result3.getContent().get(0).getAccountId()).isEqualTo(1);
+        assertThat(result3.getContent().get(0).getLoginId()).isEqualTo("manager");
+        assertThat(result3.getContent().get(0).getEmail()).isEqualTo("manager@manager.com");
+        assertThat(result3.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_ADMIN);
+        assertThat(result3.getContent().get(0).getCreatedAt()).isNotNull();
+        //검색 조건4 : pageNumber=0, size=20,Authority=ROLL_ADMIN
+        assertThat(result4.getNumber()).isEqualTo(0);
+        assertThat(result4.getSize()).isEqualTo(20);
+        assertThat(result4.getTotalPages()).isEqualTo(1);
+        assertThat(result4.getContent().get(0).getAccountId()).isEqualTo(90);
+        assertThat(result4.getContent().get(0).getLoginId()).isEqualTo("tester89");
+        assertThat(result4.getContent().get(0).getEmail()).isEqualTo("bread89@bread.com");
+        assertThat(result4.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_ADMIN);
+        assertThat(result4.getContent().get(0).getCreatedAt()).isNotNull();
+
+    }
+
+    @Test
+    @DisplayName("UserDetailService 용 조회")
+    void findAccountForLadUserTest() throws Exception{
+        //given
+        RequestSignUpForm form = RequestSignUpForm.builder()
+                .loginId("testerA")
+                .name("이테스트")
+                .nickname("접근자")
+                .password("1234fasfa")
+                .email("mimo@gogi.com")
+                .contact("010-2222-5311")
+                .addressCode(1100)
+                .city("서울")
+                .district("종로구")
+                .town("암사동")
+                .build();
+        SignupResult result = accountCommandService.signUpProcessing(form);
+        //when
+        Account account = accountRepository.findById(result.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다"));
+        InfoForLoadByUsername info = queryRepository.findAccountForLoadUser(account.getClientId())
+                .orElseThrow(() -> new IllegalArgumentException("계정 정보를 찾을 수 없습니다"));
+        //then
+        assertThat(info.getClientId()).isEqualTo(account.getClientId());
+        assertThat(passwordEncoder.matches(form.getPassword(), info.getPassword())).isTrue();
+        assertThat(info.getAuthority()).isEqualTo(Authority.ROLL_USER);
+    }
+
+    @Test
+    @DisplayName("트렌젝션 사용 속도 측정 (READ_ONLY = TRUE")
+    void useTransactionTest() throws Exception{
+        //given
+        ArrayList<Long> times = new ArrayList<>();
+        StopWatch watch1 = new StopWatch();
+        for(int i=0;i<10;i++){
+            watch1.start();
+            queryRepository.useTransaction();
+            watch1.stop();
+            times.add(watch1.getTotalTimeMillis());
+        }
         //when
 
         //then
-        delete(init);
+        AtomicInteger i = new AtomicInteger();
+        times.forEach(t->
+                        log.info("Using Transaction round= {}, Time= {}", i.getAndIncrement(),t)
+                );
+
+
 
     }
-    public List<Long> init() {
+
+    public void init() {
         ArrayList<Long> list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i <= 100; i++) {
             RequestSignUpForm form = RequestSignUpForm.builder()
                     .loginId("tester" + i)
                     .name("이테스트")
                     .nickname("브레드피트" + i)
                     .password("bread1234")
                     .email("bread" + i + "@bread.com")
-                    .contact("010-2222-"+i)
+                    .contact("010-2222-" + i)
                     .addressCode(1100)
                     .city("서울")
                     .district("종로구")
@@ -111,10 +214,11 @@ class AccountQueryRepositoryImplTest {
             SignupResult result = accountCommandService.signUpProcessing(form);
             list.add(result.getAccountId());
         }
-        return list;
     }
 
-    public void delete(List<Long> ids){
-        accountRepository.deleteAllById(ids);
+    public void deleteTestData() {
+        accountRepository.deleteAll();
     }
+
+
 }
