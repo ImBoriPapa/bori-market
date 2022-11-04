@@ -2,7 +2,10 @@ package com.bmarket.securityservice.api.account.repository.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 public class AccountListResult extends EntityModel {
 
-    private Long offSet;
+    private Integer pageNumber;
     private Integer size;
     private Long totalCount;
     private List<AccountList> accountLists = new ArrayList<>();
 
-    public AccountListResult(Long offSet,Integer size,Long totalCount,List<AccountList> accounts) {
-        this.offSet = offSet;
-        this.size = size;
-        this.totalCount = totalCount;
-        this.accountLists = accounts;
+    public AccountListResult(Page<AccountList> accountLists) {
+        this.pageNumber = accountLists.getNumber();
+        this.size = accountLists.getSize();
+        this.totalCount = accountLists.getTotalElements();
+        this.accountLists.addAll(accountLists.getContent());
     }
 }

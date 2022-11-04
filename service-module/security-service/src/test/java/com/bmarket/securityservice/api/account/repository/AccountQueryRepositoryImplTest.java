@@ -52,7 +52,7 @@ class AccountQueryRepositoryImplTest {
     @AfterEach
     void afterEach() {
         log.info("[TEST DATA DELETE]");
-        deleteTestData();
+        accountRepository.deleteAll();
     }
 
     @Test
@@ -239,9 +239,6 @@ class AccountQueryRepositoryImplTest {
         }
     }
 
-    public void deleteTestData() {
-        accountRepository.deleteAll();
-    }
 
 
 }

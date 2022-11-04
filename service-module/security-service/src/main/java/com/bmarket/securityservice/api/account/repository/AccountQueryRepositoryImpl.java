@@ -24,7 +24,6 @@ import static com.bmarket.securityservice.api.account.entity.QAccount.*;
 public class AccountQueryRepositoryImpl implements AccountQueryRepository {
 
     private final JPAQueryFactory queryFactory;
-
     /**
      * security loadUserByUsername()에 사용할 clientId,password,authority 반환
      *
@@ -46,7 +45,6 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
 
     /**
      * 계정 단건 조회
-     *
      * @param accountId
      * @return
      */

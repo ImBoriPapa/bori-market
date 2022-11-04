@@ -4,14 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-
+    NOT_FOUNT_REASON(1000,"원인을 알수 없는 에러가 발생했습니다."),
     NOT_FOUND_ACCOUNT(1001,"계정을 찾을 수 없습니다."),
     THIS_ACCOUNT_IS_LOGOUT(1002,"로그아웃된 계정입니다 다시 로그인해 주세요"),
 
     NOT_CORRECT_PASSWORD(1003,"비밀번호가 일치하지 않습니다"),
     FAIL_VALIDATION(2000,"검증에 실패했습니다"),
-
     FAIL_LOGIN(2001,"로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요"),
+
+    TOO_LONG_RANGE(2003,"검색은 최대 100건까지 검색할 수 있습니다"),
     EMPTY_ACCESS_TOKEN(2100,"토큰을 확인할 수 없습니다"),
     EXPIRED_REFRESH_TOKEN(2101,"리프레시 토큰이 만료 되었습니다. 다시 로그인해 주세요"),
 

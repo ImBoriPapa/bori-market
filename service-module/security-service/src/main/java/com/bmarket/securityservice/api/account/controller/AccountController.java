@@ -2,6 +2,7 @@ package com.bmarket.securityservice.api.account.controller;
 
 import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
 
+import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
 import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
@@ -86,7 +87,7 @@ public class AccountController {
      */
     @GetMapping("/{accountId}")
     public ResponseEntity findAccount(@PathVariable Long accountId) {
-        FindOneAccountResult result = accountQueryService.findAccountByClientId(accountId);
+        FindOneAccountResult result = accountQueryService.findAccountDetail(accountId);
 
 
         result.add(linkTo(AccountController.class).withSelfRel());
@@ -105,10 +106,11 @@ public class AccountController {
     @GetMapping
     public ResponseEntity findAllAccount(@RequestParam(defaultValue = DEFAULT_PAGE) int page,
                                          @RequestParam(defaultValue = DEFAULT_SIZE) int size,
-                                         @RequestParam(defaultValue = DEFAULT_DIRECTION) Sort.Direction direction) {
+                                         @RequestParam(defaultValue = DEFAULT_DIRECTION) Sort.Direction direction,
+                                         @RequestParam Authority authority) {
 
         PageRequest request = PageRequest.of(setPage(page), size, direction, "id");
-        AccountListResult result = accountQueryService.findAllAccount(request);
+        AccountListResult result = accountQueryService.findAccountList(request,authority);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
