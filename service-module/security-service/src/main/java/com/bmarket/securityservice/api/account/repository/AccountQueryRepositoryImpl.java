@@ -31,6 +31,7 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
      * @param clientId
      * @return
      */
+    @Transactional(readOnly = true)
     public Optional<InfoForLoadByUsername> findAccountForLoadUser(String clientId) {
         InfoForLoadByUsername result = queryFactory
                 .select(new QInfoForLoadByUsername(
@@ -50,6 +51,7 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
      * @return
      */
     @Override
+    @Transactional(readOnly = true)
     public Optional<FindOneAccountResult> findOneAccount(Long accountId) {
 
         FindOneAccountResult result = queryFactory
@@ -69,6 +71,7 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<AccountList> findAccountListByPageable(Pageable pageable, Authority authority) {
         List<AccountList> result = queryFactory
                 .select(new QAccountList(
@@ -98,14 +101,12 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
     public List<Account> useTransaction() {
         return queryFactory
                 .selectFrom(account)
-                .from(account)
                 .fetch();
     }
 
     public List<Account> donUseTransaction() {
         return queryFactory
                 .selectFrom(account)
-                .from(account)
                 .fetch();
     }
 

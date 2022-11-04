@@ -100,8 +100,8 @@ class AccountQueryRepositoryImplTest {
         Page<AccountList> result1 = queryRepository.findAccountListByPageable(request1, Authority.ROLL_USER);
         Page<AccountList> result2 = queryRepository.findAccountListByPageable(request2, null);
         Page<AccountList> result3 = queryRepository.findAccountListByPageable(request3, Authority.ROLL_ADMIN);
-        accountCommandService.changeAuthority(1L,50L,Authority.ROLL_ADMIN);
-        accountCommandService.changeAuthority(1L,90L,Authority.ROLL_ADMIN);
+        accountCommandService.changeAuthority(1L, 50L, Authority.ROLL_ADMIN);
+        accountCommandService.changeAuthority(1L, 90L, Authority.ROLL_ADMIN);
         Page<AccountList> result4 = queryRepository.findAccountListByPageable(request4, Authority.ROLL_ADMIN);
         //then
 
@@ -146,7 +146,7 @@ class AccountQueryRepositoryImplTest {
 
     @Test
     @DisplayName("UserDetailService 용 조회")
-    void findAccountForLadUserTest() throws Exception{
+    void findAccountForLadUserTest() throws Exception {
         //given
         RequestSignUpForm form = RequestSignUpForm.builder()
                 .loginId("testerA")
@@ -173,26 +173,49 @@ class AccountQueryRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("트렌젝션 사용 속도 측정 (READ_ONLY = TRUE")
-    void useTransactionTest() throws Exception{
+    @DisplayName("트렌젝션 사용 속도 측정 (READ_ONLY = TRUE)")
+    void useTransactionTest() throws Exception {
         //given
         ArrayList<Long> times = new ArrayList<>();
         StopWatch watch1 = new StopWatch();
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 100; i++) {
             watch1.start();
             queryRepository.useTransaction();
             watch1.stop();
-            times.add(watch1.getTotalTimeMillis());
+            times.add(watch1.getTotalTimeNanos());
         }
         //when
 
         //then
         AtomicInteger i = new AtomicInteger();
-        times.forEach(t->
-                        log.info("Using Transaction round= {}, Time= {}", i.getAndIncrement(),t)
-                );
+        times.forEach(t ->
+                        System.out.println("Using Transaction round= "+i.getAndIncrement()+", Time= "+t+"ns")
+        );
+        double asDouble = times.stream().mapToLong(m -> m).average().getAsDouble();
+        System.out.println("Average="+asDouble+"ns");
+    }
 
+    @Test
+    @DisplayName("트렌젝션 사용하지 않고 속도 측정 (트랜젝션 밖에서 읽기)")
+    void donUseTransactionTest() throws Exception {
+        //given
 
+        ArrayList<Long> times2 = new ArrayList<>();
+        StopWatch watch2 = new StopWatch();
+        for (int i = 0; i < 100; i++) {
+            watch2.start();
+            queryRepository.donUseTransaction();
+            watch2.stop();
+            times2.add(watch2.getTotalTimeNanos());
+        }
+        //when
+        AtomicInteger i = new AtomicInteger();
+        //then
+        times2.forEach(t ->
+                        System.out.println("Don't Using Transaction round= "+i.getAndIncrement()+", Time= "+t+"ns")
+        );
+        double asDouble = times2.stream().mapToLong(m -> m).average().getAsDouble();
+        System.out.println("Average="+asDouble+"ns");
 
     }
 
