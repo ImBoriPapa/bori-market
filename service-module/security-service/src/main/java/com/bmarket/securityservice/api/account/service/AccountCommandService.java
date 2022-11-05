@@ -55,6 +55,7 @@ public class AccountCommandService {
 
     /**
      * 비밀 번호 변경 : clientId 로 계정 조회 -> 비밀번호 검증 후 일치시 새 비밀번호를 인코딩후 저장
+     *
      * @param accountId
      * @param password
      * @param newPassword
@@ -81,6 +82,7 @@ public class AccountCommandService {
     }
 
     // TODO: 2022/11/02 계정 삭제시 계정에 속한, 거래, 파일 삭제 이벤트 추가
+
     /**
      * 계정 삭제
      *
@@ -115,12 +117,13 @@ public class AccountCommandService {
                         () -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
     }
 
-    public void deleteAccount(Long accountId){
+    public void deleteAccount(Long accountId) {
         accountRepository.deleteById(accountId);
     }
 
     /**
      * 계정 조회 : 서비스 레이어 안에서만 조회 용도의 단순 계정 조회
+     *
      * @param accountId
      * @return
      */
@@ -133,6 +136,7 @@ public class AccountCommandService {
 
     /**
      * 비밀번호 일치 확인
+     *
      * @param password
      * @param encodedPassword
      */
@@ -141,7 +145,5 @@ public class AccountCommandService {
             throw new PasswordNotCorrectException(ErrorCode.NOT_CORRECT_PASSWORD);
         }
     }
-
-
-
 }
+

@@ -34,7 +34,8 @@ public class SecurityConfig {
                 .authenticationEntryPoint(customAuthenticationEntryPoint);
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/login", "/account", "/test","/exception","/exception/**","/api/address","/api/address/*","/image-test","/event","/event/*","/profile/**").permitAll()
+                .authorizeRequests().antMatchers("/login", "/test","/exception","/exception/**","/api/address","/api/address/*","/image-test","/event","/event/*","/profile/**").permitAll()
+                .antMatchers("/account").hasAuthority("ROLL_USER")
                 .antMatchers("/trade","/trade/**").hasAuthority("ROLL_USER")
                 .antMatchers("/redirect1","/redirect2").permitAll()
                 .antMatchers("/test-profile-image").permitAll()

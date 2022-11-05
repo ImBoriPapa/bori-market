@@ -60,7 +60,7 @@ class CustomAccessDeniedHandlerTest {
     @DisplayName("권한이 없는 접근 테스트")
     void noPower() throws Exception {
         //given
-        LoginResult login = loginService.login("happy", "happy123");
+        LoginResult login = loginService.loginProcessing("happy", "happy123");
         Optional<Account> account = accountRepository.findByClientId(login.getClientId());
         log.info("Account Authority={} ",account.get().getAuthority());
 

@@ -25,17 +25,24 @@ public class LoginService {
     private final JwtUtils jwtUtils;
     private final AccountRepository accountRepository;
 
-    public LoginResult login(String loginId, String password) {
-        log.info("==============[LoginService] 로그인 실행  =============");
-        Account account = accountRepository.findByLoginId(loginId).orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
-
+    public LoginResult loginProcessing(String loginId, String password) {
+        log.info("[1.LoginService] 로그인 실행");
+        log.info("[2.LOGIN ID 확인]");
+        Account account = accountRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+        log.info("[3.PASSWORD 확인]");
         if (!passwordEncoder.matches(password, account.getPassword())) {
             throw new BasicException(ErrorCode.FAIL_LOGIN);
         }
+        
+        log.info("[4.LOGIN CHECK 확인]");
         account.loginCheck(true);
+        
+        log.info("[5.TOKEN 생성]");
         String token = "Bearer-"+jwtUtils.generateToken(account.getClientId());
+        log.info("[6.REFRESH TOKEN 생성]");
         String refreshToken = "Bearer-"+jwtService.issuedRefreshToken(account.getClientId());
-        log.info("===================로그인 과정 종료===================");
+        log.info("[7.LOGIN PROCESSING 종료]");
         return new LoginResult(account.getClientId(), token, refreshToken, account.getLastLoginTime());
     }
 

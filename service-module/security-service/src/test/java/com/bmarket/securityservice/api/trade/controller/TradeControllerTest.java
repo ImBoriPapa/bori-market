@@ -72,7 +72,7 @@ class TradeControllerTest {
     @DisplayName("거래 생성 테스트")
     void createTradeTest() throws Exception {
         //given
-        LoginResult loginResult = loginService.login("moo", "momo123");
+        LoginResult loginResult = loginService.loginProcessing("moo", "momo123");
 
         String token = loginResult.getToken();
         String refreshToken = loginResult.getRefreshToken();
@@ -110,7 +110,7 @@ class TradeControllerTest {
     @DisplayName("거래 내역 전체 조회 테스트")
     void searchSaleListTest() throws Exception {
         //given
-        LoginResult loginResult = loginService.login("moo", "momo123");
+        LoginResult loginResult = loginService.loginProcessing("moo", "momo123");
         String token = loginResult.getToken();
         String refreshToken = loginResult.getRefreshToken();
         mockMvc.perform(get("/trade")
@@ -132,7 +132,7 @@ class TradeControllerTest {
     @DisplayName("거래 상세 보기 테스트")
     void tradeDetailTest() throws Exception{
         //given
-        LoginResult loginResult = loginService.login("moo", "momo123");
+        LoginResult loginResult = loginService.loginProcessing("moo", "momo123");
         String token = loginResult.getToken();
         String refreshToken = loginResult.getRefreshToken();
         //when

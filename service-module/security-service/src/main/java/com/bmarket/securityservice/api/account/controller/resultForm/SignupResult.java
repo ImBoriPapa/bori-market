@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignupResult  extends ResultForm {
+public class SignupResult {
     private Long accountId;
     private LocalDateTime createdAt;
 }

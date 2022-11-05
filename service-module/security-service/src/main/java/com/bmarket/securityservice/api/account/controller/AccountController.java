@@ -8,6 +8,7 @@ import com.bmarket.securityservice.api.account.controller.resultForm.SignupResul
 import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
 import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
+import com.bmarket.securityservice.api.security.controller.LoginController;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.exception.validate.RequestSignUpFormValidator;
@@ -18,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +46,6 @@ public class AccountController {
 
     private final AccountQueryService accountQueryService;
     private final AccountCommandService accountCommandService;
-
     private final RequestSignUpFormValidator requestSignUpFormValidator;
     private final String DEFAULT_PAGE = "1";
     private final String DEFAULT_SIZE = "20";
@@ -55,30 +58,40 @@ public class AccountController {
 
     /**
      * POST : /ACCOUNT
-     * :계정 생성 요청
+     * 계정 생성 요청
      * @param form
-     * @return
+     * @return ResponseForm
      */
     @PostMapping
-    public ResponseEntity<ResponseForm> createAccount(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
+    public ResponseEntity<ResponseForm<EntityModel>> createAccount(@Valid @RequestBody RequestSignUpForm form, BindingResult bindingResult) {
         log.info("==============[CONTROLLER] 회원가입 요청=============");
+
         if (bindingResult.hasErrors()) {
+            log.info("Validation Error 발생");
             throw new BasicException(ErrorCode.FAIL_VALIDATION, bindingResult);
         }
-        Link link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult)).withSelfRel();
+
+        WebMvcLinkBuilder link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult));
+
+        Link loginLink = linkTo(LoginController.class).slash("login").withRel("POST : 로그인");
 
         SignupResult result = accountCommandService.signUpProcessing(form);
-        result.add(link);
+
+        URI Location = link.slash(result.getAccountId()).toUri();
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setDate(new Date().getTime());
+
+        EntityModel entityModel = EntityModel.of(result);
+        entityModel.add(loginLink);
+        entityModel.add(link.slash(result.getAccountId()).withRel("GET   : 계정 정보 조회"));
+        entityModel.add(link.slash(result.getAccountId()).withRel("PATCH : 계정 정보 수정"));
+        entityModel.add(link.slash(result.getAccountId()).withRel("DELETE: 계정 정보 삭제"));
 
         return ResponseEntity
-                .created(link.toUri())
+                .created(Location)
                 .headers(httpHeaders)
-                .body(new ResponseForm(ResponseStatus.SUCCESS, result));
+                .body(new ResponseForm<>(ResponseStatus.SUCCESS, entityModel));
     }
 
     /**
@@ -86,7 +99,7 @@ public class AccountController {
      * 계정 단건 조회
      */
     @GetMapping("/{accountId}")
-    public ResponseEntity findAccount(@PathVariable Long accountId) {
+    public ResponseEntity getAccount(@PathVariable Long accountId) {
         FindOneAccountResult result = accountQueryService.findAccountDetail(accountId);
 
 
@@ -110,7 +123,7 @@ public class AccountController {
                                          @RequestParam Authority authority) {
 
         PageRequest request = PageRequest.of(setPage(page), size, direction, "id");
-        AccountListResult result = accountQueryService.findAccountList(request,authority);
+        AccountListResult result = accountQueryService.findAccountList(request, authority);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -123,11 +136,11 @@ public class AccountController {
                 .body(new ResponseForm(ResponseStatus.SUCCESS, result));
     }
 
-    public void updatePassword(){
+    public void updatePassword() {
 
     }
 
-    public void deleteAccount(){
+    public void deleteAccount() {
 
     }
 
@@ -146,6 +159,4 @@ public class AccountController {
         }
         return page;
     }
-
-
 }

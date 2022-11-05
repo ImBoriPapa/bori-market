@@ -32,30 +32,45 @@ public class JwtService {
 
     public String reissueRefreshToken(String refreshToken) throws RuntimeException {
         log.info("==============[JWT_SERVICE] 리프레쉬 토큰 재발급 =============");
-        Claims userPk = jwtUtils.getUserPk(refreshToken);
-        RefreshToken tokenInDb = accountRepository.findByClientId(userPk.getSubject())
-                .orElseThrow(() -> new IllegalArgumentException("REFRESH TOKEN NOT FOUND")).getRefreshToken();
+        String clientId = jwtUtils.getUserPk(refreshToken).getSubject();
 
-        if (tokenInDb.getRefreshToken().equals(refreshToken)) {
-            String newRefreshToken = jwtUtils.generateToken(userPk.getSubject());
-            tokenInDb.changeRefreshToken(newRefreshToken);
-            return newRefreshToken;
+        Account account = getAccountByClientId(clientId);
 
+        if (account.getRefreshToken() != null) {
+            if (account.getRefreshToken().getRefreshToken().equals(refreshToken)) {
+                String generateRefreshToken = jwtUtils.generateRefreshToken(clientId);
+                account.getRefreshToken().changeRefreshToken(generateRefreshToken);
+                return account.getRefreshToken().getRefreshToken();
+            }
         } else {
             throw new IllegalArgumentException("NOT MATCH REFRESH TOKEN");
         }
+        return refreshToken;
     }
+
+
 
     public String issuedRefreshToken(String clientId) {
         log.info("==============[JWT_SERVICE] 리프레쉬 토큰 발급 =============");
+
+        Account account = getAccountByClientId(clientId);
+
         String newRefreshToken = jwtUtils.generateRefreshToken(clientId);
-        accountRepository.findByClientId(clientId).ifPresentOrElse(
-                m -> m.getRefreshToken().changeRefreshToken(newRefreshToken),
-                () -> {
-                    RefreshToken refreshToken = RefreshToken.createRefreshToken(newRefreshToken);
-                    refreshTokenRepository.save(refreshToken);
-                });
+
+        if (account.getRefreshToken() != null) {
+            account.getRefreshToken().changeRefreshToken(newRefreshToken);
+        }
+
+        RefreshToken refreshToken = RefreshToken.createRefreshToken(newRefreshToken);
+        account.addRefresh(refreshToken);
+
         return newRefreshToken;
+    }
+
+    private Account getAccountByClientId(String clientId) {
+        Account account = accountRepository.findByClientId(clientId)
+                .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
+        return account;
     }
 
     // JWT 토큰에서 인증 정보 조회
@@ -67,8 +82,6 @@ public class JwtService {
         }
         return userDetailService.generateAuthenticationByClientId(jwtUtils.getUserPk(token).getSubject());
     }
-
-
 
 
 }

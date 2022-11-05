@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = {"id","clientId"})
-@Table(name = "ACCOUNT",indexes = @Index(name = "idx__name",columnList = "EMAIL"))
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -124,5 +123,9 @@ public class Account {
     public void updateContact(String contact) {
         this.contact = contact;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void addRefresh(RefreshToken refreshToken){
+        this.refreshToken = refreshToken;
     }
 }
