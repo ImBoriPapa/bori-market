@@ -121,13 +121,12 @@ class AccountControllerTest {
                 .district("강남구")
                 .town("대치동")
                 .build();
-
         //when
         SignupResult signupResult = accountCommandService.signUpProcessing(form);
         Long accountId = signupResult.getAccountId();
         LoginResult loginResult = loginService.loginProcessing(form.getLoginId(), form.getPassword());
 
-        mockMvc.perform(get("http://localhost:8080/account/{accountId}",accountId)
+        mockMvc.perform(get("http://localhost:8080/account/{accountId}",loginResult.getClientId())
                         .header(AUTHORIZATION_HEADER,loginResult.getToken())
                         .header(REFRESH_HEADER,loginResult.getRefreshToken())
                 )

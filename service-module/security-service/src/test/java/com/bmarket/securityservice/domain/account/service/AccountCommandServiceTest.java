@@ -10,7 +10,6 @@ import com.bmarket.securityservice.api.address.AddressRange;
 import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -102,7 +101,7 @@ class AccountCommandServiceTest {
         assertThat(findAccount.getEmail()).isEqualTo("bread@bread.com");
         assertThat(findAccount.getContact()).isEqualTo("010-2222-1234");
         //최초 가입시 권한은 ROLL_USER
-        assertThat(findAccount.getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(findAccount.getAuthorityList()).isEqualTo(Authority.ROLL_USER);
         assertThat(findAccount.getRefreshToken()).isNull();
         assertThat(findAccount.getProfile().getNickname()).isEqualTo("브레드피트");
         //최초 가입시 프로필 이미지는 기본이미지로 저장 : http://localhost:8095/file/default/default-profile.jpg
@@ -116,7 +115,7 @@ class AccountCommandServiceTest {
 
     @Test
     @DisplayName("계정 삭제 테스트")
-    void updateAccountTest() throws Exception {
+    void deleteAccountTest() throws Exception {
         //given
         RequestSignUpForm form = RequestSignUpForm.builder()
                 .loginId("tester")
@@ -198,7 +197,7 @@ class AccountCommandServiceTest {
         SignupResult signupResult = accountCommandService.signUpProcessing(form);
         Account findUser = accountRepository.findById(signupResult.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
-        Account findAdmin = accountRepository.findByLoginId("admin")
+        Account findAdmin = accountRepository.findByLoginId("manager")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         Account anotherUser = accountRepository.findByLoginId("user")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));

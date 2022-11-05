@@ -107,8 +107,6 @@ public class AccountController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setDate(new Date().getTime());
 
         return ResponseEntity
                 .ok()

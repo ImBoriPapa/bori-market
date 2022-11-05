@@ -108,10 +108,9 @@ public class AccountCommandService {
     public void changeAuthority(Long adminId, Long accountId, Authority authority) {
         Account admin = findAccount(adminId);
 
-        if (admin.getAuthority() != Authority.ROLL_ADMIN) {
+        if (admin.getAuthority() == Authority.ROLL_USER) {
             throw new BasicException(ErrorCode.ACCESS_DENIED);
         }
-
         accountRepository.findById(accountId)
                 .ifPresentOrElse(user -> user.updateAuthority(authority),
                         () -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));

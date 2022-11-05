@@ -62,7 +62,7 @@ class CustomAccessDeniedHandlerTest {
         //given
         LoginResult login = loginService.loginProcessing("happy", "happy123");
         Optional<Account> account = accountRepository.findByClientId(login.getClientId());
-        log.info("Account Authority={} ",account.get().getAuthority());
+        log.info("Account Authority={} ",account.get().getAuthorityList());
 
         mockMvc.perform(get("/jwt-test2")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -4,8 +4,11 @@ import com.bmarket.securityservice.api.profile.entity.Profile;
 import com.bmarket.securityservice.api.security.entity.RefreshToken;
 import com.fasterxml.uuid.Generators;
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,6 +48,13 @@ public class Account {
     private LocalDateTime updatedAt;
     @Column(name = "LAST_LOGIN_AT")
     private LocalDateTime lastLoginTime;
+
+    public List<SimpleGrantedAuthority> getAuthorityList() {
+        ArrayList<SimpleGrantedAuthority> objects = new ArrayList<>();
+        Arrays.asList(this.authority.ROLL.split(","))
+                .forEach(m->objects.add(new SimpleGrantedAuthority(m)));
+        return objects;
+    }
 
     /**
      * 계정 생성
