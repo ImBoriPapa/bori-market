@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.EntityModel;
+
 
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class AccountListResult extends EntityModel {
+public class AccountListResult   {
 
     private Integer pageNumber;
     private Integer size;

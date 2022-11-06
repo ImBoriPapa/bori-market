@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.service;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.dto.AccountListResult;
@@ -18,8 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -91,8 +89,8 @@ class AccountQueryServiceTest {
         //when
         log.info("[TEST QUERY START]");
         AccountListResult findOnlyRequest = accountQueryService.findAccountList(request, null);
-        AccountListResult findWithAuthority = accountQueryService.findAccountList(request, Authority.ROLL_ADMIN);
-        AccountListResult find3Page = accountQueryService.findAccountList(request2, Authority.ROLL_USER);
+        AccountListResult findWithAuthority = accountQueryService.findAccountList(request, Authority.ADMIN);
+        AccountListResult find3Page = accountQueryService.findAccountList(request2, Authority.USER);
         log.info("[TEST QUERY FINISH]");
         //then
         //검색 조건1 : page=0, size=20, authority= null
@@ -116,7 +114,7 @@ class AccountQueryServiceTest {
     public void init() {
         ArrayList<Long> list = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
-            RequestSignUpForm form = RequestSignUpForm.builder()
+            RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                     .loginId("tester" + i)
                     .name("이테스트")
                     .nickname("브레드피트" + i)
@@ -128,8 +126,8 @@ class AccountQueryServiceTest {
                     .district("종로구")
                     .town("암사동")
                     .build();
-            SignupResult result = accountCommandService.signUpProcessing(form);
-            list.add(result.getAccountId());
+            ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+            list.add(signupForm.getAccountId());
         }
     }
 

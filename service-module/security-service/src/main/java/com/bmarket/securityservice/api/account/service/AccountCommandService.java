@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.api.account.service;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.profile.service.ProfileCommandService;
 
@@ -11,6 +11,7 @@ import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.profile.entity.Profile;
 
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.PasswordNotCorrectException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class AccountCommandService {
     private final ProfileCommandService profileCommandService;
     private final PasswordEncoder passwordEncoder;
 
-    public SignupResult signUpProcessing(RequestSignUpForm form) {
+    public ResponseAccountForm.ResponseSignupForm signUpProcessing(RequestAccountForm.CreateForm form) {
 
         Profile profile = profileCommandService.createProfile(form);
 
@@ -50,7 +51,7 @@ public class AccountCommandService {
                 .build();
         Account savedAccount = accountRepository.save(account);
 
-        return new SignupResult(savedAccount.getId(), savedAccount.getCreatedAt());
+        return new ResponseAccountForm.ResponseSignupForm(savedAccount.getId(), savedAccount.getCreatedAt());
     }
 
     /**
@@ -89,12 +90,16 @@ public class AccountCommandService {
      * @param accountId
      * @param password
      */
-    public void deleteAccount(Long accountId, String password) {
+    public Boolean deleteAccount(Long accountId, String password) {
         Account account = findAccount(accountId);
+        try {
+            passwordCheck(password, account.getPassword());
+            accountRepository.delete(account);
+        } catch (PasswordNotCorrectException e) {
+            return false;
+        }
+        return true;
 
-        passwordCheck(password, account.getPassword());
-
-        accountRepository.delete(account);
     }
 
 
@@ -108,17 +113,14 @@ public class AccountCommandService {
     public void changeAuthority(Long adminId, Long accountId, Authority authority) {
         Account admin = findAccount(adminId);
 
-        if (admin.getAuthority() == Authority.ROLL_USER) {
+        if (admin.getAuthority() == Authority.USER) {
             throw new BasicException(ErrorCode.ACCESS_DENIED);
         }
-        accountRepository.findById(accountId)
-                .ifPresentOrElse(user -> user.updateAuthority(authority),
-                        () -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+
+        findAccount(accountId).updateAuthority(authority);
+
     }
 
-    public void deleteAccount(Long accountId) {
-        accountRepository.deleteById(accountId);
-    }
 
     /**
      * 계정 조회 : 서비스 레이어 안에서만 조회 용도의 단순 계정 조회
@@ -129,7 +131,7 @@ public class AccountCommandService {
     @Transactional(readOnly = true)
     protected Account findAccount(Long accountId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.NOT_FOUND_ACCOUNT));
         return account;
     }
 

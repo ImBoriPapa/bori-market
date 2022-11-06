@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class FindOneAccountResult extends EntityModel {
+public class FindOneAccountResult {
     private Long accountId;
     private String loginId;
     private String name;

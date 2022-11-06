@@ -6,6 +6,8 @@ import com.bmarket.securityservice.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -35,7 +37,10 @@ public class SecurityConfig {
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests().antMatchers("/login", "/test","/exception","/exception/**","/api/address","/api/address/*","/image-test","/event","/event/*","/profile/**").permitAll()
-                .antMatchers("/account").hasAuthority("ROLL_USER")
+                .antMatchers(HttpMethod.POST,"/account").permitAll()
+                .antMatchers(HttpMethod.GET,"/account").hasAuthority("ROLL_USER")
+                .antMatchers(HttpMethod.PUT,"/account").hasAuthority("ROLL_USER")
+                .antMatchers(HttpMethod.DELETE,"/account").hasAuthority("ROLL_USER")
                 .antMatchers("/trade","/trade/**").hasAuthority("ROLL_USER")
                 .antMatchers("/redirect1","/redirect2").permitAll()
                 .antMatchers("/test-profile-image").permitAll()

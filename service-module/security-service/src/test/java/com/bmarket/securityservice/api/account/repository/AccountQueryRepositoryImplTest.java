@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.api.account.repository;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.dto.AccountList;
@@ -97,12 +97,12 @@ class AccountQueryRepositoryImplTest {
         PageRequest request3 = PageRequest.of(0, 20);
         PageRequest request4 = PageRequest.of(0, 20);
         //when
-        Page<AccountList> result1 = queryRepository.findAccountListByPageable(request1, Authority.ROLL_USER);
+        Page<AccountList> result1 = queryRepository.findAccountListByPageable(request1, Authority.USER);
         Page<AccountList> result2 = queryRepository.findAccountListByPageable(request2, null);
-        Page<AccountList> result3 = queryRepository.findAccountListByPageable(request3, Authority.ROLL_ADMIN);
-        accountCommandService.changeAuthority(1L, 50L, Authority.ROLL_ADMIN);
-        accountCommandService.changeAuthority(1L, 90L, Authority.ROLL_ADMIN);
-        Page<AccountList> result4 = queryRepository.findAccountListByPageable(request4, Authority.ROLL_ADMIN);
+        Page<AccountList> result3 = queryRepository.findAccountListByPageable(request3, Authority.ADMIN);
+        accountCommandService.changeAuthority(1L, 50L, Authority.ADMIN);
+        accountCommandService.changeAuthority(1L, 90L, Authority.ADMIN);
+        Page<AccountList> result4 = queryRepository.findAccountListByPageable(request4, Authority.ADMIN);
         //then
 
         //검색 조건1 : pageNumber=0, size=20,Authority=ROLL_USER
@@ -112,7 +112,7 @@ class AccountQueryRepositoryImplTest {
         assertThat(result1.getContent().get(0).getAccountId()).isEqualTo(101);
         assertThat(result1.getContent().get(0).getLoginId()).isEqualTo("tester100");
         assertThat(result1.getContent().get(0).getEmail()).isEqualTo("bread100@bread.com");
-        assertThat(result1.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(result1.getContent().get(0).getAuthority()).isEqualTo(Authority.USER);
         assertThat(result1.getContent().get(0).getCreatedAt()).isNotNull();
         //검색 조건2 : pageNumber=4, size=20,Authority=NULL
         assertThat(result2.getNumber()).isEqualTo(4);
@@ -121,7 +121,7 @@ class AccountQueryRepositoryImplTest {
         assertThat(result2.getContent().get(0).getAccountId()).isEqualTo(21);
         assertThat(result2.getContent().get(0).getLoginId()).isEqualTo("tester20");
         assertThat(result2.getContent().get(0).getEmail()).isEqualTo("bread20@bread.com");
-        assertThat(result2.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(result2.getContent().get(0).getAuthority()).isEqualTo(Authority.USER);
         assertThat(result2.getContent().get(0).getCreatedAt()).isNotNull();
         //검색 조건3 : pageNumber=0, size=20,Authority=ROLL_ADMIN
         assertThat(result3.getNumber()).isEqualTo(0);
@@ -130,7 +130,7 @@ class AccountQueryRepositoryImplTest {
         assertThat(result3.getContent().get(0).getAccountId()).isEqualTo(1);
         assertThat(result3.getContent().get(0).getLoginId()).isEqualTo("manager");
         assertThat(result3.getContent().get(0).getEmail()).isEqualTo("manager@manager.com");
-        assertThat(result3.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_ADMIN);
+        assertThat(result3.getContent().get(0).getAuthority()).isEqualTo(Authority.ADMIN);
         assertThat(result3.getContent().get(0).getCreatedAt()).isNotNull();
         //검색 조건4 : pageNumber=0, size=20,Authority=ROLL_ADMIN
         assertThat(result4.getNumber()).isEqualTo(0);
@@ -139,7 +139,7 @@ class AccountQueryRepositoryImplTest {
         assertThat(result4.getContent().get(0).getAccountId()).isEqualTo(90);
         assertThat(result4.getContent().get(0).getLoginId()).isEqualTo("tester89");
         assertThat(result4.getContent().get(0).getEmail()).isEqualTo("bread89@bread.com");
-        assertThat(result4.getContent().get(0).getAuthority()).isEqualTo(Authority.ROLL_ADMIN);
+        assertThat(result4.getContent().get(0).getAuthority()).isEqualTo(Authority.ADMIN);
         assertThat(result4.getContent().get(0).getCreatedAt()).isNotNull();
 
     }
@@ -148,7 +148,7 @@ class AccountQueryRepositoryImplTest {
     @DisplayName("UserDetailService 용 조회")
     void findAccountForLadUserTest() throws Exception {
         //given
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("testerA")
                 .name("이테스트")
                 .nickname("접근자")
@@ -160,16 +160,16 @@ class AccountQueryRepositoryImplTest {
                 .district("종로구")
                 .town("암사동")
                 .build();
-        SignupResult result = accountCommandService.signUpProcessing(form);
+        ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
         //when
-        Account account = accountRepository.findById(result.getAccountId())
+        Account account = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다"));
         InfoForLoadByUsername info = queryRepository.findAccountForLoadUser(account.getClientId())
                 .orElseThrow(() -> new IllegalArgumentException("계정 정보를 찾을 수 없습니다"));
         //then
         assertThat(info.getClientId()).isEqualTo(account.getClientId());
         assertThat(passwordEncoder.matches(form.getPassword(), info.getPassword())).isTrue();
-        assertThat(info.getAuthority()).isEqualTo(Authority.ROLL_USER);
+        assertThat(info.getAuthority()).isEqualTo(Authority.USER);
     }
 
     @Test
@@ -222,7 +222,7 @@ class AccountQueryRepositoryImplTest {
     public void init() {
         ArrayList<Long> list = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
-            RequestSignUpForm form = RequestSignUpForm.builder()
+            RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                     .loginId("tester" + i)
                     .name("이테스트")
                     .nickname("브레드피트" + i)
@@ -234,8 +234,8 @@ class AccountQueryRepositoryImplTest {
                     .district("종로구")
                     .town("암사동")
                     .build();
-            SignupResult result = accountCommandService.signUpProcessing(form);
-            list.add(result.getAccountId());
+            ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+            list.add(signupForm.getAccountId());
         }
     }
 

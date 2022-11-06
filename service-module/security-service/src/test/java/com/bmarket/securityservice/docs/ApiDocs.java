@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.docs;
 
 import com.bmarket.securityservice.api.account.controller.AccountController;
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class ApiDocs {
     @DisplayName("계정 생성")
     void createAccount() throws Exception {
         //given
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("boripapa")
                 .name("보리아빠")
                 .password("papa1234")

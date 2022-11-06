@@ -1,28 +1,29 @@
 package com.bmarket.securityservice.exception.validate;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
 @RequiredArgsConstructor
-public class RequestSignUpFormValidator implements Validator {
+public class CreateSignupFormValidator implements Validator {
 
     private final AccountRepository accountRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.isAssignableFrom(RequestSignUpForm.class);
+        return clazz.isAssignableFrom(RequestAccountForm.CreateForm.class);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public void validate(Object target, Errors errors) {
-        RequestSignUpForm form = (RequestSignUpForm) target;
+        RequestAccountForm.CreateForm form = (RequestAccountForm.CreateForm) target;
 
         if (accountRepository.existsByLoginId(form.getLoginId())) {
             throw new BasicException(ErrorCode.DUPLICATE_LOGIN_ID);

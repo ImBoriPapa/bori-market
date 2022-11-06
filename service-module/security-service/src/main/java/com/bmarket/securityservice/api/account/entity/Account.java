@@ -4,6 +4,7 @@ import com.bmarket.securityservice.api.profile.entity.Profile;
 import com.bmarket.securityservice.api.security.entity.RefreshToken;
 import com.fasterxml.uuid.Generators;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
@@ -49,13 +50,6 @@ public class Account {
     @Column(name = "LAST_LOGIN_AT")
     private LocalDateTime lastLoginTime;
 
-    public List<SimpleGrantedAuthority> getAuthorityList() {
-        ArrayList<SimpleGrantedAuthority> objects = new ArrayList<>();
-        Arrays.asList(this.authority.ROLL.split(","))
-                .forEach(m->objects.add(new SimpleGrantedAuthority(m)));
-        return objects;
-    }
-
     /**
      * 계정 생성
      * @param loginId  로그안 아이디
@@ -75,7 +69,7 @@ public class Account {
         this.password = password;
         this.email = email;
         this.contact = contact;
-        this.authority = Authority.ROLL_USER;
+        this.authority = Authority.USER;
         this.profile = profile;
         this.isLogin = false;
         this.createdAt = LocalDateTime.now();
@@ -89,7 +83,7 @@ public class Account {
         this.password = password;
         this.email = email;
         this.contact = contact;
-        this.authority = Authority.ROLL_ADMIN;
+        this.authority = Authority.ADMIN;
         this.isLogin = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -133,6 +127,13 @@ public class Account {
     public void updateContact(String contact) {
         this.contact = contact;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorityList() {
+        ArrayList<SimpleGrantedAuthority> objects = new ArrayList<>();
+        Arrays.asList(this.authority.ROLL.split(","))
+                .forEach(m->objects.add(new SimpleGrantedAuthority(m)));
+        return objects;
     }
 
     public void addRefresh(RefreshToken refreshToken){

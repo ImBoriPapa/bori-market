@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.api.trade.controller;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.api.security.controller.LoginResult;
@@ -51,7 +51,7 @@ class TradeControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("moo")
                 .name("momo")
                 .password("momo123")
@@ -61,7 +61,7 @@ class TradeControllerTest {
                 .city("서울시")
                 .district("종로구")
                 .town("평창동").build();
-        SignupResult result = accountCommandService.signUpProcessing(form);
+        ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
     }
     @AfterEach
     void AfterEach(){

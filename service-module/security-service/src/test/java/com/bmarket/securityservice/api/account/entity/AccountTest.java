@@ -75,7 +75,7 @@ class AccountTest {
         assertThat(findAccount.getPassword()).isEqualTo(savedAccount.getPassword());
         assertThat(findAccount.getEmail()).isEqualTo(savedAccount.getEmail());
         assertThat(findAccount.getContact()).isEqualTo(savedAccount.getContact());
-        assertThat(findAccount.getAuthorityList()).isEqualTo(Authority.ROLL_USER);
+        assertThat(findAccount.getAuthorityList()).isEqualTo(Authority.USER);
         assertThat(findAccount.isLogin()).isFalse();
         assertThat(findAccount.getCreatedAt()).isEqualTo(savedAccount.getCreatedAt());
         assertThat(findAccount.getUpdatedAt()).isEqualTo(savedAccount.getUpdatedAt());

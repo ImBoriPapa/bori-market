@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.api.profile.service;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
 
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
@@ -31,7 +31,7 @@ public class ProfileCommandService {
 
     @Value("${url.default-profile}")
     private  String GET_DEFAULT_IMAGES;
-    public Profile createProfile(RequestSignUpForm form) {
+    public Profile createProfile(RequestAccountForm.CreateForm form) {
 
         Address address = Address.createAddress()
                 .addressCode(form.getAddressCode())

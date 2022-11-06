@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.domain.account.service;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
-import com.bmarket.securityservice.api.account.controller.resultForm.SignupResult;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
@@ -48,7 +48,7 @@ class AccountCommandServiceTest {
                 .name("관리자1")
                 .build();
         Account save1 = accountRepository.save(testAdmin);
-        save1.updateAuthority(Authority.ROLL_ADMIN);
+        save1.updateAuthority(Authority.ADMIN);
 
         Account testUser = Account.createAccount()
                 .loginId("user")
@@ -74,7 +74,7 @@ class AccountCommandServiceTest {
     @DisplayName("계정 생성 성공 테스트")
     void successCreateTest() throws Exception {
         //given
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("tester")
                 .name("이테스트")
                 .nickname("브레드피트")
@@ -87,13 +87,13 @@ class AccountCommandServiceTest {
                 .town("암사동")
                 .build();
         //when
-        SignupResult signupResult = accountCommandService.signUpProcessing(form);
-        Account findAccount = accountRepository.findById(signupResult.getAccountId())
+        ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+        Account findAccount = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다"));
         //then
         //계정 생성시 반환값 SignupResult : accountId,createdAt
-        assertThat(findAccount.getId()).isEqualTo(signupResult.getAccountId());
-        assertThat(findAccount.getCreatedAt()).isEqualTo(signupResult.getCreatedAt());
+        assertThat(findAccount.getId()).isEqualTo(signupForm.getAccountId());
+        assertThat(findAccount.getCreatedAt()).isEqualTo(signupForm.getCreatedAt());
         assertThat(findAccount.getLoginId()).isEqualTo("tester");
         assertThat(findAccount.getName()).isEqualTo("이테스트");
         //encoding 된 패스워드 확인
@@ -101,7 +101,7 @@ class AccountCommandServiceTest {
         assertThat(findAccount.getEmail()).isEqualTo("bread@bread.com");
         assertThat(findAccount.getContact()).isEqualTo("010-2222-1234");
         //최초 가입시 권한은 ROLL_USER
-        assertThat(findAccount.getAuthorityList()).isEqualTo(Authority.ROLL_USER);
+        assertThat(findAccount.getAuthorityList()).isEqualTo(Authority.USER);
         assertThat(findAccount.getRefreshToken()).isNull();
         assertThat(findAccount.getProfile().getNickname()).isEqualTo("브레드피트");
         //최초 가입시 프로필 이미지는 기본이미지로 저장 : http://localhost:8095/file/default/default-profile.jpg
@@ -117,7 +117,7 @@ class AccountCommandServiceTest {
     @DisplayName("계정 삭제 테스트")
     void deleteAccountTest() throws Exception {
         //given
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("tester")
                 .name("이테스트")
                 .nickname("브레드피트")
@@ -130,17 +130,17 @@ class AccountCommandServiceTest {
                 .town("암사동")
                 .build();
         //when
-        SignupResult signupResult = accountCommandService.signUpProcessing(form);
-        accountCommandService.deleteAccount(signupResult.getAccountId(), "bread1234");
+        ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+        accountCommandService.deleteAccount(signupForm.getAccountId(), "bread1234");
 
         //then
         assertThatThrownBy(() ->
-                accountRepository.findById(signupResult.getAccountId())
+                accountRepository.findById(signupForm.getAccountId())
                         .orElseThrow(() -> new IllegalArgumentException("계정을 찾지 못했습니다.")))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() ->
-                profileRepository.findById(signupResult.getAccountId())
+                profileRepository.findById(signupForm.getAccountId())
                         .orElseThrow(() -> new IllegalArgumentException("프로필을 찾지 못했습니다")))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
@@ -149,7 +149,7 @@ class AccountCommandServiceTest {
     @DisplayName("계정 비밀번호 수정 테스트")
     void updatePasswordTest() throws Exception {
         //given
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("tester")
                 .name("이테스트")
                 .nickname("브레드피트")
@@ -164,11 +164,11 @@ class AccountCommandServiceTest {
         String beforePassword = form.getPassword();
         String afterPassword = "new1234";
         //when
-        SignupResult signupResult = accountCommandService.signUpProcessing(form);
-        Account findAccountBefore = accountRepository.findById(signupResult.getAccountId())
+        ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+        Account findAccountBefore = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
-        accountCommandService.updatePassword(signupResult.getAccountId(), beforePassword, afterPassword);
-        Account findAccountAfter = accountRepository.findById(signupResult.getAccountId())
+        accountCommandService.updatePassword(signupForm.getAccountId(), beforePassword, afterPassword);
+        Account findAccountAfter = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
         //then
         assertThat(findAccountAfter.getPassword()).isNotEqualTo("bread1234");
@@ -181,7 +181,7 @@ class AccountCommandServiceTest {
     @DisplayName("계정 권한 수정 테스트")
     void changeAuthorityTest() throws Exception {
         //given
-        RequestSignUpForm form = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("tester")
                 .name("이테스트")
                 .nickname("브레드피트")
@@ -194,23 +194,23 @@ class AccountCommandServiceTest {
                 .town("암사동")
                 .build();
         //when
-        SignupResult signupResult = accountCommandService.signUpProcessing(form);
-        Account findUser = accountRepository.findById(signupResult.getAccountId())
+        ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+        Account findUser = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         Account findAdmin = accountRepository.findByLoginId("manager")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         Account anotherUser = accountRepository.findByLoginId("user")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
 
-        accountCommandService.changeAuthority(findAdmin.getId(), findUser.getId(), Authority.ROLL_ADMIN);
-        Account afterChange = accountRepository.findById(signupResult.getAccountId())
+        accountCommandService.changeAuthority(findAdmin.getId(), findUser.getId(), Authority.ADMIN);
+        Account afterChange = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         //then
         // 권한이 있는 계정에서 권한 변경 요청
-        assertThat(afterChange.getAuthority()).isEqualTo(Authority.ROLL_ADMIN);
+        assertThat(afterChange.getAuthority()).isEqualTo(Authority.ADMIN);
         // 권한이 없는 계정에서 권한 변경 요청
         assertThatThrownBy(() ->
-                accountCommandService.changeAuthority(anotherUser.getId(), afterChange.getId(), Authority.ROLL_USER)
+                accountCommandService.changeAuthority(anotherUser.getId(), afterChange.getId(), Authority.USER)
         ).isExactlyInstanceOf(BasicException.class);
     }
 }

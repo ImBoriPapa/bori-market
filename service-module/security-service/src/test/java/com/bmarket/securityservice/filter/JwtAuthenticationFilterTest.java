@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.api.account.controller.requestForm.RequestSignUpForm;
+import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
 import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.account.service.AccountQueryService;
@@ -46,7 +46,7 @@ class JwtAuthenticationFilterTest {
 
     @BeforeEach
     void before() {
-        RequestSignUpForm signUpForm = RequestSignUpForm.builder()
+        RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("happy")
                 .name("happyHappy")
                 .password("happy123")

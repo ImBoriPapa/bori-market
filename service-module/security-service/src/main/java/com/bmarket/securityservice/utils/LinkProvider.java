@@ -1,45 +1,67 @@
 package com.bmarket.securityservice.utils;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * 기본 링크 생성
- * @param <T>
+ *
+ * @param
  */
 @Component
-public class LinkProvider<T> {
-    /**
-     * Controller 클래스로 resource 링크 생성
-     * @param target
-     * @return
-     */
-    private  WebMvcLinkBuilder getResourcesLink(Class<T> target) {
-        WebMvcLinkBuilder resource = WebMvcLinkBuilder.linkTo(target);
-        return resource;
+public class LinkProvider {
+
+
+    private WebMvcLinkBuilder getController(Class<?> className) {
+        return WebMvcLinkBuilder.linkTo(className);
     }
 
     /**
-     * resource, clientId 로 LOCATION URI 생성
-     * @param target
+     * 기본 C,R,U,D 링크 생성
+     *
+     * @param className
+     * @param ids
+     * @param resourcesName
      * @return
      */
-//    public  URI getLocationUri(Class<T> target, ResultForm form){
-//       return getResourcesLink(target).slash(form.getClientId()).toUri();
-//    }
+    public List<Link> createCrudLink(Class<?> className, Object ids, String resourcesName) {
+        WebMvcLinkBuilder builder = getController(className);
+        Link link1 = builder.withRel("POST   : " + resourcesName + " 생성");
+        Link link2 = builder.withRel("GET   : " + resourcesName + "  전체 조회");
+        Link link3 = builder.slash(ids).withRel("GET : " + resourcesName + " 상세 조회");
+        Link link4 = builder.slash(ids).withRel("PUT : " + resourcesName + " 수정");
+        Link link5 = builder.slash(ids).withRel("DELETE: " + resourcesName + " 삭제");
+        return List.of(link1, link2, link3, link4, link5);
+    }
 
-    /**
-     * 기본 링크 생성 : findOne, list, update, delete
-     * @param target
-     * @param form
-     * @return
-     */
-//    public List getLinks(Class<T> target, ResultForm form) {
-//        WebMvcLinkBuilder resource = getResourcesLink(target);
-//        Link findOne = resource.slash(form.getClientId()).withRel("GET");
-//        Link list = resource.withSelfRel().withRel("GET");
-//        Link update = resource.slash(form.getClientId()).withRel("PUT");
-//        Link delete = resource.slash(form.getClientId()).withRel("DELETE");
-//        return List.of(findOne, list, update, delete);
-//    }
+    public Link createOneLink(Class<?> className, Object resourceName, String rel) {
+        WebMvcLinkBuilder builder = getController(className);
+        return builder.slash(resourceName).withRel(rel);
+    }
+
+
+    public List<Link> createPageLink(Class<?> className, Integer pageNumber, Integer size, Long totalCount) {
+        WebMvcLinkBuilder builder = getController(className);
+
+        String next = "?page=" + (pageNumber + 1);
+        String previous = "?page=" + (pageNumber - 1);
+        Link nextLink = builder.slash(next).withRel("GET : 다음 페이지");
+        Link previousLink = builder.slash(previous).withRel("GET : 이전 페이지");
+
+        if (pageNumber <= 0) {
+            return List.of(nextLink);
+        }
+
+        if (pageNumber < (totalCount / size)) {
+            return List.of(previousLink, nextLink);
+        }
+
+        return List.of(previousLink);
+    }
+
+
 }
