@@ -181,7 +181,7 @@ class AccountControllerTest {
                         .header(AUTHORIZATION_HEADER, loginResult.getToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON))
-        //then
+                //then
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("status").value(SUCCESS.name()))
@@ -312,7 +312,7 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("계정 삭제 테스트")
-    void deleteAccountTest() throws Exception{
+    void deleteAccountTest() throws Exception {
         //given
         RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
                 .loginId("loginId")
@@ -332,7 +332,7 @@ class AccountControllerTest {
         RequestAccountForm.DeleteForm deleteForm = new RequestAccountForm.DeleteForm(form.getPassword());
         String value = objectMapper.writeValueAsString(deleteForm);
         //when
-        mockMvc.perform(delete("/account/"+signupResult.getAccountId())
+        mockMvc.perform(delete("/account/" + signupResult.getAccountId())
                         .header(AUTHORIZATION_HEADER, loginResult.getToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .accept(MediaType.APPLICATION_JSON)
@@ -345,6 +345,24 @@ class AccountControllerTest {
                 .andExpect(jsonPath("status").value(SUCCESS.toString()))
                 .andExpect(jsonPath("code").value(SUCCESS.getCode()))
                 .andExpect(jsonPath("message").value(SUCCESS.getMessage()))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("계정 비밀번호 변경 테스트")
+    void updatePasswordTest() throws Exception {
+        //given
+        LoginResult loginResult = loginService.loginProcessing("loginId1", "login123");
+        RequestAccountForm.UpdateEmailForm emailForm = new RequestAccountForm.UpdateEmailForm("new@new.com");
+        String value = objectMapper.writeValueAsString(emailForm);
+        //when
+        mockMvc.perform(put("/account/" + loginResult.getAccountId() + "/email")
+                        .header(AUTHORIZATION_HEADER,loginResult.getToken())
+                        .header(REFRESH_HEADER,loginResult.getRefreshToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(value))
+                //then
+                .andExpect(status().isOk())
                 .andDo(print());
 
     }

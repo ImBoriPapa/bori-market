@@ -6,10 +6,7 @@ import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResu
 import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.api.security.controller.LoginController;
-import com.bmarket.securityservice.exception.ErrorResponse;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.custom_exception.security_ex.PasswordNotCorrectException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.exception.validate.CreateSignupFormValidator;
 import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.utils.LinkProvider;
@@ -26,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +47,9 @@ public class AccountController {
     private final LinkProvider linkProvider;
 
 
-    @InitBinder("RequestSignUpForm")
+    @InitBinder
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(createSignupFormValidator);
-
     }
 
     /**
@@ -64,13 +61,13 @@ public class AccountController {
      */
     @PostMapping
     public ResponseEntity<ResponseForm<EntityModel>> createAccount(
-            @Valid
+            @Validated
             @RequestBody RequestAccountForm.CreateForm form, BindingResult bindingResult) {
         log.info("==============[CONTROLLER] 회원가입 요청=============");
 
         if (bindingResult.hasErrors()) {
             log.info("Validation Error 발생");
-            throw new BasicException(ErrorCode.FAIL_VALIDATION, bindingResult);
+            throw new BasicException(ResponseStatus.FAIL_VALIDATION, bindingResult);
         }
 
         WebMvcLinkBuilder link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult));
@@ -143,24 +140,50 @@ public class AccountController {
     @DeleteMapping("/{accountId}")
     public ResponseEntity deleteAccount(@PathVariable Long accountId, @RequestBody RequestAccountForm.DeleteForm form) {
 
-        if (!accountCommandService.deleteAccount(accountId, form.getPassword())) {
-            return ResponseEntity.badRequest().body(new ErrorResponse(new PasswordNotCorrectException(ErrorCode.NOT_CORRECT_PASSWORD)));
-        }
+        accountCommandService.deleteAccount(accountId, form.getPassword());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseAccountForm.ResponseDeleteForm deleteForm = new ResponseAccountForm.ResponseDeleteForm("ok");
-        EntityModel<ResponseAccountForm.ResponseDeleteForm> entityModel = EntityModel.of(deleteForm);
+
+        ResponseAccountForm.ResponseResultForm deleteForm = new ResponseAccountForm.ResponseResultForm("ok");
+        EntityModel<ResponseAccountForm.ResponseResultForm> entityModel = EntityModel.of(deleteForm);
 
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(new ResponseForm<>(ResponseStatus.SUCCESS, entityModel));
     }
 
+    @PutMapping("/{accountId}/password")
+    public ResponseEntity updatePassword(@PathVariable Long accountId,
+                               @RequestBody RequestAccountForm.UpdatePasswordForm form) {
 
-    public void updatePassword() {
+        accountCommandService.updatePassword(accountId,form.getPassword(),form.getNewPassword());
 
+        ResponseAccountForm.ResponseResultForm passwordForm = new ResponseAccountForm.ResponseResultForm("비밀번호 변경 성공");
+        EntityModel<ResponseAccountForm.ResponseResultForm> entityModel = EntityModel.of(passwordForm);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return ResponseEntity.ok().headers(headers).body(entityModel);
     }
+
+    @PutMapping("/{accountId}/email")
+    public ResponseEntity updateEmail(@PathVariable Long accountId,
+                            @RequestBody RequestAccountForm.UpdateEmailForm form){
+        log.info("[UpdateEmail param= '{}']",form.getEmail());
+        accountCommandService.updateEmail(accountId,form.getEmail());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseAccountForm.ResponseResultForm resultForm = new ResponseAccountForm.ResponseResultForm("OK");
+        EntityModel<ResponseAccountForm.ResponseResultForm> entityModel = EntityModel.of(resultForm);
+
+        return ResponseEntity.ok().headers(headers).body(entityModel);
+    }
+
+    
 
 
 }

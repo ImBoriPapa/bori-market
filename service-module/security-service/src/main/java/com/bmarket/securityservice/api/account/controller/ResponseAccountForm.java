@@ -20,8 +20,12 @@ public class ResponseAccountForm {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
-    public static class ResponseDeleteForm{
+    public static class ResponseResultForm {
 
         private String result;
     }
+
+
+
+
 }

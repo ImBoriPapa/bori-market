@@ -3,9 +3,9 @@ package com.bmarket.securityservice.api.security.service;
 import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,10 +29,10 @@ public class LoginService {
         log.info("[1.LoginService] 로그인 실행");
         log.info("[2.LOGIN ID 확인]");
         Account account = accountRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+                .orElseThrow(() -> new BasicException(ResponseStatus.NOT_FOUND_ACCOUNT));
         log.info("[3.PASSWORD 확인]");
         if (!passwordEncoder.matches(password, account.getPassword())) {
-            throw new BasicException(ErrorCode.FAIL_LOGIN);
+            throw new BasicException(ResponseStatus.FAIL_LOGIN);
         }
         
         log.info("[4.LOGIN CHECK 확인]");
@@ -43,7 +43,7 @@ public class LoginService {
         log.info("[6.REFRESH TOKEN 생성]");
         String refreshToken = "Bearer-"+jwtService.issuedRefreshToken(account.getClientId());
         log.info("[7.LOGIN PROCESSING 종료]");
-        return new LoginResult(account.getClientId(), token, refreshToken, account.getLastLoginTime());
+        return new LoginResult(account.getId(),account.getClientId(), token, refreshToken, account.getLastLoginTime());
     }
 
     public void logout(String clientId){

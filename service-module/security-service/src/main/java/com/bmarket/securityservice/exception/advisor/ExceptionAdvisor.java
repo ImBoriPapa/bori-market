@@ -1,10 +1,8 @@
 package com.bmarket.securityservice.exception.advisor;
 
 import com.bmarket.securityservice.api.common.ResponseForm;
-import com.bmarket.securityservice.exception.ErrorResponse;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailAuthenticationException;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,13 +19,13 @@ public class ExceptionAdvisor {
 
     @ExceptionHandler(BasicException.class)
     public ResponseEntity basic(BasicException e) {
-        ResponseForm<ErrorResponse> response = new ResponseForm<>(ResponseStatus.ERROR, new ErrorResponse(e));
-        return ResponseEntity.badRequest().body(response);
+        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(e);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(FailAuthenticationException.class)
     public ResponseEntity failAuthenticationException(FailAuthenticationException e) {
-        ResponseForm<ErrorResponse> response = new ResponseForm<>(ResponseStatus.ERROR, new ErrorResponse(e));
-        return ResponseEntity.badRequest().body(response);
+        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(e);
+        return ResponseEntity.badRequest().body(errorResponse);
     }
 }

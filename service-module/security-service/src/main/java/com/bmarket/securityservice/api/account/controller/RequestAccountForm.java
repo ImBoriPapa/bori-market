@@ -54,4 +54,19 @@ public class RequestAccountForm {
     public static class DeleteForm{
         private String password;
     }
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class UpdatePasswordForm {
+        private String password;
+        private String newPassword;
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class UpdateEmailForm{
+        private String email;
+    }
+
 }

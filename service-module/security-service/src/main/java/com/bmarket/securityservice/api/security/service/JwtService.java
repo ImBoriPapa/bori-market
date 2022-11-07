@@ -5,8 +5,8 @@ import com.bmarket.securityservice.api.security.entity.RefreshToken;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.security.repository.RefreshTokenRepository;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import io.jsonwebtoken.*;
 
 
@@ -78,7 +78,7 @@ public class JwtService {
         log.info("==============[JWT_SERVICE] Authentication 생성 요청 =============");
         Optional<Account> account = accountRepository.findByClientId(jwtUtils.getUserPk(token).getSubject());
         if (!account.get().isLogin()) {
-            throw new BasicException(ErrorCode.THIS_ACCOUNT_IS_LOGOUT);
+            throw new BasicException(ResponseStatus.THIS_ACCOUNT_IS_LOGOUT);
         }
         return userDetailService.generateAuthenticationByClientId(jwtUtils.getUserPk(token).getSubject());
     }

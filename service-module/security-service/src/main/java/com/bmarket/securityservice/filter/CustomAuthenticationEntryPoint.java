@@ -1,18 +1,11 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.exception.ErrorResponse;
-import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
+
 import com.bmarket.securityservice.utils.status.JwtTokenStatus;
-import com.fasterxml.jackson.core.json.UTF8DataInputJsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

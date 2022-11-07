@@ -13,12 +13,14 @@ import com.bmarket.securityservice.api.profile.entity.Profile;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.PasswordNotCorrectException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 @Service
 @Slf4j
@@ -32,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  *  update
  */
 public class AccountCommandService {
-
+    private final EntityManager em;
     private final AccountRepository accountRepository;
     private final ProfileCommandService profileCommandService;
     private final PasswordEncoder passwordEncoder;
@@ -76,10 +78,10 @@ public class AccountCommandService {
     }
 
     // TODO: 2022/11/02 email 인증 구현 공부하기
-    public void updateEmail(Long accountId, String email) {
-        findAccount(accountId)
-                .updateEmail(email);
 
+    public void updateEmail(Long accountId, String email) {
+        log.info("[이메일 변경]");
+        findAccount(accountId).updateEmail(email);
     }
 
     // TODO: 2022/11/02 계정 삭제시 계정에 속한, 거래, 파일 삭제 이벤트 추가
@@ -90,15 +92,12 @@ public class AccountCommandService {
      * @param accountId
      * @param password
      */
-    public Boolean deleteAccount(Long accountId, String password) {
+    public void deleteAccount(Long accountId, String password) {
         Account account = findAccount(accountId);
-        try {
-            passwordCheck(password, account.getPassword());
-            accountRepository.delete(account);
-        } catch (PasswordNotCorrectException e) {
-            return false;
-        }
-        return true;
+
+        passwordCheck(password, account.getPassword());
+        accountRepository.delete(account);
+
 
     }
 
@@ -114,13 +113,11 @@ public class AccountCommandService {
         Account admin = findAccount(adminId);
 
         if (admin.getAuthority() == Authority.USER) {
-            throw new BasicException(ErrorCode.ACCESS_DENIED);
+            throw new BasicException(ResponseStatus.ACCESS_DENIED);
         }
 
         findAccount(accountId).updateAuthority(authority);
-
     }
-
 
     /**
      * 계정 조회 : 서비스 레이어 안에서만 조회 용도의 단순 계정 조회
@@ -128,10 +125,9 @@ public class AccountCommandService {
      * @param accountId
      * @return
      */
-    @Transactional(readOnly = true)
     protected Account findAccount(Long accountId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundAccountException(ErrorCode.NOT_FOUND_ACCOUNT));
+                .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT));
         return account;
     }
 
@@ -143,7 +139,7 @@ public class AccountCommandService {
      */
     private void passwordCheck(String password, String encodedPassword) {
         if (!passwordEncoder.matches(password, encodedPassword)) {
-            throw new PasswordNotCorrectException(ErrorCode.NOT_CORRECT_PASSWORD);
+            throw new PasswordNotCorrectException(ResponseStatus.NOT_CORRECT_PASSWORD);
         }
     }
 }

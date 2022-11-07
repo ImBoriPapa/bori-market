@@ -6,7 +6,7 @@ import com.bmarket.securityservice.api.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.api.account.repository.AccountQueryRepository;
 import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import com.querydsl.core.NonUniqueResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +34,10 @@ public class AccountQueryService {
     public FindOneAccountResult findAccountDetail(Long accountId) {
         try {
             return queryRepository.findOneAccount(accountId)
-                    .orElseThrow(() -> new BasicException(ErrorCode.NOT_FOUND_ACCOUNT));
+                    .orElseThrow(() -> new BasicException(ResponseStatus.NOT_FOUND_ACCOUNT));
         } catch (NonUniqueResultException e) {
             log.error("NonUniqueResultException 발생");
-            throw new BasicException(ErrorCode.NOT_FOUNT_REASON);
+            throw new BasicException(ResponseStatus.NOT_FOUNT_REASON);
         }
     }
 

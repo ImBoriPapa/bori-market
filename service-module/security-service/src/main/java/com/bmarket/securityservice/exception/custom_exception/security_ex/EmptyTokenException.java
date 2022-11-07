@@ -1,17 +1,17 @@
 package com.bmarket.securityservice.exception.custom_exception.security_ex;
 
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import org.springframework.validation.BindingResult;
 
 
 public class EmptyTokenException extends BasicException {
 
-    public EmptyTokenException(ErrorCode code) {
-        super(code);
+    public EmptyTokenException(ResponseStatus status) {
+        super(status);
     }
 
-    public EmptyTokenException(ErrorCode code, BindingResult bindingResult) {
-        super(code, bindingResult);
+    public EmptyTokenException(ResponseStatus status, BindingResult bindingResult) {
+        super(status, bindingResult);
     }
 }

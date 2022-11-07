@@ -1,6 +1,7 @@
 package com.bmarket.securityservice.exception.custom_exception;
 
-import com.bmarket.securityservice.exception.error_code.ErrorCode;
+
+import com.bmarket.securityservice.utils.status.ResponseStatus;
 import org.springframework.context.MessageSourceResolvable;
 
 import org.springframework.validation.BindingResult;
@@ -8,36 +9,36 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BasicException extends RuntimeException{
+public class BasicException extends RuntimeException {
 
     private String errorType;
     int errorCode;
     private List<String> errorMessage;
 
-    public String getErrorType(){
-        return errorType;}
+    public String getErrorType() {
+        return errorType;
+    }
 
-    public int getErrorCode(){
+    public int getErrorCode() {
         return errorCode;
     }
 
-    public List<String> getErrorMessage(){
+    public List<String> getErrorMessageList() {
         return errorMessage;
     }
 
-    public BasicException(ErrorCode code ) {
+    public BasicException(ResponseStatus status) {
         this.errorType = this.getClass().getName();
-        this.errorCode = code.getErrorCode();
-        this.errorMessage = List.of(code.getErrorMessage());
+        this.errorCode = status.getCode();
+        this.errorMessage = List.of(status.getMessage());
     }
 
-    public BasicException(ErrorCode code ,BindingResult bindingResult) {
+    public BasicException(ResponseStatus status, BindingResult bindingResult) {
         this.errorType = this.getClass().getName();
-        this.errorCode = code.getErrorCode();
+        this.errorCode = status.getCode();
         this.errorMessage = getErrorList(bindingResult);
 
     }
-
     private static List<String> getErrorList(BindingResult bindingResult) {
         return bindingResult.getFieldErrors().stream().map(MessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
     }
