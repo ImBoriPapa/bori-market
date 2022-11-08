@@ -6,6 +6,8 @@ import com.bmarket.securityservice.utils.status.ResponseStatus;
 import org.springframework.validation.BindingResult;
 
 public class FailAuthenticationException extends BasicException {
+    public FailAuthenticationException() {
+    }
 
     public FailAuthenticationException(ResponseStatus status) {
         super(status);

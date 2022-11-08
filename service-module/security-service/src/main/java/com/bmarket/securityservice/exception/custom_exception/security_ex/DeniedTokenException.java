@@ -5,6 +5,8 @@ import com.bmarket.securityservice.utils.status.ResponseStatus;
 import org.springframework.validation.BindingResult;
 
 public class DeniedTokenException extends BasicException {
+    public DeniedTokenException() {
+    }
 
     public DeniedTokenException(ResponseStatus status) {
         super(status);

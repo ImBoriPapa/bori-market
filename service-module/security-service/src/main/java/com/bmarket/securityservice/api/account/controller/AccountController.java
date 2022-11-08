@@ -7,7 +7,8 @@ import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.api.security.controller.LoginController;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.exception.validate.CreateSignupFormValidator;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
+import com.bmarket.securityservice.exception.validator.CreateSignupFormValidator;
 import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
@@ -27,7 +28,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.xml.bind.ValidationException;
 import java.net.URI;
 import java.util.List;
 
@@ -46,7 +47,6 @@ public class AccountController {
     private final CreateSignupFormValidator createSignupFormValidator;
     private final LinkProvider linkProvider;
 
-
     @InitBinder
     public void init(WebDataBinder dataBinder) {
         dataBinder.addValidators(createSignupFormValidator);
@@ -63,11 +63,11 @@ public class AccountController {
     public ResponseEntity<ResponseForm<EntityModel>> createAccount(
             @Validated
             @RequestBody RequestAccountForm.CreateForm form, BindingResult bindingResult) {
-        log.info("==============[CONTROLLER] 회원가입 요청=============");
+        log.info("[ACCOUNT CONTROLLER] createAccount");
 
         if (bindingResult.hasErrors()) {
             log.info("Validation Error 발생");
-            throw new BasicException(ResponseStatus.FAIL_VALIDATION, bindingResult);
+            throw new FormValidationException(ResponseStatus.FAIL_VALIDATION, bindingResult);
         }
 
         WebMvcLinkBuilder link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult));
@@ -94,7 +94,8 @@ public class AccountController {
      * 계정 단건 조회
      */
     @GetMapping("/{accountId}")
-    public ResponseEntity<ResponseForm<EntityModel<FindOneAccountResult>>> getAccount(@PathVariable Long accountId) {
+    public ResponseEntity<ResponseForm<EntityModel<FindOneAccountResult>>> getAccount(@PathVariable Long accountId ) {
+
         FindOneAccountResult result = accountQueryService.findAccountDetail(accountId);
 
         List<Link> crudLink = linkProvider.createCrudLink(AccountController.class, accountId, "계정");

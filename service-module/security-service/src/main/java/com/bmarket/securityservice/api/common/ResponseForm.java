@@ -5,7 +5,6 @@ package com.bmarket.securityservice.api.common;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -49,10 +48,10 @@ public class ResponseForm <T>{
         private List<String> message;
 
         public ErrorResponse(BasicException ex) {
-            this.status = ResponseStatus.ERROR;
+            this.status = ex.getStatus();
             this.errorType = ex.getErrorType();
             this.errorCode = ex.getErrorCode();
-            this.message = ex.getErrorMessageList();
+            this.message = ex.getErrorMessage();
         }
 
     }

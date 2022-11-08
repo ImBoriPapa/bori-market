@@ -6,6 +6,9 @@ import org.springframework.validation.BindingResult;
 
 
 public class NotFoundAccountException extends BasicException {
+    public NotFoundAccountException() {
+    }
+
     public NotFoundAccountException(ResponseStatus status) {
         super(status);
     }

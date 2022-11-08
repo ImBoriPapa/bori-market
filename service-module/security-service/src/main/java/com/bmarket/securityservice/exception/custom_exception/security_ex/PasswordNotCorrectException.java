@@ -5,6 +5,8 @@ import com.bmarket.securityservice.utils.status.ResponseStatus;
 import org.springframework.validation.BindingResult;
 
 public class PasswordNotCorrectException extends BasicException {
+    public PasswordNotCorrectException() {
+    }
 
     public PasswordNotCorrectException(ResponseStatus status) {
         super(status);

@@ -6,6 +6,8 @@ import org.springframework.validation.BindingResult;
 
 
 public class EmptyTokenException extends BasicException {
+    public EmptyTokenException() {
+    }
 
     public EmptyTokenException(ResponseStatus status) {
         super(status);
