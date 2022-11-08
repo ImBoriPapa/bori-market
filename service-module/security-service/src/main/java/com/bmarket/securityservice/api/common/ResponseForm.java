@@ -11,28 +11,17 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @NoArgsConstructor
-@Getter
-public class ResponseForm <T>{
-    private ResponseStatus status;
-    private int code;
-    private String message;
-    private T result;
+public class ResponseForm {
 
-    public ResponseForm(ResponseStatus status, T result) {
-        this.status = status;
-        this.code = status.getCode();
-        this.message = status.getMessage();
-        this.result = result;
-    }
     @NoArgsConstructor
     @Getter
-    public static class Response<T>{
+    public static class Of<T>{
         private ResponseStatus status;
         private int code;
         private String message;
         private T result;
 
-        public Response(ResponseStatus status, T result) {
+        public Of(ResponseStatus status, T result) {
             this.status = status;
             this.code = status.getCode();
             this.message = status.getMessage();
@@ -41,13 +30,13 @@ public class ResponseForm <T>{
     }
     @NoArgsConstructor
     @Getter
-    public static class ErrorResponse{
+    public static class Error {
         private ResponseStatus status;
         private String errorType;
         private int errorCode;
         private List<String> message;
 
-        public ErrorResponse(BasicException ex) {
+        public Error(BasicException ex) {
             this.status = ex.getStatus();
             this.errorType = ex.getErrorType();
             this.errorCode = ex.getErrorCode();

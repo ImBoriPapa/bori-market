@@ -37,7 +37,7 @@ public class TradeController {
     private final JwtUtils jwtUtils;
 
     @PostMapping("/trade")
-    public ResponseEntity<ResponseForm> createTrade(@RequestPart RequestCreateTradeForm form,
+    public ResponseEntity<ResponseForm.Of> createTrade(@RequestPart RequestCreateTradeForm form,
                                                     @RequestPart List<MultipartFile> images,
                                                     HttpServletRequest request) {
         String token = jwtUtils.resolveToken(request, AUTHORIZATION_HEADER).get();
@@ -57,7 +57,7 @@ public class TradeController {
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, responseCreateTradeResult));
+                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, responseCreateTradeResult));
     }
 
     @GetMapping("/trade")
@@ -72,7 +72,7 @@ public class TradeController {
 
         TradeListResult result = requestTradeApi.RequestGetTradeList(condition).getBody();
         return ResponseEntity.ok()
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, result));
+                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, result));
     }
 
     @GetMapping("/trade/{tradeId}")
@@ -91,7 +91,7 @@ public class TradeController {
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, history));
+                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, history));
     }
 
 

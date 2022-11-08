@@ -35,7 +35,7 @@ public class ExceptionController {
             errorCode = ResponseStatus.REFRESH_TOKEN_IS_EMPTY;
         }
 
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(new EmptyTokenException(errorCode));
+        ResponseForm.Error errorResponse = new ResponseForm.Error(new EmptyTokenException(errorCode));
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
@@ -43,7 +43,7 @@ public class ExceptionController {
     public ResponseEntity expiredTokenException() {
         log.info("Expired Token exception 응답");
 
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(new ExpiredTokenException(ResponseStatus.EXPIRED_REFRESH_TOKEN));
+        ResponseForm.Error errorResponse = new ResponseForm.Error(new ExpiredTokenException(ResponseStatus.EXPIRED_REFRESH_TOKEN));
         HttpHeaders httpHeaders = new HttpHeaders();
 
         httpHeaders.setLocation(URI.create("/login"));
@@ -59,14 +59,14 @@ public class ExceptionController {
             errorCode = ResponseStatus.DENIED_REFRESH_TOKEN;
         }
 
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(new DeniedTokenException(errorCode));
+        ResponseForm.Error errorResponse = new ResponseForm.Error(new DeniedTokenException(errorCode));
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @GetMapping("/access-denied")
     public ResponseEntity accessDeniedException(){
 
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(new CustomAccessDeniedException(ResponseStatus.ACCESS_DENIED));
+        ResponseForm.Error errorResponse = new ResponseForm.Error(new CustomAccessDeniedException(ResponseStatus.ACCESS_DENIED));
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }

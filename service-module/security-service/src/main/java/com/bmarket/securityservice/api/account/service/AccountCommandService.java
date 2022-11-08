@@ -20,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+
 
 @Service
 @Slf4j
@@ -34,7 +34,6 @@ import javax.persistence.EntityManager;
  *  update
  */
 public class AccountCommandService {
-    private final EntityManager em;
     private final AccountRepository accountRepository;
     private final ProfileCommandService profileCommandService;
     private final PasswordEncoder passwordEncoder;
@@ -97,8 +96,6 @@ public class AccountCommandService {
 
         passwordCheck(password, account.getPassword());
         accountRepository.delete(account);
-
-
     }
 
 
@@ -115,7 +112,6 @@ public class AccountCommandService {
         if (admin.getAuthority() == Authority.USER) {
             throw new BasicException(ResponseStatus.ACCESS_DENIED);
         }
-
         findAccount(accountId).updateAuthority(authority);
     }
 

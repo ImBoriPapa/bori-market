@@ -35,6 +35,6 @@ public class LoginController {
         return ResponseEntity
                 .ok()
                 .headers(httpHeaders)
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, resultForm));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, resultForm));
     }
 }

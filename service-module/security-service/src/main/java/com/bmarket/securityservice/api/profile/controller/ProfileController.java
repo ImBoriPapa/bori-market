@@ -40,7 +40,7 @@ public class ProfileController {
         Link link3 = webMvcLinkBuilder.slash("/profile").slash(clientId).slash("/contact").withRel("PUT : 연락처 변경");
         Link link4 = webMvcLinkBuilder.slash("/profile").slash(clientId).slash("/image").withRel("PUT : 프로필 이미지 변경");
         List<Link> linkList = List.of(link1, link2, link3, link4);
-        return ResponseEntity.ok().body(new ResponseForm<>(ResponseStatus.REQUEST_SUCCESS, linkList));
+        return ResponseEntity.ok().body(new ResponseForm.Of(ResponseStatus.REQUEST_SUCCESS, linkList));
     }
 
 

@@ -21,20 +21,20 @@ public class ExceptionAdvisor {
     @ExceptionHandler(BasicException.class)
     public ResponseEntity basic(BasicException e) {
         log.info("BASIC EXCEPTION 햰들러 작동");
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(e);
+        ResponseForm.Error errorResponse = new ResponseForm.Error(e);
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(FailAuthenticationException.class)
     public ResponseEntity failAuthenticationException(FailAuthenticationException e) {
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(e);
+        ResponseForm.Error errorResponse = new ResponseForm.Error(e);
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
     @ExceptionHandler(FormValidationException.class)
     public ResponseEntity validation(FormValidationException e){
         log.info("VALIDATION EXCEPTION 햰들러 작동");
-        ResponseForm.ErrorResponse errorResponse = new ResponseForm.ErrorResponse(e);
+        ResponseForm.Error errorResponse = new ResponseForm.Error(e);
         return ResponseEntity.badRequest().body(errorResponse);
     }
 }

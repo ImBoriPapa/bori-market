@@ -6,7 +6,7 @@ import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResu
 import com.bmarket.securityservice.api.common.ResponseForm;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.api.security.controller.LoginController;
-import com.bmarket.securityservice.exception.custom_exception.BasicException;
+
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 import com.bmarket.securityservice.exception.validator.CreateSignupFormValidator;
 import com.bmarket.securityservice.api.account.service.AccountQueryService;
@@ -47,8 +47,9 @@ public class AccountController {
     private final CreateSignupFormValidator createSignupFormValidator;
     private final LinkProvider linkProvider;
 
-    @InitBinder
+    @InitBinder("CreateForm")
     public void init(WebDataBinder dataBinder) {
+        log.info("WebDataBinder={}, target={}",dataBinder,dataBinder.getTarget());
         dataBinder.addValidators(createSignupFormValidator);
     }
 
@@ -60,7 +61,7 @@ public class AccountController {
      * @return ResponseForm
      */
     @PostMapping
-    public ResponseEntity<ResponseForm<EntityModel>> createAccount(
+    public ResponseEntity<ResponseForm.Of> createAccount(
             @Validated
             @RequestBody RequestAccountForm.CreateForm form, BindingResult bindingResult) {
         log.info("[ACCOUNT CONTROLLER] createAccount");
@@ -86,7 +87,7 @@ public class AccountController {
         return ResponseEntity
                 .created(Location)
                 .headers(httpHeaders)
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, entityModel));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     /**
@@ -94,7 +95,7 @@ public class AccountController {
      * 계정 단건 조회
      */
     @GetMapping("/{accountId}")
-    public ResponseEntity<ResponseForm<EntityModel<FindOneAccountResult>>> getAccount(@PathVariable Long accountId ) {
+    public ResponseEntity<ResponseForm.Of> getAccount(@PathVariable Long accountId ) {
 
         FindOneAccountResult result = accountQueryService.findAccountDetail(accountId);
 
@@ -110,7 +111,7 @@ public class AccountController {
         return ResponseEntity
                 .ok()
                 .headers(httpHeaders)
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, entityModel));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     /**
@@ -120,7 +121,7 @@ public class AccountController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<ResponseForm<EntityModel<AccountListResult>>> getAccountList(
+    public ResponseEntity<ResponseForm.Of> getAccountList(
             @PageableDefault(size = 20) Pageable pageable,
             @RequestParam(required = false) Authority authority) {
 
@@ -135,11 +136,15 @@ public class AccountController {
         return ResponseEntity
                 .ok()
                 .headers(httpHeaders)
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, entityModel));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     @DeleteMapping("/{accountId}")
-    public ResponseEntity deleteAccount(@PathVariable Long accountId, @RequestBody RequestAccountForm.DeleteForm form) {
+    public ResponseEntity deleteAccount(@Validated @PathVariable Long accountId, @RequestBody RequestAccountForm.DeleteForm form,BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors()){
+            log.error("error",bindingResult);
+        }
 
         accountCommandService.deleteAccount(accountId, form.getPassword());
 
@@ -151,7 +156,7 @@ public class AccountController {
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(new ResponseForm<>(ResponseStatus.SUCCESS, entityModel));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     @PutMapping("/{accountId}/password")
@@ -183,8 +188,4 @@ public class AccountController {
 
         return ResponseEntity.ok().headers(headers).body(entityModel);
     }
-
-    
-
-
 }
