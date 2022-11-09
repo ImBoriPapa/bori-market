@@ -31,8 +31,8 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
      * @return
      */
     @Transactional(readOnly = true)
-    public Optional<InfoForLoadByUsername> findAccountForLoadUser(String clientId) {
-        InfoForLoadByUsername result = queryFactory
+    public Optional<UserDetailData> findAccountForLoadUser(String clientId) {
+        UserDetailData result = queryFactory
                 .select(new QInfoForLoadByUsername(
                         account.clientId,
                         account.password,

@@ -6,7 +6,7 @@ import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.dto.AccountList;
 import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.api.account.repository.dto.InfoForLoadByUsername;
+import com.bmarket.securityservice.api.account.repository.dto.UserDetailData;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -164,7 +164,7 @@ class AccountQueryRepositoryImplTest {
         //when
         Account account = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다"));
-        InfoForLoadByUsername info = queryRepository.findAccountForLoadUser(account.getClientId())
+        UserDetailData info = queryRepository.findAccountForLoadUser(account.getClientId())
                 .orElseThrow(() -> new IllegalArgumentException("계정 정보를 찾을 수 없습니다"));
         //then
         assertThat(info.getClientId()).isEqualTo(account.getClientId());

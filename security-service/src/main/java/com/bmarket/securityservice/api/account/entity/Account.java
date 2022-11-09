@@ -136,6 +136,13 @@ public class Account {
         return objects;
     }
 
+    public static Collection<? extends GrantedAuthority> getAuthorityList(Authority authority) {
+        ArrayList<SimpleGrantedAuthority> objects = new ArrayList<>();
+        Arrays.asList(authority.ROLL.split(","))
+                .forEach(m->objects.add(new SimpleGrantedAuthority(m)));
+        return objects;
+    }
+
     public void addRefresh(RefreshToken refreshToken){
         this.refreshToken = refreshToken;
     }

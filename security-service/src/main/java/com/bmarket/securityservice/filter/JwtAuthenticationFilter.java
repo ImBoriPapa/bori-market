@@ -1,5 +1,6 @@
 package com.bmarket.securityservice.filter;
 
+import com.bmarket.securityservice.api.security.service.UserDetailServiceImpl;
 import com.bmarket.securityservice.utils.jwt.JwtCode;
 
 import com.bmarket.securityservice.api.security.service.JwtService;
@@ -30,6 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final JwtUtils jwtUtils;
+
+    private final UserDetailServiceImpl userDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -69,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         JwtCode jwtCode = jwtUtils.validateToken(token);
         if (jwtCode == JwtCode.ACCESS) {
             log.info("리프레쉬 토큰 인증이 성공하였습니다.");
-            Authentication authentication = jwtService.getAuthentication(token);
+            Authentication authentication = userDetailService.generateAuthenticationByClientId(jwtUtils.getUserPk(token).getSubject());
             String generateToken = jwtUtils.generateToken(authentication.getName());
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
             String reissueRefreshToken = jwtService.reissueRefreshToken(token);
@@ -91,7 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public void setAuthentication(String jwt) {
-        Authentication authentication = jwtService.getAuthentication(jwt);
+        Authentication authentication = userDetailService.generateAuthenticationByClientId(jwtUtils.getUserPk(jwt).getSubject());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

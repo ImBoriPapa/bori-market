@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/address-service" />
             <option value="$PROJECT_DIR$/frm-service" />
             <option value="$PROJECT_DIR$/security-service" />
-            <option value="$PROJECT_DIR$/service-module" />
             <option value="$PROJECT_DIR$/trade-service" />
           </set>
         </option>

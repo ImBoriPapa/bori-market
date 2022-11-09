@@ -213,9 +213,6 @@ class JwtAuthenticationFilterTest {
 
 
         //then
-        Assertions.assertThatThrownBy(
-                        () -> jwtService.getAuthentication(result.getToken().substring(7)))
-                .isInstanceOf(BasicException.class);
 
     }
 

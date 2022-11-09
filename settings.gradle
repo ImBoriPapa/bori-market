@@ -1,5 +1,5 @@
 rootProject.name = 'bori-market'
-include 'service-module'
+
 include 'address-service'
 include 'frm-service'
 include 'trade-service'

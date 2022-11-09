@@ -4,202 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="UserDetailServiceImpl 리팩토링 및 테스트">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/address-service/bori-market.address-service.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/AddressServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/AddressServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/config/MongoConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/config/MongoConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/controller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/controller/AddressController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/domain/entity/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/domain/entity/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/domain/repository/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/domain/repository/AddressRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/domain/service/AddressResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/domain/service/AddressResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/java/com/bmarket/addressservice/domain/service/AddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/java/com/bmarket/addressservice/domain/service/AddressService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/main/resources/seoul_address.csv" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/main/resources/seoul_address.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/test/java/com/bmarket/addressservice/AddressServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/test/java/com/bmarket/addressservice/AddressServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/test/java/com/bmarket/addressservice/domain/entity/AddressTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/test/java/com/bmarket/addressservice/domain/entity/AddressTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/address-service/src/test/java/com/bmarket/addressservice/domain/service/AddressServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/src/test/java/com/bmarket/addressservice/domain/service/AddressServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/build.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/FrmServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/FrmServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/controller/ProfileImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/controller/ProfileImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/entity/ProfileImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/entity/ProfileImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/repository/ProfileImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/repository/ProfileImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/service/ProfileImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/service/ProfileImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/service/ProfileImageServiceV1.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/profile/service/ProfileImageServiceV1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/controller/TradeImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/controller/TradeImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/entity/TradeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/entity/TradeImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/entity/UploadFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/entity/UploadFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/repository/TradeImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/repository/TradeImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/service/TradeImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/domain/trade/service/TradeImageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/exception/ResponseError.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/exception/ResponseError.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/utils/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/utils/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/java/com/bmarket/frmservice/utils/Patterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/java/com/bmarket/frmservice/utils/Patterns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/java/com/bmarket/frmservice/FrmServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/java/com/bmarket/frmservice/FrmServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/java/com/bmarket/frmservice/controller/ProfileImageControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/java/com/bmarket/frmservice/controller/ProfileImageControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/java/com/bmarket/frmservice/domain/ProfileImageTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/java/com/bmarket/frmservice/domain/ProfileImageTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/java/com/bmarket/frmservice/domain/trade/entity/TradeImageTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/java/com/bmarket/frmservice/domain/trade/entity/TradeImageTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/java/com/bmarket/frmservice/domain/trade/service/TradeImageServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/java/com/bmarket/frmservice/domain/trade/service/TradeImageServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/java/com/bmarket/frmservice/service/ProfileImageServiceV1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/java/com/bmarket/frmservice/service/ProfileImageServiceV1Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/frm-service/src/test/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/src/test/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/docs/asciidoc/index.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/docs/asciidoc/index.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/SecurityServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/SecurityServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/RequestAccountForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/RequestAccountForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/ResponseAccountForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/ResponseAccountForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Authority.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Authority.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/AccountList.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/AccountList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/AccountListResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/AccountListResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/FindOneAccountResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/FindOneAccountResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/InfoForLoadByUsername.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/InfoForLoadByUsername.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/service/AccountCommandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/service/AccountCommandService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/account/service/AccountQueryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/service/AccountQueryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/address/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/address/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/address/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/address/AddressController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/address/AddressRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/address/AddressRange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/address/AddressResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/address/AddressResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/common/ResponseForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ResponseForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/common/ResultForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ResultForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/controller/ProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/controller/ProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/controller/requestForm/RequestProfileForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/controller/requestForm/RequestProfileForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/controller/resultForm/ResponseProfileResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/controller/resultForm/ResponseProfileResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/entity/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/entity/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/repository/ProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/repository/ProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/service/ProfileCommandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/service/ProfileCommandService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/profile/service/ProfileQueryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/profile/service/ProfileQueryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/requestForm/RequestLoginForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/requestForm/RequestLoginForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/requestResultForm/LoginResultForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/requestResultForm/LoginResultForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/entity/RefreshToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/entity/RefreshToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/repository/RefreshTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/repository/RefreshTokenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/RequestForm/RequestCreateTradeForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/RequestForm/RequestCreateTradeForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/TradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/TradeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/resultForm/RequestGetTradeListResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/resultForm/RequestGetTradeListResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/resultForm/ResponseCreateTradeResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/resultForm/ResponseCreateTradeResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/entity/TradeStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/entity/TradeStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/RequestTradeApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/RequestTradeApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/RequestTradeForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/RequestTradeForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/SearchCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/SearchCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/TradeDetailResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/TradeDetailResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/TradeList.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/TradeList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/TradeListResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/service/form/TradeListResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/cofig/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/cofig/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/advisor/ExceptionAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/advisor/ExceptionAdvisor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/BasicException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/BasicException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/CustomAccessDeniedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/CustomAccessDeniedException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/DeniedTokenException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/DeniedTokenException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/EmptyTokenException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/EmptyTokenException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/ExpiredTokenException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/ExpiredTokenException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/FailAuthenticationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/FailAuthenticationException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/FormValidationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/FormValidationException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/NotFoundAccountException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/NotFoundAccountException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/PasswordNotCorrectException.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/PasswordNotCorrectException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/exception/validator/CreateSignupFormValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/validator/CreateSignupFormValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAuthenticationEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/testApi/TestApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/testApi/TestApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/LinkProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/LinkProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/converter/AddressSearchRequestConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/converter/AddressSearchRequestConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtHeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/regex/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/regex/Regex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/status/JwtTokenStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/JwtTokenStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/status/ResponseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/ResponseStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/java/com/bmarket/securityservice/utils/url/JwtEntrypointRedirectUrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/url/JwtEntrypointRedirectUrl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/main/resources/static/docs/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/resources/static/docs/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/SecurityServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/SecurityServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/api/account/controller/AccountControllerValidationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/controller/AccountControllerValidationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/api/account/entity/AccountTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/entity/AccountTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/api/security/entity/RefreshTokenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/entity/RefreshTokenTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/api/trade/controller/TradeControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/trade/controller/TradeControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/controller/AccountControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/docs/ApiDocs.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/docs/ApiDocs.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/docs/Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/docs/Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/domain/account/service/AccountCommandServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/account/service/AccountCommandServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/domain/profile/entity/ProfileTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/profile/entity/ProfileTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/domain/service/JwtServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/service/JwtServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandlerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/java/com/bmarket/securityservice/service/AccountQueryServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/service/AccountQueryServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/security-service/src/test/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/settings.gradle" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/TradeServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/TradeServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/cofig/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/cofig/AppConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/controller/TradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/controller/TradeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/dto/RequestForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/dto/RequestForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/dto/ResponseImageDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/dto/ResponseImageDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Trade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/TradeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/TradeImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/TradeStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/TradeStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/internal/RequestImageApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/internal/RequestImageApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/TradeImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/TradeImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/TradeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/TradeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/AddressRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/AddressRange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/ResponseResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/ResponseResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/SearchCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/SearchCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/TradeQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/TradeQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/TradeQueryRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/TradeQueryRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/dto/TradeDetailDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/dto/TradeDetailDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/dto/TradeListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/dto/TradeListDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/service/TradeCommandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/service/TradeCommandService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/test/java/com/bmarket/tradeservice/TradeCommandServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/TradeCommandServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/test/java/com/bmarket/tradeservice/domain/entity/TradeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/domain/entity/TradeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/test/java/com/bmarket/tradeservice/domain/repository/TradeQueryRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/domain/repository/TradeQueryRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service-module/trade-service/src/test/java/com/bmarket/tradeservice/domain/service/TradeCommandServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/domain/service/TradeCommandServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/address-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/address-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frm-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/frm-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/InfoForLoadByUsername.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/UserDetailData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/entity/RefreshToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/entity/RefreshToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/entity/RefreshTokenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/entity/RefreshTokenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trade-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,22 +35,7 @@
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
-      <ProjectState>
-        <dataType path="$PROJECT_DIR$/service-module">
-          <ModuleState>
-            <id value="com.intellij.externalSystem.JavaModuleData" />
-            <id value="com.intellij.openapi.externalSystem.model.project.ContentRootData" />
-            <id value="com.intellij.openapi.externalSystem.model.project.ModuleData" />
-            <id value="com.intellij.openapi.externalSystem.model.project.ModuleSdkData" />
-            <id value="com.intellij.openapi.externalSystem.model.task.TaskData" />
-            <id value="org.jetbrains.idea.gradle.ext.profiler.model.JavaTaskData" />
-            <id value="org.jetbrains.kotlin.android.synthetic.idea.AndroidExtensionProperties" />
-            <id value="org.jetbrains.plugins.gradle.model.GradleExtensions" />
-            <id value="org.jetbrains.plugins.gradle.model.data.BuildScriptClasspathData" />
-            <id value="org.jetbrains.plugins.gradle.model.data.GradleProjectBuildScriptData" />
-          </ModuleState>
-        </dataType>
-      </ProjectState>
+      <ProjectState />
     </projectState>
     <projectState path="$PROJECT_DIR$/service-module/address-service">
       <ProjectState>
@@ -248,6 +60,15 @@
         <task path="$PROJECT_DIR$/service-module">
           <activation />
         </task>
+        <task path="$PROJECT_DIR$/address-service">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/frm-service">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/security-service">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand>
@@ -262,86 +83,148 @@
       </state>
     </system>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2HGhX4cWjMW9FIUU6mf8xedJqWO" />
   <component name="ProjectViewState">
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;d1f93f70cfb5ee84d41ac4f25d97a87e&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.uml",
+    "settings.editor.splitter.proportion": "0.3058104",
+    "spring.configuration.checksum": "0e4def695e699b81a8459407ba42b983"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.bmarket.securityservice.api.security.service" />
+    </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.SecurityServiceApplication">
-    <configuration name="TradeImageTest.createTradeImage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":frm-service:test" />
-            <option value="--tests" />
-            <option value="&quot;com.bmarket.frmservice.domain.trade.entity.TradeImageTest.createTradeImage&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.UserDetailServiceImplTest">
+    <configuration name="RefreshTokenTest.createRefreshToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.security.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.security.entity" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.security.entity.RefreshTokenTest" />
+      <option name="METHOD_NAME" value="createRefreshToken" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="bori-market:trade-service [compileQuerydsl]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/trade-service" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="compileQuerydsl" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="RefreshTokenTest.updateRefreshTokenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.security.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.security.entity" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.security.entity.RefreshTokenTest" />
+      <option name="METHOD_NAME" value="updateRefreshTokenTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDetailServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.security.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.security.service" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.security.service.UserDetailServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDetailServiceImplTest.Authentication" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.security.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.security.service" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.security.service.UserDetailServiceImplTest" />
+      <option name="METHOD_NAME" value="Authentication" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserDetailServiceImplTest.loadUserByUsernameTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.security.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.security.service" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.security.service.UserDetailServiceImplTest" />
+      <option name="METHOD_NAME" value="loadUserByUsernameTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="AddressServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="bori-market.address-service.main" />
@@ -373,8 +256,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.bori-market:trade-service [compileQuerydsl]" />
-        <item itemvalue="Gradle.TradeImageTest.createTradeImage" />
+        <item itemvalue="JUnit.UserDetailServiceImplTest" />
+        <item itemvalue="JUnit.UserDetailServiceImplTest.Authentication" />
+        <item itemvalue="JUnit.UserDetailServiceImplTest.loadUserByUsernameTest" />
+        <item itemvalue="JUnit.RefreshTokenTest.updateRefreshTokenTest" />
+        <item itemvalue="JUnit.RefreshTokenTest.createRefreshToken" />
       </list>
     </recent_temporary>
   </component>
@@ -387,7 +273,19 @@
       <option name="presentableId" value="Default" />
       <updated>1667917363816</updated>
       <workItem from="1667917365966" duration="1496000" />
+      <workItem from="1667918872303" duration="888000" />
+      <workItem from="1667952353006" duration="1277000" />
+      <workItem from="1667953711676" duration="212000" />
+      <workItem from="1667954352654" duration="15455000" />
     </task>
+    <task id="LOCAL-00001" summary="프로젝트 모듈 구조 변경 -&gt; service-module 삭제">
+      <created>1667919050176</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1667919050176</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -403,6 +301,11 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="프로젝트 모듈 구조 변경 -&gt; service-module 삭제" />
+    <MESSAGE value="UserDetailServiceImpl 리팩토링 및 테스트" />
+    <option name="LAST_COMMIT_MESSAGE" value="UserDetailServiceImpl 리팩토링 및 테스트" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

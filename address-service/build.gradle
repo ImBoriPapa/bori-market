@@ -1,8 +1,4 @@
-plugins {
-	id 'org.springframework.boot' version '2.7.4'
-	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
-	id 'java'
-}
+
 
 group = 'com.bmarket'
 version = '0.0.1-SNAPSHOT'
@@ -21,8 +17,6 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive:2.7.4'
 	implementation('org.springframework.boot:spring-boot-starter-webflux')
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

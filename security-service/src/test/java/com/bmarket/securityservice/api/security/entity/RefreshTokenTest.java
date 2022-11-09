@@ -38,6 +38,7 @@ class RefreshTokenTest {
         RefreshToken findRefresh = refreshTokenRepository.findById(savedRefreshToken.getId())
                 .orElseThrow(()->new IllegalArgumentException("리프레쉬 토큰을 찾을수 없습니다."));
         //then
+        assertThat(findRefresh.getId()).isEqualTo(savedRefreshToken.getId());
         assertThat(findRefresh.getRefreshToken()).isEqualTo(savedRefreshToken.getRefreshToken());
     }
 
@@ -53,14 +54,18 @@ class RefreshTokenTest {
 
         //when
         RefreshToken savedToken = refreshTokenRepository.save(refreshToken);
-        String beforeToken = savedToken.getRefreshToken();
-        savedToken.changeRefreshToken(token2);
-        String afterToken = savedToken.getRefreshToken();
-        RefreshToken findToken = refreshTokenRepository.findById(savedToken.getId())
+
+        RefreshToken findBefore = refreshTokenRepository.findById(savedToken.getId())
+                .orElseThrow(()->new IllegalArgumentException("토큰을 찾을수 없습니다."));
+
+        String beforeToken = findBefore.getRefreshToken();
+        findBefore.changeRefreshToken(token2);
+
+        RefreshToken findAfter = refreshTokenRepository.findById(savedToken.getId())
                 .orElseThrow(()->new IllegalArgumentException("토큰을 찾을수 없습니다."));
         //then
-        assertThat(beforeToken).isNotEqualTo(afterToken);
-        assertThat(findToken.getRefreshToken()).isEqualTo(afterToken);
+        assertThat(beforeToken).isNotEqualTo(findAfter.getRefreshToken());
+        assertThat(findAfter.getRefreshToken()).isEqualTo(token2);
 
     }
 

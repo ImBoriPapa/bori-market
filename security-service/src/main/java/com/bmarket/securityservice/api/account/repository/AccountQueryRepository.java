@@ -4,7 +4,7 @@ import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.dto.AccountList;
 import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.api.account.repository.dto.InfoForLoadByUsername;
+import com.bmarket.securityservice.api.account.repository.dto.UserDetailData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface AccountQueryRepository {
 
-    Optional<InfoForLoadByUsername> findAccountForLoadUser(String clientId);
+    Optional<UserDetailData> findAccountForLoadUser(String clientId);
 
     Optional<FindOneAccountResult> findOneAccount(Long accountId);
 
