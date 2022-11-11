@@ -39,7 +39,7 @@ public class LoginService {
         account.loginCheck(true);
         
         log.info("[5.TOKEN 생성]");
-        String token = "Bearer-"+jwtUtils.generateToken(account.getClientId());
+        String token = "Bearer-"+jwtUtils.generateAccessToken(account.getClientId());
         log.info("[6.REFRESH TOKEN 생성]");
         String refreshToken = "Bearer-"+jwtService.issuedRefreshToken(account.getClientId());
         log.info("[7.LOGIN PROCESSING 종료]");

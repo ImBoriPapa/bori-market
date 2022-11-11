@@ -73,7 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (jwtCode == JwtCode.ACCESS) {
             log.info("리프레쉬 토큰 인증이 성공하였습니다.");
             Authentication authentication = userDetailService.generateAuthenticationByClientId(jwtUtils.getUserPk(token).getSubject());
-            String generateToken = jwtUtils.generateToken(authentication.getName());
+            String generateToken = jwtUtils.generateAccessToken(authentication.getName());
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
             String reissueRefreshToken = jwtService.reissueRefreshToken(token);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");

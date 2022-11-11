@@ -23,44 +23,40 @@ public class JwtUtils implements InitializingBean {
     private final String SECRET_KEY;
     private final long TOKEN_VALIDATION_MS;
     private final long REFRESH_VALIDATION_MS;
-
     private Key key;
-    public Optional<String> resolveToken(HttpServletRequest request, String header) {
-        String bearerToken = request.getHeader(header);
-        if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(JWT_HEADER_PREFIX)) {
-            return Optional.of(bearerToken.substring(7));
-        }
-        return Optional.empty();
-    }
+
 
     public JwtUtils(@Value("${custom-key.secret-key}") String SECRET_KEY,
-                    @Value("${custom-key.token-validation-life}")long TOKEN_VALIDATION_MS,
+                    @Value("${custom-key.token-validation-life}") long TOKEN_VALIDATION_MS,
                     @Value("${custom-key.refresh-token-validation-life}") long REFRESH_VALIDATION_MS) {
         this.SECRET_KEY = SECRET_KEY;
-        this.TOKEN_VALIDATION_MS = TOKEN_VALIDATION_MS*1000;
-        this.REFRESH_VALIDATION_MS = REFRESH_VALIDATION_MS*1000;
+        this.TOKEN_VALIDATION_MS = TOKEN_VALIDATION_MS * 1000;
+        this.REFRESH_VALIDATION_MS = REFRESH_VALIDATION_MS * 1000;
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        log.info("[JwtUtils.afterPropertiesSet()]");
         String encodedKey = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
         key = Keys.hmacShaKeyFor(encodedKey.getBytes());
     }
 
-    public String generateToken(String clientId) {
-        log.info("==============[JWT_SERVICE] 토큰생성 =============");
+    //토큰 생성
+    public String generateAccessToken(String clientId) {
+        log.info("[엑세스 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALIDATION_MS);
         return Jwts.builder()
-                .setSubject(clientId)//정보 저장
-                .setIssuedAt(now) // 토큰 발행 시간 정보
+                .setSubject(clientId)    //정보 저장
+                .setIssuedAt(now)        // 토큰 발행 시간 정보
                 .setExpiration(validity) //만료시간 설정
                 .signWith(key, SignatureAlgorithm.HS512)//암호화
                 .compact();
     }
 
+    //리프레시 토큰 생성
     public String generateRefreshToken(String clientId) {
-        log.info("==============[JWT_SERVICE] 리프레쉬 토큰생성 =============");
+        log.info("[리프레쉬 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_VALIDATION_MS);
         return Jwts.builder()
@@ -81,7 +77,7 @@ public class JwtUtils implements InitializingBean {
     public JwtCode validateToken(String jwtToken) {
         log.info("==============[JWT_SERVICE] 토큰 검증  =============");
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
             return JwtCode.ACCESS;
         } catch (ExpiredJwtException e) {
             return JwtCode.EXPIRED;
@@ -89,6 +85,14 @@ public class JwtUtils implements InitializingBean {
             return JwtCode.DENIED;
         }
 
+    }
+    // 헤더에서 토큰 확인
+    public Optional<String> resolveToken(HttpServletRequest request, String header) {
+        String bearerToken = request.getHeader(header);
+        if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(JWT_HEADER_PREFIX)) {
+            return Optional.of(bearerToken.substring(7));
+        }
+        return Optional.empty();
     }
 }
 

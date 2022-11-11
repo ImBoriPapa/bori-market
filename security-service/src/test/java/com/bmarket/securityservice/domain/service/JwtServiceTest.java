@@ -23,24 +23,14 @@ class JwtServiceTest {
     @Autowired
     JwtUtils jwtUtils;
 
-    /**
-     *  토큰 유효 시간 설정 5초
-     * @throws Exception
-     */
     @Test
-    @DisplayName("토큰 유효시간 테스트")
-    void validateTimeTest() throws Exception{
+    @DisplayName("리프레쉬 토큰 발급 테스트")
+    void issuedRefreshTokenTest() throws Exception{
         //given
-        String clientId = "abc1234def";
-        String generateToken = jwtUtils.generateToken(clientId);
+        
         //when
-        for(int i=1; i<=5; i++){
-            log.info("[COUNT]= {}",i);
-            Thread.sleep(1000L);
-        }
-        JwtCode jwtCode = jwtUtils.validateToken(generateToken);
+    
         //then
-        assertThat(jwtCode).isEqualTo(JwtCode.EXPIRED);
+    
     }
-
 }

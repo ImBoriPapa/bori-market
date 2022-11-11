@@ -1,8 +1,8 @@
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
-  token-validation-life: 5
-  refresh-token-validation-life: 10
+  token-validation-life: 10
+  refresh-token-validation-life: 100
 
 spring:
 
