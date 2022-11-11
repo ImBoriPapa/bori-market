@@ -17,9 +17,9 @@ public class RefreshToken {
     @Column(name = "REFRESH_TOKEN_ID")
     private Long id;
     @Column(name = "REFRESH_TOKEN")
-    private String refreshToken;
-    protected RefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
+    private String token;
+    protected RefreshToken(String token){
+        this.token = token;
     }
 
     /**
@@ -34,7 +34,7 @@ public class RefreshToken {
     /**
      * Refresh token 변경 메서드
      */
-    public void changeRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
+    public String changeRefreshToken(String refreshToken){
+        return  this.token = refreshToken;
     }
 }

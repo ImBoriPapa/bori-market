@@ -54,9 +54,9 @@ public class ExceptionController {
     public ResponseEntity deniedTokenException(@RequestParam String token) {
         log.info("deniedTokenException 응답");
 
-        ResponseStatus errorCode = ResponseStatus.DENIED_ACCESS_TOKEN;
+        ResponseStatus errorCode = ResponseStatus.INVALID_ACCESS_TOKEN;
         if (token.equals("refresh")) {
-            errorCode = ResponseStatus.DENIED_REFRESH_TOKEN;
+            errorCode = ResponseStatus.INVALID_REFRESH_TOKEN;
         }
 
         ResponseForm.Error errorResponse = new ResponseForm.Error(new DeniedTokenException(errorCode));

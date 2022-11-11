@@ -22,8 +22,8 @@ public enum ResponseStatus {
     EMPTY_ACCESS_TOKEN(4007, "토큰을 확인할 수 없습니다"),
     EXPIRED_REFRESH_TOKEN(4008, "리프레시 토큰이 만료 되었습니다. 다시 로그인해 주세요"),
 
-    DENIED_ACCESS_TOKEN(4009, "잘못된 토큰입니다."),
-    DENIED_REFRESH_TOKEN(4010, "잘못된 토큰입니다."),
+    INVALID_ACCESS_TOKEN(4009, "잘못된  토큰입니다."),
+    INVALID_REFRESH_TOKEN(4010, "잘못된 토큰입니다."),
     DUPLICATE_LOGIN_ID(4011, "이미 사용중인 아이디는 사용할 수 없습니다."),
     DUPLICATE_NICKNAME(4012, "이미 사용중인 닉네임은 사용할 수 없습니다."),
     DUPLICATE_EMAIL(4013, "이미 사용중인 이메일은 사용할 수 없습니다."),

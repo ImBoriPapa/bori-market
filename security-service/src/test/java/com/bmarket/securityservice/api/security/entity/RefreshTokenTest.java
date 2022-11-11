@@ -4,17 +4,13 @@ import com.bmarket.securityservice.api.security.repository.RefreshTokenRepositor
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
 import com.fasterxml.uuid.Generators;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -39,7 +35,7 @@ class RefreshTokenTest {
                 .orElseThrow(()->new IllegalArgumentException("리프레쉬 토큰을 찾을수 없습니다."));
         //then
         assertThat(findRefresh.getId()).isEqualTo(savedRefreshToken.getId());
-        assertThat(findRefresh.getRefreshToken()).isEqualTo(savedRefreshToken.getRefreshToken());
+        assertThat(findRefresh.getToken()).isEqualTo(savedRefreshToken.getToken());
     }
 
     @Test
@@ -58,14 +54,14 @@ class RefreshTokenTest {
         RefreshToken findBefore = refreshTokenRepository.findById(savedToken.getId())
                 .orElseThrow(()->new IllegalArgumentException("토큰을 찾을수 없습니다."));
 
-        String beforeToken = findBefore.getRefreshToken();
+        String beforeToken = findBefore.getToken();
         findBefore.changeRefreshToken(token2);
 
         RefreshToken findAfter = refreshTokenRepository.findById(savedToken.getId())
                 .orElseThrow(()->new IllegalArgumentException("토큰을 찾을수 없습니다."));
         //then
-        assertThat(beforeToken).isNotEqualTo(findAfter.getRefreshToken());
-        assertThat(findAfter.getRefreshToken()).isEqualTo(token2);
+        assertThat(beforeToken).isNotEqualTo(findAfter.getToken());
+        assertThat(findAfter.getToken()).isEqualTo(token2);
 
     }
 

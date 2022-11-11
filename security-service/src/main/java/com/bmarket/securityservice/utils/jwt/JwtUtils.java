@@ -68,8 +68,8 @@ public class JwtUtils implements InitializingBean {
     }
 
     // 토큰에서 회원 정보 추출
-    public Claims getUserPk(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+    public String getUserClientId(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
     }
 
 
