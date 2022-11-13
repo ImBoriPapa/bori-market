@@ -31,33 +31,31 @@ public class UserDetailServiceImpl implements UserDetailsService {
     /**
      * clientId 로 Account 조회 후 반환 받은 UserDetailData 로  UserDetails 반환
      *
-     * @param clientId the username identifying the user whose data is required.
      * @return
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String clientId) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String accountId) throws UsernameNotFoundException {
         log.info("[loadUserByUsername 동작]");
-        return accountQueryRepository.findAccountForLoadUser(clientId)
+        return accountQueryRepository.findAccountForLoadUser(Long.valueOf(accountId))
                 .stream()
-                .map(data -> generateUser(data.getClientId(), data.getPassword(), data.getAuthority()))
+                .map(data -> generateUser(String.valueOf(data.getAccountId()), data.getPassword(), data.getAuthority()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT));
     }
 
-    private User generateUser(String clientId, String password, Authority authorities) {
-        return new User(clientId, password, Account.getAuthorityList(authorities));
+    private User generateUser(String accountId, String password, Authority authorities) {
+        return new User(accountId, password, Account.getAuthorityList(authorities));
     }
 
     /**
      * loadUserByUsername() 로 생성한 UserDetails 로 Authentication 반환
-     *
-     * @param clientId
+     * @param
      * @return
      */
-    public Authentication generateAuthenticationByClientId(String clientId) {
+    public Authentication generateAuthentication(Long accountId) {
         log.info("[Authentication 생성]");
-        UserDetails userDetails = loadUserByUsername(clientId);
+        UserDetails userDetails = loadUserByUsername(String.valueOf(accountId));
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getUsername(), userDetails.getAuthorities());
     }
 }

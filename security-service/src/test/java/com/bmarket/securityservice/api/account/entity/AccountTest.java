@@ -6,6 +6,7 @@ import com.bmarket.securityservice.api.address.AddressRange;
 import com.bmarket.securityservice.api.profile.entity.Profile;
 import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
 
+import com.fasterxml.uuid.Generators;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ class AccountTest {
     ProfileRepository profileRepository;
     @Autowired
     EntityManager em;
+
 
     @Test
     @DisplayName("Account 생성 테스트")
@@ -134,6 +136,9 @@ class AccountTest {
         st3.start();
         accountRepository.findById(ids.get(9999));
         st3.stop();
+        log.info("=====================================[FLUSH]=======================================");
+        em.flush();
+        em.clear();
 
         st4.start();
         accountRepository.findByClientId(clientIds.get(0));
@@ -158,15 +163,15 @@ class AccountTest {
         st8.stop();
         //then
 
-        System.out.println("index  id로    0번째 찾는 속도 = " + st1.getTotalTimeMillis()+"ms");
-        System.out.println("index  id로 4999번째 찾는 속도 = " + st2.getTotalTimeMillis()+"ms");
-        System.out.println("index  id로 9999번째 찾는 속도 = " + st3.getTotalTimeMillis()+"ms");
-        System.out.println("index  average= " + (st1.getTotalTimeMillis() + st2.getTotalTimeMillis() + st3.getTotalTimeMillis()) / 3+"ms");
-        System.out.println("client id로    0번째 찾는 속도 = " + st4.getTotalTimeMillis()+"ms");
-        System.out.println("client id로 4999번째 찾는 속도 = " + st5.getTotalTimeMillis()+"ms");
-        System.out.println("client id로 9999번째 찾는 속도 = " + st6.getTotalTimeMillis()+"ms");
-        System.out.println("client average= " + (st4.getTotalTimeMillis() + st5.getTotalTimeMillis() + st6.getTotalTimeMillis()) / 3+"ms");
-        System.out.println("index id로 정렬헤서 페이징 조회 속도= " + st7.getTotalTimeMillis()+"ms");
-        System.out.println("client id로 정렬헤서 페이징 조회 속도= " + st8.getTotalTimeMillis()+"ms");
+        System.out.println("index  id로    0번째 찾는 시간 = " + st1.getTotalTimeMillis() + "ms");
+        System.out.println("index  id로 4999번째 찾는 시간 = " + st2.getTotalTimeMillis() + "ms");
+        System.out.println("index  id로 9999번째 찾는 시간 = " + st3.getTotalTimeMillis() + "ms");
+        System.out.println("index  average= " + (st1.getTotalTimeMillis() + st2.getTotalTimeMillis() + st3.getTotalTimeMillis()) / 3 + "ms");
+        System.out.println("client id로    0번째 찾는 시간 = " + st4.getTotalTimeMillis() + "ms");
+        System.out.println("client id로 4999번째 찾는 시간 = " + st5.getTotalTimeMillis() + "ms");
+        System.out.println("client id로 9999번째 찾는 시간 = " + st6.getTotalTimeMillis() + "ms");
+        System.out.println("client average= " + (st4.getTotalTimeMillis() + st5.getTotalTimeMillis() + st6.getTotalTimeMillis()) / 3 + "ms");
+        System.out.println("index id로 정렬헤서 페이징 조회 시간= " + st7.getTotalTimeMillis() + "ms");
+        System.out.println("client id로 정렬헤서 페이징 조회 시간= " + st8.getTotalTimeMillis() + "ms");
     }
 }

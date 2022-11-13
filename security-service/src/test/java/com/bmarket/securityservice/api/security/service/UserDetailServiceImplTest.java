@@ -5,7 +5,6 @@ import com.bmarket.securityservice.api.account.entity.Authority;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,12 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -50,9 +46,9 @@ class UserDetailServiceImplTest {
                 .build();
         Account savedAccount = accountRepository.save(account);
         //when
-        UserDetails userDetails = userDetailService.loadUserByUsername(savedAccount.getClientId());
+        UserDetails userDetails = userDetailService.loadUserByUsername(String.valueOf(savedAccount.getId()));
         //then
-        assertThat(userDetails.getUsername()).isEqualTo(savedAccount.getClientId());
+        assertThat(userDetails.getUsername()).isEqualTo(String.valueOf(savedAccount.getId()));
         assertThat(userDetails.getPassword()).isEqualTo(savedAccount.getPassword());
         assertThat(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .containsExactly(Authority.USER.ROLL);
@@ -72,9 +68,9 @@ class UserDetailServiceImplTest {
                 .build();
         Account savedAccount = accountRepository.save(account);
         //when
-        Authentication authentication = userDetailService.generateAuthenticationByClientId(savedAccount.getClientId());
+        Authentication authentication = userDetailService.generateAuthentication(savedAccount.getId());
         //then
-        assertThat(authentication.getName()).isEqualTo(savedAccount.getClientId());
+        assertThat(authentication.getName()).isEqualTo(String.valueOf(savedAccount.getId()));
         assertThat(authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList())).containsExactly(Authority.USER.ROLL);
 

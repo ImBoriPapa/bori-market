@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDetailData {
 
-    private String clientId;
+    private Long accountId;
     private String password;
     private Authority authority;
 
     @QueryProjection
-    public UserDetailData(String clientId, String password, Authority authority) {
-        this.clientId = clientId;
+    public UserDetailData(Long accountId, String password, Authority authority) {
+        this.accountId = accountId;
         this.password = password;
         this.authority = authority;
     }

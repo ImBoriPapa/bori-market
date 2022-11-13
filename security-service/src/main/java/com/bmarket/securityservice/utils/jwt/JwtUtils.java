@@ -25,7 +25,6 @@ public class JwtUtils implements InitializingBean {
     private final long REFRESH_VALIDATION_MS;
     private Key key;
 
-
     public JwtUtils(@Value("${custom-key.secret-key}") String SECRET_KEY,
                     @Value("${custom-key.token-validation-life}") long TOKEN_VALIDATION_MS,
                     @Value("${custom-key.refresh-token-validation-life}") long REFRESH_VALIDATION_MS) {
@@ -42,12 +41,12 @@ public class JwtUtils implements InitializingBean {
     }
 
     //토큰 생성
-    public String generateAccessToken(String clientId) {
+    public String generateAccessToken(Long accountId) {
         log.info("[엑세스 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALIDATION_MS);
         return Jwts.builder()
-                .setSubject(clientId)    //정보 저장
+                .setSubject(String.valueOf(accountId))    //정보 저장
                 .setIssuedAt(now)        // 토큰 발행 시간 정보
                 .setExpiration(validity) //만료시간 설정
                 .signWith(key, SignatureAlgorithm.HS512)//암호화
@@ -55,12 +54,12 @@ public class JwtUtils implements InitializingBean {
     }
 
     //리프레시 토큰 생성
-    public String generateRefreshToken(String clientId) {
+    public String generateRefreshToken(Long accountId) {
         log.info("[리프레쉬 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_VALIDATION_MS);
         return Jwts.builder()
-                .setSubject(clientId)
+                .setSubject(String.valueOf(accountId))
                 .setIssuedAt(now)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
@@ -68,24 +67,25 @@ public class JwtUtils implements InitializingBean {
     }
 
     // 토큰에서 회원 정보 추출
-    public String getUserClientId(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    public Long getUserId(String token) {
+        String subject = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        return Long.valueOf(subject);
     }
 
 
     // 토큰의 유효성 + 만료일자 확인
-    public JwtCode validateToken(String jwtToken) {
+    public JwtCode validateToken(String token) {
         log.info("==============[JWT_SERVICE] 토큰 검증  =============");
         try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
+            getClaimsJws(token);
             return JwtCode.ACCESS;
         } catch (ExpiredJwtException e) {
             return JwtCode.EXPIRED;
         } catch (JwtException | IllegalArgumentException e) {
             return JwtCode.DENIED;
         }
-
     }
+
     // 헤더에서 토큰 확인
     public Optional<String> resolveToken(HttpServletRequest request, String header) {
         String bearerToken = request.getHeader(header);
@@ -93,6 +93,15 @@ public class JwtUtils implements InitializingBean {
             return Optional.of(bearerToken.substring(7));
         }
         return Optional.empty();
+    }
+
+    public Date getExpired(String token) {
+        Jws<Claims> claimsJws = getClaimsJws(token);
+        return claimsJws.getBody().getExpiration();
+    }
+
+    private Jws<Claims> getClaimsJws(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
     }
 }
 

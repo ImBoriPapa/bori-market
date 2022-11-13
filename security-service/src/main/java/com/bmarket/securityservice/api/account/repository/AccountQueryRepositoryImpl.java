@@ -27,18 +27,17 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
     /**
      * security loadUserByUsername()에 사용할 clientId,password,authority 반환
      *
-     * @param clientId
      * @return
      */
     @Transactional(readOnly = true)
-    public Optional<UserDetailData> findAccountForLoadUser(String clientId) {
+    public Optional<UserDetailData> findAccountForLoadUser(Long accountId) {
         UserDetailData result = queryFactory
-                .select(new QInfoForLoadByUsername(
-                        account.clientId,
+                .select(new QUserDetailData(
+                        account.id,
                         account.password,
                         account.authority))
                 .from(account)
-                .where(account.clientId.eq(clientId))
+                .where(account.id.eq(accountId))
                 .fetchOne();
         return Optional.ofNullable(result);
     }

@@ -5,10 +5,7 @@ import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.account.service.AccountQueryService;
 import com.bmarket.securityservice.api.security.service.JwtService;
-import com.bmarket.securityservice.api.security.service.LoginService;
-import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
 import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -37,8 +34,7 @@ class JwtAuthenticationFilterTest {
     JwtService jwtService;
     @Autowired
     AccountQueryService accountQueryService;
-    @Autowired
-    LoginService loginService;
+
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -78,7 +74,7 @@ class JwtAuthenticationFilterTest {
     @DisplayName("인증 토큰이 없는 경우")
     void emptyAccessToken() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         mockMvc.perform(get("/jwt-test1")
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
@@ -93,9 +89,9 @@ class JwtAuthenticationFilterTest {
     @DisplayName("인증이 성공한 경우")
     void successAccessToken() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         mockMvc.perform(get("/jwt-test1")
-                .header(AUTHORIZATION_HEADER, login.getToken())
+                .header(AUTHORIZATION_HEADER, login.getAccessToken())
                 .header(REFRESH_HEADER, login.getRefreshToken())
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
@@ -108,9 +104,9 @@ class JwtAuthenticationFilterTest {
     @DisplayName("인증이 실패한 경우")
     void failAccessToken() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         mockMvc.perform(get("/jwt-test1")
-                .header(AUTHORIZATION_HEADER, login.getToken() + 12)
+                .header(AUTHORIZATION_HEADER, login.getAccessToken() + 12)
                 .header(REFRESH_HEADER, login.getRefreshToken() + 31)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is3xxRedirection());
@@ -130,14 +126,14 @@ class JwtAuthenticationFilterTest {
     @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 없을 경우 ")
     void expiredAccessToken() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         for (int i = 1; i <= 6; i++) {
             log.info("count={}", i);
             Thread.sleep(1000);
         }
 
         mockMvc.perform(get("/jwt-test1")
-                .header(AUTHORIZATION_HEADER, login.getToken())
+                .header(AUTHORIZATION_HEADER, login.getAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is3xxRedirection());
         //when
@@ -149,14 +145,14 @@ class JwtAuthenticationFilterTest {
     @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 ACCESS 경우")
     void successRefreshToken() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         for (int i = 1; i <= 6; i++) {
             log.info("count={}", i);
             Thread.sleep(1000);
         }
 
         mockMvc.perform(get("/jwt-test1")
-                        .header(AUTHORIZATION_HEADER, login.getToken())
+                        .header(AUTHORIZATION_HEADER, login.getAccessToken())
                         .header(REFRESH_HEADER, login.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
@@ -171,14 +167,14 @@ class JwtAuthenticationFilterTest {
     @DisplayName("access 토큰이 만료 되었고 리프레쉬 토큰이 EXPIRED 경우")
     void expiredRefreshToken() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         for (int i = 1; i <= 15; i++) {
             log.info("count={}", i);
             Thread.sleep(1000);
         }
 
         mockMvc.perform(get("/jwt-test1")
-                        .header(AUTHORIZATION_HEADER, login.getToken())
+                        .header(AUTHORIZATION_HEADER, login.getAccessToken())
                         .header(REFRESH_HEADER, login.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
@@ -200,16 +196,16 @@ class JwtAuthenticationFilterTest {
     void filter() throws Exception {
         //given
 
-        LoginResult result = loginService.loginProcessing("happy", "happy123");
+        LoginResult result = jwtService.loginProcessing("happy", "happy123");
 
         //when
 
         mockMvc.perform(get("/jwt-test1")
-                        .header(AUTHORIZATION_HEADER, result.getToken())
+                        .header(AUTHORIZATION_HEADER, result.getAccessToken())
                         .header(REFRESH_HEADER, result.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        loginService.logout(result.getClientId());
+
 
 
         //then

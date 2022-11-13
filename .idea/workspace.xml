@@ -4,20 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="JwtUtils 리펙토링 , Test">
-      <change afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/InvalidTokenException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/IsLogoutAccountException.java" afterDir="false" />
+    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="JwtService 리펙토링">
+      <change afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/enums/JwtValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/exception/custom_exception/security_ex/FailLoginException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/controller/AccountController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/UserDetailData.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/dto/UserDetailData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/entity/RefreshToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/entity/RefreshToken.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/LoginService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/TradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/TradeController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/ResponseStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/ResponseStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/entity/AccountTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/entity/AccountTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/account/repository/AccountQueryRepositoryImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/entity/RefreshTokenTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/entity/RefreshTokenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/security/service/UserDetailServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/trade/controller/TradeControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/trade/controller/TradeControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/controller/AccountControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/service/JwtServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/service/JwtServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/utils/jwt/JwtUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/utils/jwt/JwtUtilsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +81,24 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="bori-market" type="f1a62948:ProjectNode" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="bori-market" type="f1a62948:ProjectNode" />
+                <item name="security-service" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="bori-market" type="f1a62948:ProjectNode" />
+                <item name="security-service" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="bori-market" type="f1a62948:ProjectNode" />
+                <item name="security-service" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -79,6 +111,7 @@
       <list>
         <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -142,8 +175,61 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.JwtServiceTest.reissueRefreshTokenTest">
-    <configuration name="JwtServiceTest.issuedRefreshTokenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.JwtServiceTest">
+    <configuration name="bori-market:security-service [compileQuerydsl]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/security-service" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="compileQuerydsl" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="AccountQueryRepositoryImplTest.findOneAccountTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.account.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.account.repository" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.account.repository.AccountQueryRepositoryImplTest" />
+      <option name="METHOD_NAME" value="findOneAccountTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountTest.getClientIdTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.api.account.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.account.entity" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.account.entity.AccountTest" />
+      <option name="METHOD_NAME" value="getClientIdTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JwtServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bori-market.security-service.test" />
       <extension name="coverage">
         <pattern>
@@ -153,72 +239,22 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.bmarket.securityservice.domain.service" />
       <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.domain.service.JwtServiceTest" />
-      <option name="METHOD_NAME" value="issuedRefreshTokenTest" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="JwtServiceTest.issuedRefreshTokenTest2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserDetailServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bori-market.security-service.test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.domain.service.*" />
+          <option name="PATTERN" value="com.bmarket.securityservice.api.security.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.domain.service" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.domain.service.JwtServiceTest" />
-      <option name="METHOD_NAME" value="issuedRefreshTokenTest2" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JwtServiceTest.reissueRefreshTokenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bori-market.security-service.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.domain.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.domain.service" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.domain.service.JwtServiceTest" />
-      <option name="METHOD_NAME" value="reissueRefreshTokenTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JwtUtilsTest.generateTokenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bori-market.security-service.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.utils.jwt.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.utils.jwt" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.utils.jwt.JwtUtilsTest" />
-      <option name="METHOD_NAME" value="generateTokenTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JwtUtilsTest.validateTokenTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bori-market.security-service.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.utils.jwt.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.utils.jwt" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.utils.jwt.JwtUtilsTest" />
-      <option name="METHOD_NAME" value="validateTokenTest" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.api.security.service" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.api.security.service.UserDetailServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -253,11 +289,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.JwtServiceTest.reissueRefreshTokenTest" />
-        <item itemvalue="JUnit.JwtServiceTest.issuedRefreshTokenTest2" />
-        <item itemvalue="JUnit.JwtServiceTest.issuedRefreshTokenTest" />
-        <item itemvalue="JUnit.JwtUtilsTest.generateTokenTest" />
-        <item itemvalue="JUnit.JwtUtilsTest.validateTokenTest" />
+        <item itemvalue="JUnit.JwtServiceTest" />
+        <item itemvalue="JUnit.UserDetailServiceImplTest" />
+        <item itemvalue="JUnit.AccountQueryRepositoryImplTest.findOneAccountTest" />
+        <item itemvalue="Gradle.bori-market:security-service [compileQuerydsl]" />
+        <item itemvalue="JUnit.AccountTest.getClientIdTest" />
       </list>
     </recent_temporary>
   </component>
@@ -279,7 +315,9 @@
       <workItem from="1668119342045" duration="4000" />
       <workItem from="1668123079074" duration="9920000" />
       <workItem from="1668134435026" duration="1759000" />
-      <workItem from="1668173227289" duration="4189000" />
+      <workItem from="1668173227289" duration="4223000" />
+      <workItem from="1668206464126" duration="7877000" />
+      <workItem from="1668315505215" duration="20278000" />
     </task>
     <task id="LOCAL-00001" summary="프로젝트 모듈 구조 변경 -&gt; service-module 삭제">
       <created>1667919050176</created>
@@ -302,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668130662609</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="JwtService 리펙토링">
+      <created>1668178205818</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1668178205819</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -323,7 +368,8 @@
     <MESSAGE value="프로젝트 모듈 구조 변경 -&gt; service-module 삭제" />
     <MESSAGE value="UserDetailServiceImpl 리팩토링 및 테스트" />
     <MESSAGE value="JwtUtils 리펙토링 , Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="JwtUtils 리펙토링 , Test" />
+    <MESSAGE value="JwtService 리펙토링" />
+    <option name="LAST_COMMIT_MESSAGE" value="JwtService 리펙토링" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

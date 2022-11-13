@@ -37,4 +37,11 @@ public class RefreshToken {
     public String changeRefreshToken(String refreshToken){
         return  this.token = refreshToken;
     }
+
+    /**
+     * 로그아웃시 토큰 삭제
+     */
+    public void deleteToken(){
+        this.token = null;
+    }
 }

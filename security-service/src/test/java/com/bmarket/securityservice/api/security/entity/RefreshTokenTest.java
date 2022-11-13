@@ -26,8 +26,8 @@ class RefreshTokenTest {
     @DisplayName("리프레쉬 토큰 생성 테스트")
     void createRefreshToken() throws Exception{
         //given
-        String clientId = Generators.timeBasedGenerator().generate().toString();
-        String generatedRefreshToken = jwtUtils.generateRefreshToken(clientId);
+        Long id = 1L;
+        String generatedRefreshToken = jwtUtils.generateRefreshToken(id);
         RefreshToken refreshToken = RefreshToken.createRefreshToken(generatedRefreshToken);
         //when
         RefreshToken savedRefreshToken = refreshTokenRepository.save(refreshToken);
@@ -42,10 +42,10 @@ class RefreshTokenTest {
     @DisplayName("리프레쉬 토큰 수정 테스트")
     void updateRefreshTokenTest() throws Exception{
         //given
-        String clientId1 = Generators.timeBasedGenerator().generate().toString();
-        String clientId2 = Generators.timeBasedGenerator().generate().toString();
-        String token1 = jwtUtils.generateRefreshToken(clientId1);
-        String token2 = jwtUtils.generateRefreshToken(clientId2);
+        Long id1 = 1L;
+        Long id2 = 2L;
+        String token1 = jwtUtils.generateRefreshToken(id1);
+        String token2 = jwtUtils.generateRefreshToken(id2);
         RefreshToken refreshToken = RefreshToken.createRefreshToken(token1);
 
         //when

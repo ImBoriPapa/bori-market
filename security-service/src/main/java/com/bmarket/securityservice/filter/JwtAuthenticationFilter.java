@@ -72,8 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         JwtCode jwtCode = jwtUtils.validateToken(token);
         if (jwtCode == JwtCode.ACCESS) {
             log.info("리프레쉬 토큰 인증이 성공하였습니다.");
-            Authentication authentication = userDetailService.generateAuthenticationByClientId(jwtUtils.getUserClientId(token));
-            String generateToken = jwtUtils.generateAccessToken(authentication.getName());
+            Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getUserId(token));
+            String generateToken = jwtUtils.generateAccessToken(Long.valueOf(authentication.getName()));
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
             String reissueRefreshToken = jwtService.reissueRefreshToken(token);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
@@ -94,7 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public void setAuthentication(String jwt) {
-        Authentication authentication = userDetailService.generateAuthenticationByClientId(jwtUtils.getUserClientId(jwt));
+        Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getUserId(jwt));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

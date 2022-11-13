@@ -41,8 +41,8 @@ public class TradeController {
                                                     @RequestPart List<MultipartFile> images,
                                                     HttpServletRequest request) {
         String token = jwtUtils.resolveToken(request, AUTHORIZATION_HEADER).get();
-        String clientId = jwtUtils.getUserClientId(token);
-        Account id = accountRepository.findByClientId(clientId).get();
+        Long accountId = jwtUtils.getUserId(token);
+        Account id = accountRepository.findById(accountId).get();
 
         RequestTradeForm requestTradeForm = RequestTradeForm.builder()
                 .accountId(id.getId())
@@ -64,8 +64,8 @@ public class TradeController {
     public ResponseEntity getAllTrade(SearchCondition condition,
                                       HttpServletRequest request) {
         String token = jwtUtils.resolveToken(request, AUTHORIZATION_HEADER).get();
-        String clientId = jwtUtils.getUserClientId(token);
-        Account id = accountRepository.findByClientId(clientId).get();
+        Long accountId = jwtUtils.getUserId(token);
+        Account id = accountRepository.findById(accountId).get();
 
         condition.setAddressCode(id.getProfile().getAddress().getAddressCode());
         condition.setRange(id.getProfile().getAddressRange());
@@ -84,8 +84,8 @@ public class TradeController {
     @GetMapping("/trade/sale-list")
     public ResponseEntity getSaleList(HttpServletRequest request) {
         String token = jwtUtils.resolveToken(request, AUTHORIZATION_HEADER).get();
-        String clientId = jwtUtils.getUserClientId(token);
-        Account id = accountRepository.findByClientId(clientId).get();
+        Long accountId = jwtUtils.getUserId(token);
+        Account id = accountRepository.findById(accountId).get();
 
         RequestGetTradeListResult[] history = requestTradeApi.RequestGetSaleHistory(id.getId());
 

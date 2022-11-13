@@ -1,9 +1,10 @@
 package com.bmarket.securityservice.api.security.service;
 
 import com.bmarket.securityservice.api.account.entity.Account;
+import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.security.entity.RefreshToken;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.exception.custom_exception.security_ex.EmptyTokenException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
@@ -11,8 +12,13 @@ import com.bmarket.securityservice.utils.jwt.JwtUtils;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+
+import static com.bmarket.securityservice.api.security.enums.JwtValue.BEARER;
 
 @Service
 @Transactional
@@ -22,65 +28,138 @@ public class JwtService {
 
     private final AccountRepository accountRepository;
     private final JwtUtils jwtUtils;
+    private final PasswordEncoder passwordEncoder;
 
-    public String issuedRefreshToken(String clientId) {
+    /**
+     * 클라이언트는 로그인 실패시 로그인 아이디 혹은 비밀번호중 무었이 잘못됬는지 감추기 위해 FailLoginException(ResponseStatus.FAIL_LOGIN)
+     * @return
+     */
+    public LoginResult loginProcessing(String loginId, String password) {
+        log.info("[LoginProcessing 실행]");
+        Account account = accountRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new FailLoginException(ResponseStatus.FAIL_LOGIN));
+
+        passwordCheck(password, account.getPassword());
+
+        account.loginIn();
+
+        String token = jwtUtils.generateAccessToken(account.getId());
+        Date accessTokenExpired = jwtUtils.getExpired(token);
+
+        String bearerToken = BEARER + token;
+        String bearerRefreshToken = BEARER + issuedRefreshToken(account.getId());
+
+        return new LoginResult(account.getId(), account.getClientId(), bearerToken,accessTokenExpired, bearerRefreshToken, account.getLastLoginTime());
+    }
+
+    /**
+     * accountId로 계정 확인 후 로그아웃 처리
+     */
+    public void logoutProcessing(Long accountId) {
+        log.info("[Logout]");
+        accountRepository.findById(accountId)
+                .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT))
+                .logout();
+    }
+
+    /**
+     * 로그인 확인
+     */
+    public boolean loginCheck(Long accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("d")).isLogin();
+    }
+
+    /**
+     * 리프레시 토큰 생성
+     * 1. accountId 로 계정 확인
+     * 2. 계정에 저장된 리프레시 토큰이 없을시 생성 및 저장 후 토큰 반환
+     * 3. 계정에 저장된 리프레시 토큰이 있을시 새 토큰으로 업데이트
+     */
+    public String issuedRefreshToken(Long accountId) {
         log.info("[리프레쉬 토큰 발급]");
-
-        Account account = accountRepository.findByClientId(clientId)
+        Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT));
 
-        String newRefreshToken = jwtUtils.generateRefreshToken(clientId);
-        return account.getRefreshToken() == null ? creatAndGetRefresh(account, newRefreshToken)
+        String newRefreshToken = jwtUtils.generateRefreshToken(account.getId());
+        return getRefreshExistOrNull(account, newRefreshToken);
+    }
+
+    /**
+     * 1.getAccountByIdInToken(): 토큰에 저장된 clientId로 계정을 찾을 수 없을 시 InvalidException
+     * 2.checkRefreshToken(): Account 에 저장된 Refresh 토큰이 없을시 IsLogoutAccountException
+     * 3.getIfRefreshEqStored(): 저장된 리프레시 토큰과 비교해서 토큰이 일치한다면 새로운 토큰 발급 일치하지 않는다면 InvalidTokenException
+     * 정상 토큰이 검증 되면 새로운 리프레시 토큰 반환
+     */
+    public String reissueRefreshToken(String token) {
+        log.info("[리프레쉬 토큰 재발급]");
+        Long accountId = jwtUtils.getUserId(token);
+
+        Account account = getAccountByIdInToken(accountId);
+
+        checkRefreshToken(account.getRefreshToken().getToken());
+
+        return getIfRefreshEqStored(token, account);
+    }
+
+    /**
+     * 로그인시 비밀번호 검증
+     */
+    private void passwordCheck(String password, String savedPassword) {
+        if (!passwordEncoder.matches(password, savedPassword)) {
+            log.info("[패스워드 불일치]");
+            throw new FailLoginException(ResponseStatus.FAIL_LOGIN);
+        }
+    }
+
+
+    /**
+     * 계정에 리프레시 토큰이 저장되어있을시 토큰 업데이트 ,없다면 저장
+     */
+    private String getRefreshExistOrNull(Account account, String newRefreshToken) {
+        return account.getRefreshToken() == null ? createAndGetRefresh(account, newRefreshToken)
                 : account.getRefreshToken().changeRefreshToken(newRefreshToken);
     }
 
-    private  String creatAndGetRefresh(Account account, String newRefreshToken) {
+    /**
+     * 리프레시 토큰 객체 생성후 Account 에 저장 후 저장된 토큰 반환
+     */
+    private String createAndGetRefresh(Account account, String newRefreshToken) {
         RefreshToken refreshToken = RefreshToken.createRefreshToken(newRefreshToken);
         account.addRefresh(refreshToken);
         return refreshToken.getToken();
     }
 
     /**
-     *
+     * 저장된 리프레시 토큰과 비교해서 토큰이 일치한다면 새로운 토큰 발급 일치하지 않는다면
+     * InvalidTokenException
      */
-    public String reissueRefreshToken(String refreshToken) {
-        log.info("[리프레쉬 토큰 재발급]");
-        String clientId = jwtUtils.getUserClientId(refreshToken);
-        // 1.토큰에 저장된 clientId로 계정을 찾을 수 없을 시 InvalidException
-        Account account = getAccountByClientIdInToken(clientId);
-        // 2.Account 에 저장된 Refresh 토큰이 없을시
-        checkRefreshInAccount(account);
-
-        return getRefreshIfEqStored(refreshToken, clientId, account);
-    }
-
-    private String getRefreshIfEqStored(String refreshToken, String clientId, Account account) {
+    private String getIfRefreshEqStored(String refreshToken, Account account) {
         if (account.getRefreshToken().getToken().equals(refreshToken)) {
-            String refresh = jwtUtils.generateRefreshToken(clientId);
+            log.info("[리프레시 토큰 일치]");
+            String refresh = jwtUtils.generateRefreshToken(account.getId());
             account.getRefreshToken().changeRefreshToken(refresh);
             return refresh;
         } else {
-            throw new IllegalArgumentException("NOT MATCH REFRESH TOKEN");
+            log.info("[리프레시 토큰 불일치]");
+            throw new InvalidTokenException(ResponseStatus.INVALID_REFRESH_TOKEN);
         }
     }
 
     /**
      * 저장된 리프레시 토큰이 없다면 로그아웃으로 간주
-     * @param account
      */
-    private void checkRefreshInAccount(Account account) {
-        if (account.getRefreshToken() == null) {
+    private void checkRefreshToken(String refreshToken) {
+        if (refreshToken == null) {
             throw new IsLogoutAccountException(ResponseStatus.THIS_ACCOUNT_IS_LOGOUT);
         }
     }
 
     /**
-     * token 에 저장된 clientId 로 계정 조회시 찾을 수 없다면 잘못된 토큰으로 간주 InvalidTokenException 반환
-     * @param clientId
-     * @return
+     * token 에 저장된 Id 로 계정 조회시 찾을 수 없다면 잘못된 토큰으로 간주 InvalidTokenException 반환
      */
-    private Account getAccountByClientIdInToken(String clientId) {
-        return accountRepository.findByClientId(clientId)
+    private Account getAccountByIdInToken(Long accountId) {
+        return accountRepository.findById(accountId)
                 .orElseThrow(() -> new InvalidTokenException(ResponseStatus.INVALID_REFRESH_TOKEN));
     }
 }

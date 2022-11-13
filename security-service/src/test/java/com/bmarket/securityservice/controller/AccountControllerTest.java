@@ -7,11 +7,10 @@ import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.account.service.AccountCommandService;
 import com.bmarket.securityservice.api.security.controller.LoginController;
 import com.bmarket.securityservice.api.security.controller.LoginResult;
-import com.bmarket.securityservice.api.security.service.LoginService;
+import com.bmarket.securityservice.api.security.service.JwtService;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,10 +49,11 @@ class AccountControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
-    @Autowired
-    LoginService loginService;
+
     @Autowired
     LinkProvider linkProvider;
+    @Autowired
+    JwtService jwtService;
 
     @BeforeEach
     void beforeEach() {
@@ -143,9 +143,9 @@ class AccountControllerTest {
         //when
         ResponseAccountForm.ResponseSignupForm responseSignupForm = accountCommandService.signUpProcessing(form);
         Long accountId = responseSignupForm.getAccountId();
-        LoginResult loginResult = loginService.loginProcessing(form.getLoginId(), form.getPassword());
+        LoginResult loginResult = jwtService.loginProcessing(form.getLoginId(), form.getPassword());
         mockMvc.perform(get("http://localhost:8080/account/{accountId}", accountId)
-                        .header(AUTHORIZATION_HEADER, loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                 )
 
@@ -175,10 +175,10 @@ class AccountControllerTest {
     @DisplayName("계정 리스트 검색 조건없이 조회")
     void getAccountListTest1() throws Exception {
         //given
-        LoginResult loginResult = loginService.loginProcessing("loginId1", "login123");
+        LoginResult loginResult = jwtService.loginProcessing("loginId1", "login123");
         //when
         mockMvc.perform(get("/account")
-                        .header(AUTHORIZATION_HEADER, loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON))
                 //then
@@ -210,10 +210,10 @@ class AccountControllerTest {
     @DisplayName("계정 리스트 검색 마지막 페이지")
     void getAccountListTest2() throws Exception {
         //given
-        LoginResult loginResult = loginService.loginProcessing("loginId1", "login123");
+        LoginResult loginResult = jwtService.loginProcessing("loginId1", "login123");
         //when
         mockMvc.perform(get("/account?page=5")
-                        .header(AUTHORIZATION_HEADER, loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON))
                 //then
@@ -246,10 +246,10 @@ class AccountControllerTest {
     void getAccountListTest3() throws Exception {
         //given
 
-        LoginResult loginResult = loginService.loginProcessing("loginId1", "login123");
+        LoginResult loginResult = jwtService.loginProcessing("loginId1", "login123");
         //when
         mockMvc.perform(get("/account?page=3")
-                        .header(AUTHORIZATION_HEADER, loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON))
                 //then
@@ -284,10 +284,10 @@ class AccountControllerTest {
     void getAccountListTest4() throws Exception {
         //given
 
-        LoginResult loginResult = loginService.loginProcessing("loginId1", "login123");
+        LoginResult loginResult = jwtService.loginProcessing("loginId1", "login123");
         //when
         mockMvc.perform(get("/account?authority=ADMIN")
-                        .header(AUTHORIZATION_HEADER, loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON))
                 //then
@@ -327,13 +327,13 @@ class AccountControllerTest {
                 .town("대치동")
                 .build();
         ResponseAccountForm.ResponseSignupForm signupResult = accountCommandService.signUpProcessing(form);
-        LoginResult loginResult = loginService.loginProcessing(form.getLoginId(), form.getPassword());
+        LoginResult loginResult = jwtService.loginProcessing(form.getLoginId(), form.getPassword());
 
         RequestAccountForm.DeleteForm deleteForm = new RequestAccountForm.DeleteForm(form.getPassword());
         String value = objectMapper.writeValueAsString(deleteForm);
         //when
         mockMvc.perform(delete("/account/" + signupResult.getAccountId())
-                        .header(AUTHORIZATION_HEADER, loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
                         .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -352,12 +352,12 @@ class AccountControllerTest {
     @DisplayName("계정 비밀번호 변경 테스트")
     void updatePasswordTest() throws Exception {
         //given
-        LoginResult loginResult = loginService.loginProcessing("loginId1", "login123");
+        LoginResult loginResult = jwtService.loginProcessing("loginId1", "login123");
         RequestAccountForm.UpdateEmailForm emailForm = new RequestAccountForm.UpdateEmailForm("new@new.com");
         String value = objectMapper.writeValueAsString(emailForm);
         //when
         mockMvc.perform(put("/account/" + loginResult.getAccountId() + "/email")
-                        .header(AUTHORIZATION_HEADER,loginResult.getToken())
+                        .header(AUTHORIZATION_HEADER,loginResult.getAccessToken())
                         .header(REFRESH_HEADER,loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(value))

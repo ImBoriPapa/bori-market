@@ -5,7 +5,7 @@ import com.bmarket.securityservice.api.security.controller.LoginResult;
 import com.bmarket.securityservice.api.account.entity.Account;
 import com.bmarket.securityservice.api.account.repository.AccountRepository;
 import com.bmarket.securityservice.api.account.service.AccountQueryService;
-import com.bmarket.securityservice.api.security.service.LoginService;
+import com.bmarket.securityservice.api.security.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,11 +32,12 @@ class CustomAccessDeniedHandlerTest {
     MockMvc mockMvc;
     @Autowired
     AccountQueryService accountQueryService;
-    @Autowired
-    LoginService loginService;
+
 
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    JwtService jwtService;
 
     @BeforeEach
     void before() {
@@ -60,13 +61,13 @@ class CustomAccessDeniedHandlerTest {
     @DisplayName("권한이 없는 접근 테스트")
     void noPower() throws Exception {
         //given
-        LoginResult login = loginService.loginProcessing("happy", "happy123");
+        LoginResult login = jwtService.loginProcessing("happy", "happy123");
         Optional<Account> account = accountRepository.findByClientId(login.getClientId());
         log.info("Account Authority={} ",account.get().getAuthorityList());
 
         mockMvc.perform(get("/jwt-test2")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(AUTHORIZATION_HEADER, login.getToken())
+                .header(AUTHORIZATION_HEADER, login.getAccessToken())
                 .header(REFRESH_HEADER, login.getRefreshToken()));
 
         //when

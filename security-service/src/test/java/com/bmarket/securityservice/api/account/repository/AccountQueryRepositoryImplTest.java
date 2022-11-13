@@ -164,10 +164,10 @@ class AccountQueryRepositoryImplTest {
         //when
         Account account = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다"));
-        UserDetailData info = queryRepository.findAccountForLoadUser(account.getClientId())
+        UserDetailData info = queryRepository.findAccountForLoadUser(account.getId())
                 .orElseThrow(() -> new IllegalArgumentException("계정 정보를 찾을 수 없습니다"));
         //then
-        assertThat(info.getClientId()).isEqualTo(account.getClientId());
+        assertThat(info.getAccountId()).isEqualTo(account.getId());
         assertThat(passwordEncoder.matches(form.getPassword(), info.getPassword())).isTrue();
         assertThat(info.getAuthority()).isEqualTo(Authority.USER);
     }

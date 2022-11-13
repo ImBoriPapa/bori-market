@@ -41,7 +41,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/account")
 @Slf4j
 public class AccountController {
-
     private final AccountQueryService accountQueryService;
     private final AccountCommandService accountCommandService;
     private final CreateSignupFormValidator createSignupFormValidator;
