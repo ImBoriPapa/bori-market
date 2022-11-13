@@ -93,9 +93,10 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateClientId() {
-        this.clientId = generateSequentialUUID();
+    public String updateClientId() {
         this.updatedAt = LocalDateTime.now();
+        return this.clientId = generateSequentialUUID();
+
     }
 
 

@@ -14,7 +14,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.JWT_HEADER_PREFIX;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.CLIENT_ID;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.JWT_HEADER_PREFIX;
 
 @Component
 @Slf4j
@@ -94,6 +95,7 @@ public class JwtUtils implements InitializingBean {
         }
         return Optional.empty();
     }
+
 
     public Date getExpired(String token) {
         Jws<Claims> claimsJws = getClaimsJws(token);

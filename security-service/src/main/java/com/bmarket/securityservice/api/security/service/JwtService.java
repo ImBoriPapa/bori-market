@@ -32,6 +32,7 @@ public class JwtService {
 
     /**
      * 클라이언트는 로그인 실패시 로그인 아이디 혹은 비밀번호중 무었이 잘못됬는지 감추기 위해 FailLoginException(ResponseStatus.FAIL_LOGIN)
+     *
      * @return
      */
     public LoginResult loginProcessing(String loginId, String password) {
@@ -49,7 +50,7 @@ public class JwtService {
         String bearerToken = BEARER + token;
         String bearerRefreshToken = BEARER + issuedRefreshToken(account.getId());
 
-        return new LoginResult(account.getId(), account.getClientId(), bearerToken,accessTokenExpired, bearerRefreshToken, account.getLastLoginTime());
+        return new LoginResult(account.getId(), account.getClientId(), bearerToken, accessTokenExpired, bearerRefreshToken, account.getLastLoginTime());
     }
 
     /**
@@ -70,6 +71,12 @@ public class JwtService {
                 .orElseThrow(() -> new IllegalArgumentException("d")).isLogin();
     }
 
+    public String reGeneratedClientId(Long accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("d")).
+                updateClientId();
+    }
+
     /**
      * 리프레시 토큰 생성
      * 1. accountId 로 계정 확인
@@ -86,14 +93,13 @@ public class JwtService {
     }
 
     /**
-     * 1.getAccountByIdInToken(): 토큰에 저장된 clientId로 계정을 찾을 수 없을 시 InvalidException
+     * 1.getAccountByIdInToken(): 토큰에 저장된 account 계정을 찾을 수 없을 시 InvalidException
      * 2.checkRefreshToken(): Account 에 저장된 Refresh 토큰이 없을시 IsLogoutAccountException
      * 3.getIfRefreshEqStored(): 저장된 리프레시 토큰과 비교해서 토큰이 일치한다면 새로운 토큰 발급 일치하지 않는다면 InvalidTokenException
      * 정상 토큰이 검증 되면 새로운 리프레시 토큰 반환
      */
-    public String reissueRefreshToken(String token) {
+    public String reissueRefreshToken(String token,Long accountId) {
         log.info("[리프레쉬 토큰 재발급]");
-        Long accountId = jwtUtils.getUserId(token);
 
         Account account = getAccountByIdInToken(accountId);
 
@@ -106,6 +112,8 @@ public class JwtService {
      * 로그인시 비밀번호 검증
      */
     private void passwordCheck(String password, String savedPassword) {
+        log.info("password={}", password);
+        log.info("save password={}", savedPassword);
         if (!passwordEncoder.matches(password, savedPassword)) {
             log.info("[패스워드 불일치]");
             throw new FailLoginException(ResponseStatus.FAIL_LOGIN);

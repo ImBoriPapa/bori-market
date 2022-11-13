@@ -1,8 +1,11 @@
 package com.bmarket.securityservice.utils.status;
 
-public enum JwtTokenStatus {
+import lombok.Getter;
 
-    JWT_TOKEN_STATUS,
+@Getter
+public enum AuthenticationFilterStatus {
+    FILTER_STATUS,
+    CLIENT_ID_EMPTY,
     TOKEN_IS_EMPTY,
     TOKEN_IS_DENIED,
     REFRESH_TOKEN_IS_EMPTY,

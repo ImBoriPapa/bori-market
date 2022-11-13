@@ -171,7 +171,7 @@ class JwtServiceTest {
         //when
 
         //then
-        assertThatThrownBy(() -> jwtService.reissueRefreshToken(refreshToken))
+        assertThatThrownBy(() -> jwtService.reissueRefreshToken(refreshToken,314141L))
                 .isExactlyInstanceOf(InvalidTokenException.class);
     }
 
@@ -198,7 +198,7 @@ class JwtServiceTest {
         //when
 
         //then
-        assertThatThrownBy(() -> jwtService.reissueRefreshToken(refreshToken))
+        assertThatThrownBy(() -> jwtService.reissueRefreshToken(refreshToken,savedAccount.getId()))
                 .isExactlyInstanceOf(IsLogoutAccountException.class);
     }
 
@@ -223,7 +223,7 @@ class JwtServiceTest {
         log.info("notStoredToken= {}", notStoredToken);
 
         //then
-        assertThatThrownBy(() -> jwtService.reissueRefreshToken(notStoredToken))
+        assertThatThrownBy(() -> jwtService.reissueRefreshToken(notStoredToken,savedAccount.getId()))
                 .isExactlyInstanceOf(InvalidTokenException.class);
     }
 
@@ -243,7 +243,7 @@ class JwtServiceTest {
         savedAccount.addRefresh(token);
         //when
         Thread.sleep(1000);
-        String newRefresh = jwtService.reissueRefreshToken(refreshToken);
+        String newRefresh = jwtService.reissueRefreshToken(refreshToken,savedAccount.getId());
         //then
         assertThat(newRefresh).isNotEqualTo(refreshToken);
 

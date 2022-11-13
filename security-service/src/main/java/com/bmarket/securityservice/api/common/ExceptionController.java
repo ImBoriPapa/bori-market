@@ -26,6 +26,12 @@ import static com.bmarket.securityservice.utils.url.JwtEntrypointRedirectUrl.*;
 @RequestMapping("/exception")
 public class ExceptionController {
 
+    @GetMapping(EMPTY_CLIENT_ID)
+    public ResponseEntity emptyClientId(@RequestParam String clientId){
+        log.info("[EMPTY CLIENT 응답]");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ooo");
+    }
+
     @GetMapping(EMPTY_TOKEN)
     public ResponseEntity emptyTokenException(@RequestParam(defaultValue = "token") String token) {
         log.info("Empty Token Error 응답");

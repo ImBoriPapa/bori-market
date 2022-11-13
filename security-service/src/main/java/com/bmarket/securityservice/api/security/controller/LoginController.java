@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 
 @RestController
 @Slf4j

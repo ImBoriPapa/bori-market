@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

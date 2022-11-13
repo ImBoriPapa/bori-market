@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,8 @@ public class SecurityServiceApplication {
     private final AccountRepository accountRepository;
     private final AccountCommandService accountCommandService;
 
+    private final PasswordEncoder passwordEncoder;
+
     public static void main(String[] args) {
         SpringApplication.run(SecurityServiceApplication.class, args);
 
@@ -42,7 +45,8 @@ public class SecurityServiceApplication {
     public void initAdmin() {
 
         if (!accountRepository.findByLoginId("manager").isPresent()) {
-            Account account = new Account("manager", "최고관리자", "0000", "manager@manager.com", "070-070-0707");
+            String password = passwordEncoder.encode("0000");
+            Account account = new Account("manager", "최고관리자", password, "manager@manager.com", "070-070-0707");
 
             Account admin = accountRepository.save(account);
 

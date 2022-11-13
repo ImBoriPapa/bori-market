@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest

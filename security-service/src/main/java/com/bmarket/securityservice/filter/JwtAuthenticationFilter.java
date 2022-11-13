@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.utils.jwt.JwtHeader.*;
-import static com.bmarket.securityservice.utils.status.JwtTokenStatus.*;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
+import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.*;
 
 
 @Component
@@ -31,19 +31,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final JwtUtils jwtUtils;
-
     private final UserDetailServiceImpl userDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> token = jwtUtils.resolveToken(request, AUTHORIZATION_HEADER);
+        Optional<String> clientId = Optional.ofNullable(request.getHeader(CLIENT_ID));
         JwtCode jwtCode;
-        if (token.isEmpty()) {
-            log.info("ACCESS TOKEN 이 없습니다.", request.getRequestURI());
-            request.setAttribute(JWT_TOKEN_STATUS.name(), TOKEN_IS_EMPTY);
+
+        if(clientId.isEmpty()){
+            log.info("CLIENT-ID가 없습니다.={}",request.getRequestURI());
+            request.setAttribute(FILTER_STATUS.name(),CLIENT_ID_EMPTY);
         }
 
-        if (token.isPresent()) {
+        if (token.isEmpty()) {
+            log.info("ACCESS TOKEN 이 없습니다.={}", request.getRequestURI());
+            request.setAttribute(FILTER_STATUS.name(),TOKEN_IS_EMPTY);
+        }
+
+        if (token.isPresent()&&clientId.isPresent()) {
             jwtCode = jwtUtils.validateToken(token.get());
 
             switch (jwtCode) {
@@ -56,11 +62,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     log.info("ACCESS TOKEN 이 만료 되었습니다.");
                     token.ifPresentOrElse((m) -> refreshTokenValidation(request, response, m),
-                            () -> request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_EMPTY)
+                            () -> request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_EMPTY)
                     );
                     break;
                 case DENIED:
-                    request.setAttribute(JWT_TOKEN_STATUS.name(), TOKEN_IS_DENIED);
+                    request.setAttribute(FILTER_STATUS.name(), TOKEN_IS_DENIED);
                     log.info("잘못된 토큰입니다.");
                     break;
             }
@@ -71,12 +77,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void refreshTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) {
         JwtCode jwtCode = jwtUtils.validateToken(token);
         if (jwtCode == JwtCode.ACCESS) {
+            Long accountId = jwtUtils.getUserId(token);
             log.info("리프레쉬 토큰 인증이 성공하였습니다.");
-            Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getUserId(token));
-            String generateToken = jwtUtils.generateAccessToken(Long.valueOf(authentication.getName()));
+            Authentication authentication = userDetailService.generateAuthentication(accountId);
+            String generateToken = jwtUtils.generateAccessToken(accountId);
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
-            String reissueRefreshToken = jwtService.reissueRefreshToken(token);
+            String reissueRefreshToken = jwtService.reissueRefreshToken(token,accountId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
+            String clientId = jwtService.reGeneratedClientId(accountId);
+            log.info("Client Id 를 갱신 하였습니다.");
+
+            response.setHeader(CLIENT_ID,clientId);
             response.setHeader(AUTHORIZATION_HEADER, JWT_HEADER_PREFIX + generateToken);
             response.setHeader(REFRESH_HEADER, JWT_HEADER_PREFIX + reissueRefreshToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -84,12 +95,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (jwtCode == JwtCode.EXPIRED) {
             log.info("리프레쉬 토큰이 만료되었습니다.");
-            request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_EXPIRED);
+            request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_EXPIRED);
         }
 
         if (jwtCode == JwtCode.DENIED) {
             log.info("리프레쉬 토큰이 잘못되었습니다.");
-            request.setAttribute(JWT_TOKEN_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
+            request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
         }
     }
 
