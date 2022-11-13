@@ -38,7 +38,7 @@ class JwtAuthenticationFilterTest {
     @Autowired
     AccountRepository accountRepository;
 
-
+    // TODO: 2022/11/14 테스트 보강
     @Test
     @DisplayName("인증없이 접근 가능한 경로 POST:/login")
     void freeAccess() throws Exception {

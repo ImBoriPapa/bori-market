@@ -4,26 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="loadByUsername username = clientId -&gt; accountId 관련 기능 수정">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/SecurityServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/SecurityServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/TradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/trade/controller/TradeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAuthenticationEntryPoint.java" afterDir="false" />
+    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경">
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtHeader.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/SecurityHeader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/JwtTokenStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/AuthenticationFilterStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/url/JwtEntrypointRedirectUrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/url/JwtEntrypointRedirectUrl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/trade/controller/TradeControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/api/trade/controller/TradeControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/controller/AccountControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/service/JwtServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/domain/service/JwtServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/CustomAccessDeniedHandlerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -305,7 +287,7 @@
       <workItem from="1668134435026" duration="1759000" />
       <workItem from="1668173227289" duration="4223000" />
       <workItem from="1668206464126" duration="7877000" />
-      <workItem from="1668315505215" duration="28318000" />
+      <workItem from="1668315505215" duration="30083000" />
     </task>
     <task id="LOCAL-00001" summary="프로젝트 모듈 구조 변경 -&gt; service-module 삭제">
       <created>1667919050176</created>
@@ -342,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668341990904</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경">
+      <created>1668350922746</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1668350922746</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +354,8 @@
     <MESSAGE value="JwtUtils 리펙토링 , Test" />
     <MESSAGE value="JwtService 리펙토링" />
     <MESSAGE value="loadByUsername username = clientId -&gt; accountId 관련 기능 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="loadByUsername username = clientId -&gt; accountId 관련 기능 수정" />
+    <MESSAGE value="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경" />
+    <option name="LAST_COMMIT_MESSAGE" value="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
