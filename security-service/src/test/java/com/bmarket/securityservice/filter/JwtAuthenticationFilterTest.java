@@ -17,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
-import static com.bmarket.securityservice.utils.url.JwtEntrypointRedirectUrl.REDIRECT_EXCEPTION_EMPTY_CLIENT_ID;
+
+
+import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -55,21 +57,35 @@ class JwtAuthenticationFilterTest {
     }
 
     @Test
-    @DisplayName("clientId가 없을 경우 GET:/account/{clientId}")
-    void clientIfIsNull() throws Exception {
+    @DisplayName("인증 필요한 접근에 토큰 및 클라이언트 아이디 둘다 없는 경우")
+    void emptyTokenAndIdTest() throws Exception {
         //given
-
         LoginResult result = jwtService.loginProcessing("manager", "0000");
 
+        mockMvc.perform(get("/account/" + result.getAccountId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(EMPTY_BOTH.getUrl()));
+        //when
+
+        //then
+
+    }
+
+
+    @Test
+    @DisplayName("인증 토큰이 없는 경우 GET:/account/{clientId}")
+    void emptyAccessToken() throws Exception {
+        //given
+        LoginResult result = jwtService.loginProcessing("manager", "0000");
         HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
-        headers.add(REFRESH_HEADER, result.getRefreshToken());
+        headers.set(CLIENT_ID, result.getClientId() + 121314);
 
         mockMvc.perform(get("/account/" + result.getAccountId())
-                        .headers(headers))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(REDIRECT_EXCEPTION_EMPTY_CLIENT_ID));
-
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .headers(headers)
+                ).andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(TOKEN_IS_EMPTY.getUrl()));
         //when
 
         //then
@@ -77,15 +93,20 @@ class JwtAuthenticationFilterTest {
     }
 
     @Test
-    @DisplayName("인증 토큰이 없는 경우 GET:/account/{clientId}")
-    void emptyAccessToken() throws Exception {
+    @DisplayName("clientId가 잘못된 경우 경우 GET:/account/{clientId}")
+    void wrongAccessToken() throws Exception {
         //given
         LoginResult result = jwtService.loginProcessing("manager", "0000");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(CLIENT_ID, result.getClientId() + 121314);
+        headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
+        headers.add(REFRESH_HEADER, result.getRefreshToken());
+        //when
         mockMvc.perform(get("/account/" + result.getAccountId())
+                        .headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/exception/empty-token?token=access"));
-        //when
+                .andExpect(redirectedUrl(CLIENT_ID_IS_INVALID.getUrl()));
 
         //then
 
@@ -200,12 +221,11 @@ class JwtAuthenticationFilterTest {
                         .headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/exception/expired-token"));
+                .andExpect(redirectedUrl(REFRESH_TOKEN_IS_EXPIRED.getUrl()));
         //when
 
         //then
     }
-
 
 
 }

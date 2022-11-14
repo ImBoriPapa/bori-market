@@ -19,22 +19,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
-import static com.bmarket.securityservice.utils.url.JwtEntrypointRedirectUrl.*;
 
 @RestController
 @Slf4j
 @RequestMapping("/exception")
-public class ExceptionController {
-
-    @GetMapping(EMPTY_CLIENT_ID)
-    public ResponseEntity emptyClientId(@RequestParam String clientId){
-        log.info("[EMPTY CLIENT 응답]");
+public class AuthenticationFailResponseController {
+    @GetMapping("/empty-both")
+    public ResponseEntity emptyAnyThing(@RequestParam String clientId) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ooo");
     }
 
-    @GetMapping(EMPTY_TOKEN)
+    @GetMapping("/empty-clientId")
+    public ResponseEntity emptyClientId(@RequestParam String clientId) {
+
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ooo");
+    }
+
+    @GetMapping("/wrong-clientId")
+    public ResponseEntity wrongClientId(@RequestParam String clientId) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("ooo");
+    }
+
+    @GetMapping("/empty-token")
     public ResponseEntity emptyTokenException(@RequestParam(defaultValue = "token") String token) {
-        log.info("Empty Token Error 응답");
+
         ResponseStatus errorCode = ResponseStatus.EMPTY_ACCESS_TOKEN;
 
         if (token.equals("refresh")) {
@@ -45,9 +55,8 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
-    @GetMapping(EXPIRED_TOKEN)
+    @GetMapping("/expired-token")
     public ResponseEntity expiredTokenException() {
-        log.info("Expired Token exception 응답");
 
         ResponseForm.Error errorResponse = new ResponseForm.Error(new ExpiredTokenException(ResponseStatus.EXPIRED_REFRESH_TOKEN));
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -56,9 +65,9 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT).headers(httpHeaders).body(errorResponse);
     }
 
-    @GetMapping(DENIED_TOKEN)
+    @GetMapping("/denied-token")
     public ResponseEntity deniedTokenException(@RequestParam String token) {
-        log.info("deniedTokenException 응답");
+
 
         ResponseStatus errorCode = ResponseStatus.INVALID_ACCESS_TOKEN;
         if (token.equals("refresh")) {
@@ -70,7 +79,7 @@ public class ExceptionController {
     }
 
     @GetMapping("/access-denied")
-    public ResponseEntity accessDeniedException(){
+    public ResponseEntity accessDeniedException() {
 
         ResponseForm.Error errorResponse = new ResponseForm.Error(new CustomAccessDeniedException(ResponseStatus.ACCESS_DENIED));
 

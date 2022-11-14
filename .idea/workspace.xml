@@ -4,8 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경">
+    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="JwtAuthenticationFilter 리펙토링">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/account/repository/AccountRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/common/AuthenticationFailResponseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/api/security/service/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/cofig/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/CustomAuthenticationEntryPoint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/jwt/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/AuthenticationFilterStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/status/AuthenticationFilterStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/utils/url/JwtEntrypointRedirectUrl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/test/java/com/bmarket/securityservice/filter/JwtAuthenticationFilterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,8 +96,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -165,7 +177,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="JwtAuthenticationFilterTest.expiredAccessToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="JwtAuthenticationFilterTest.clientIdWrong" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bori-market.security-service.test" />
       <extension name="coverage">
         <pattern>
@@ -175,7 +187,23 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.bmarket.securityservice.filter" />
       <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.filter.JwtAuthenticationFilterTest" />
-      <option name="METHOD_NAME" value="expiredAccessToken" />
+      <option name="METHOD_NAME" value="clientIdWrong" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JwtAuthenticationFilterTest.clientIfIsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.security-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.securityservice.filter.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.filter" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.filter.JwtAuthenticationFilterTest" />
+      <option name="METHOD_NAME" value="clientIfIsNull" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -197,7 +225,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="JwtAuthenticationFilterTest.failAccessToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="JwtAuthenticationFilterTest.freeAccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bori-market.security-service.test" />
       <extension name="coverage">
         <pattern>
@@ -207,23 +235,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.bmarket.securityservice.filter" />
       <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.filter.JwtAuthenticationFilterTest" />
-      <option name="METHOD_NAME" value="failAccessToken" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JwtAuthenticationFilterTest.successRefreshToken" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bori-market.security-service.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.filter.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.filter" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.filter.JwtAuthenticationFilterTest" />
-      <option name="METHOD_NAME" value="successRefreshToken" />
+      <option name="METHOD_NAME" value="freeAccess" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -260,10 +272,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.JwtAuthenticationFilterTest" />
+        <item itemvalue="JUnit.JwtAuthenticationFilterTest.clientIfIsNull" />
+        <item itemvalue="JUnit.JwtAuthenticationFilterTest.freeAccess" />
+        <item itemvalue="JUnit.JwtAuthenticationFilterTest.clientIdWrong" />
         <item itemvalue="JUnit.JwtAuthenticationFilterTest.expiredRefreshToken" />
-        <item itemvalue="JUnit.JwtAuthenticationFilterTest.successRefreshToken" />
-        <item itemvalue="JUnit.JwtAuthenticationFilterTest.expiredAccessToken" />
-        <item itemvalue="JUnit.JwtAuthenticationFilterTest.failAccessToken" />
       </list>
     </recent_temporary>
   </component>
@@ -287,7 +299,8 @@
       <workItem from="1668134435026" duration="1759000" />
       <workItem from="1668173227289" duration="4223000" />
       <workItem from="1668206464126" duration="7877000" />
-      <workItem from="1668315505215" duration="30083000" />
+      <workItem from="1668315505215" duration="30541000" />
+      <workItem from="1668392798407" duration="28486000" />
     </task>
     <task id="LOCAL-00001" summary="프로젝트 모듈 구조 변경 -&gt; service-module 삭제">
       <created>1667919050176</created>
@@ -331,7 +344,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668350922746</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="JwtAuthenticationFilter 리펙토링">
+      <created>1668352572622</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1668352572622</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,7 +375,8 @@
     <MESSAGE value="JwtService 리펙토링" />
     <MESSAGE value="loadByUsername username = clientId -&gt; accountId 관련 기능 수정" />
     <MESSAGE value="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경" />
-    <option name="LAST_COMMIT_MESSAGE" value="JwtAuthenticationFilterTest 수정 및 테스트 관련 변경" />
+    <MESSAGE value="JwtAuthenticationFilter 리펙토링" />
+    <option name="LAST_COMMIT_MESSAGE" value="JwtAuthenticationFilter 리펙토링" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

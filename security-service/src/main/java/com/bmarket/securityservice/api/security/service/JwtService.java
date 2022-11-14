@@ -98,7 +98,7 @@ public class JwtService {
      * 3.getIfRefreshEqStored(): 저장된 리프레시 토큰과 비교해서 토큰이 일치한다면 새로운 토큰 발급 일치하지 않는다면 InvalidTokenException
      * 정상 토큰이 검증 되면 새로운 리프레시 토큰 반환
      */
-    public String reissueRefreshToken(String token,Long accountId) {
+    public String reissueRefreshToken(String token, Long accountId) {
         log.info("[리프레쉬 토큰 재발급]");
 
         Account account = getAccountByIdInToken(accountId);
@@ -120,6 +120,9 @@ public class JwtService {
         }
     }
 
+    public boolean clientIdCheck(String clientId) {
+        return accountRepository.existsByClientId(clientId);
+    }
 
     /**
      * 계정에 리프레시 토큰이 저장되어있을시 토큰 업데이트 ,없다면 저장

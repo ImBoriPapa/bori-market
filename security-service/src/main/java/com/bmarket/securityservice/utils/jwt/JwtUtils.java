@@ -14,7 +14,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.CLIENT_ID;
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.JWT_HEADER_PREFIX;
 
 @Component
@@ -91,7 +90,7 @@ public class JwtUtils implements InitializingBean {
     public Optional<String> resolveToken(HttpServletRequest request, String header) {
         String bearerToken = request.getHeader(header);
         if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith(JWT_HEADER_PREFIX)) {
-            return Optional.of(bearerToken.substring(7));
+            return Optional.ofNullable(bearerToken.substring(7));
         }
         return Optional.empty();
     }

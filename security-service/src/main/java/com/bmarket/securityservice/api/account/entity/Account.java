@@ -99,11 +99,6 @@ public class Account {
 
     }
 
-
-    public Boolean validationClientId(String clientId) {
-        return this.clientId.equals(clientId.substring(35));
-    }
-
     private String generateSequentialUUID() {
         String proto = Generators.timeBasedGenerator().generate().toString();
         String[] array = proto.split("-");
