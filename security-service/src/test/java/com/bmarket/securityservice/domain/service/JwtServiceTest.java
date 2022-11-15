@@ -1,12 +1,12 @@
 package com.bmarket.securityservice.domain.service;
 
-import com.bmarket.securityservice.api.account.entity.Account;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.security.controller.LoginResult;
-import com.bmarket.securityservice.api.security.entity.RefreshToken;
-import com.bmarket.securityservice.api.security.repository.RefreshTokenRepository;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.security.controller.LoginResult;
+import com.bmarket.securityservice.domain.security.entity.RefreshToken;
+import com.bmarket.securityservice.domain.security.repository.RefreshTokenRepository;
 
-import com.bmarket.securityservice.api.security.service.JwtService;
+import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;

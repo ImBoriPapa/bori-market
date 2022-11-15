@@ -1,8 +1,8 @@
 package com.bmarket.securityservice.api.security.entity;
 
-import com.bmarket.securityservice.api.security.repository.RefreshTokenRepository;
+import com.bmarket.securityservice.domain.security.entity.RefreshToken;
+import com.bmarket.securityservice.domain.security.repository.RefreshTokenRepository;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
-import com.fasterxml.uuid.Generators;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

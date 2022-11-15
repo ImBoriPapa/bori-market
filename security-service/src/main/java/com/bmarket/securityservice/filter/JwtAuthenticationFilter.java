@@ -1,9 +1,9 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.api.security.service.UserDetailServiceImpl;
+import com.bmarket.securityservice.domain.security.service.UserDetailServiceImpl;
 import com.bmarket.securityservice.utils.jwt.JwtCode;
 
-import com.bmarket.securityservice.api.security.service.JwtService;
+import com.bmarket.securityservice.domain.security.service.JwtService;
 
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
 
@@ -29,7 +29,6 @@ import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatu
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    // TODO: 2022/11/14 메서드 설명 작성
     private final JwtService jwtService;
     private final JwtUtils jwtUtils;
     private final UserDetailServiceImpl userDetailService;
@@ -61,7 +60,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private String clientIdCheck(HttpServletRequest request) {
         String clientId = request.getHeader(CLIENT_ID);
-
         isClientIdExist(request, clientId);
         return clientId;
     }
@@ -137,7 +135,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * RefreshToken 검증 후 처리
      */
-    public void refreshTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) {
+    private void refreshTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) {
         JwtCode jwtCode = jwtUtils.validateToken(token);
         refreshIsAccess(response, token, jwtCode);
 
@@ -149,7 +147,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * RefreshToken 이 잘못된 경우 처리
      */
-    private static void refreshIsDenied(HttpServletRequest request, JwtCode jwtCode) {
+    private void refreshIsDenied(HttpServletRequest request, JwtCode jwtCode) {
         if (jwtCode == JwtCode.DENIED) {
             log.info("리프레쉬 토큰이 잘못되었습니다.");
             request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
@@ -159,7 +157,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * RefreshToken 이 만료된 경우 처리
      */
-    private static void refreshIsExpired(HttpServletRequest request, JwtCode jwtCode) {
+    private void refreshIsExpired(HttpServletRequest request, JwtCode jwtCode) {
         if (jwtCode == JwtCode.EXPIRED) {
             log.info("리프레쉬 토큰이 만료되었습니다.");
             request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_EXPIRED);
@@ -179,7 +177,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
             String reissueRefreshToken = jwtService.reissueRefreshToken(token, accountId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
-            String clientId = jwtService.reGeneratedClientId(accountId);
+            String clientId = jwtService.reGenerateClientId(accountId);
             log.info("Client Id 를 갱신 하였습니다.");
 
             response.setHeader(CLIENT_ID, clientId);
@@ -192,7 +190,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * 인증 객체 저장
      */
-    public void setAuthentication(String jwt) {
+    private void setAuthentication(String jwt) {
         log.info("[인증정보 저장]");
         Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getUserId(jwt));
         SecurityContextHolder.getContext().setAuthentication(authentication);

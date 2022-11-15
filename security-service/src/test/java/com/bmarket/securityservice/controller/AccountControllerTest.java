@@ -1,13 +1,13 @@
 package com.bmarket.securityservice.controller;
 
-import com.bmarket.securityservice.api.account.controller.AccountController;
-import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
-import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.account.service.AccountCommandService;
-import com.bmarket.securityservice.api.security.controller.LoginController;
-import com.bmarket.securityservice.api.security.controller.LoginResult;
-import com.bmarket.securityservice.api.security.service.JwtService;
+import com.bmarket.securityservice.domain.account.controller.AccountController;
+import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.domain.account.controller.ResponseAccountForm;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.service.AccountCommandService;
+import com.bmarket.securityservice.domain.security.controller.LoginController;
+import com.bmarket.securityservice.domain.security.controller.LoginResult;
+import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;

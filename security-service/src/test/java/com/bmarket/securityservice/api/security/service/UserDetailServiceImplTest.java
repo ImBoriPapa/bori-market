@@ -1,9 +1,10 @@
 package com.bmarket.securityservice.api.security.service;
 
-import com.bmarket.securityservice.api.account.entity.Account;
-import com.bmarket.securityservice.api.account.entity.Authority;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 
+import com.bmarket.securityservice.domain.security.service.UserDetailServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

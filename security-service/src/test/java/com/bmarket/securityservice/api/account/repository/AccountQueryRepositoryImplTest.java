@@ -1,13 +1,15 @@
 package com.bmarket.securityservice.api.account.repository;
 
-import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
-import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
-import com.bmarket.securityservice.api.account.entity.Account;
-import com.bmarket.securityservice.api.account.entity.Authority;
-import com.bmarket.securityservice.api.account.repository.dto.AccountList;
-import com.bmarket.securityservice.api.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.api.account.repository.dto.UserDetailData;
-import com.bmarket.securityservice.api.account.service.AccountCommandService;
+import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.domain.account.controller.ResponseAccountForm;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.account.repository.AccountQueryRepository;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.repository.dto.AccountList;
+import com.bmarket.securityservice.domain.account.repository.dto.FindOneAccountResult;
+import com.bmarket.securityservice.domain.account.repository.dto.UserDetailData;
+import com.bmarket.securityservice.domain.account.service.AccountCommandService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

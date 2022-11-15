@@ -1,12 +1,13 @@
 package com.bmarket.securityservice.api.account.entity;
 
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.address.Address;
-import com.bmarket.securityservice.api.address.AddressRange;
-import com.bmarket.securityservice.api.profile.entity.Profile;
-import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.address.Address;
+import com.bmarket.securityservice.domain.address.AddressRange;
+import com.bmarket.securityservice.domain.profile.entity.Profile;
+import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 
-import com.fasterxml.uuid.Generators;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,7 @@ class AccountTest {
         assertThat(findAccount.getProfile().getId()).isEqualTo(findProfile.getId());
         assertThat(findAccount.getProfile().getNickname()).isEqualTo("nickname");
         assertThat(findAccount.getProfile().getProfileImage()).isEqualTo("프로필이미지.jpg");
-        assertThat(findAccount.getProfile().getAddressRange()).isEqualTo(AddressRange.JUST);
+        assertThat(findAccount.getProfile().getAddressRange()).isEqualTo(AddressRange.ONLY);
         assertThat(findAccount.getProfile().getAddress()).isSameAs(address);
     }
 

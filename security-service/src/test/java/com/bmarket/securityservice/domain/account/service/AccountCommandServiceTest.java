@@ -1,13 +1,12 @@
 package com.bmarket.securityservice.domain.account.service;
 
-import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
-import com.bmarket.securityservice.api.account.controller.ResponseAccountForm;
-import com.bmarket.securityservice.api.account.entity.Account;
-import com.bmarket.securityservice.api.account.entity.Authority;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.account.service.AccountCommandService;
-import com.bmarket.securityservice.api.address.AddressRange;
-import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
+import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.domain.account.controller.ResponseAccountForm;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.address.AddressRange;
+import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -110,7 +109,7 @@ class AccountCommandServiceTest {
         assertThat(findAccount.getProfile().getAddress().getCity()).isEqualTo("서울");
         assertThat(findAccount.getProfile().getAddress().getDistrict()).isEqualTo("종로구");
         assertThat(findAccount.getProfile().getAddress().getTown()).isEqualTo("암사동");
-        assertThat(findAccount.getProfile().getAddressRange()).isEqualTo(AddressRange.JUST);
+        assertThat(findAccount.getProfile().getAddressRange()).isEqualTo(AddressRange.ONLY);
     }
 
     @Test

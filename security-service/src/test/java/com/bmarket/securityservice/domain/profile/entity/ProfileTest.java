@@ -1,10 +1,9 @@
 package com.bmarket.securityservice.domain.profile.entity;
 
 
-import com.bmarket.securityservice.api.address.Address;
-import com.bmarket.securityservice.api.address.AddressRange;
-import com.bmarket.securityservice.api.profile.entity.Profile;
-import com.bmarket.securityservice.api.profile.repository.ProfileRepository;
+import com.bmarket.securityservice.domain.address.Address;
+import com.bmarket.securityservice.domain.address.AddressRange;
+import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class ProfileTest {
 
     @Test
     @DisplayName("프로필 생성 테스트")
-    void createProfile() throws Exception{
+    void createProfileTest() throws Exception{
         //given
         Address address = Address.createAddress()
                 .addressCode(1001)
@@ -50,7 +49,7 @@ class ProfileTest {
         assertThat(findProfile.getNickname()).isEqualTo(findProfile.getNickname());
         assertThat(findProfile.getProfileImage()).isEqualTo(savedProfile.getProfileImage());
         assertThat(findProfile.getAddress()).isExactlyInstanceOf(address.getClass());
-        assertThat(findProfile.getAddressRange()).isEqualTo(AddressRange.JUST);
+        assertThat(findProfile.getAddressRange()).isEqualTo(AddressRange.ONLY);
     }
 
     @Test

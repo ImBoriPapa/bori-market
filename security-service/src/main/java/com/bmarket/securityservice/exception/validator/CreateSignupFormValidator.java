@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.exception.validator;
 
-import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;

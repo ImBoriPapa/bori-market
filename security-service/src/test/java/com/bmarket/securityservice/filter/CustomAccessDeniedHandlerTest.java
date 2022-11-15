@@ -1,11 +1,11 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.api.account.controller.RequestAccountForm;
-import com.bmarket.securityservice.api.security.controller.LoginResult;
-import com.bmarket.securityservice.api.account.entity.Account;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.account.service.AccountQueryService;
-import com.bmarket.securityservice.api.security.service.JwtService;
+import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
+import com.bmarket.securityservice.domain.security.controller.LoginResult;
+import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.account.service.AccountQueryService;
+import com.bmarket.securityservice.domain.security.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

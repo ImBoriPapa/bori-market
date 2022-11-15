@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.utils.converter;
 
-import com.bmarket.securityservice.api.address.AddressRange;
+import com.bmarket.securityservice.domain.address.AddressRange;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

@@ -1,9 +1,9 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.api.security.controller.LoginResult;
-import com.bmarket.securityservice.api.account.repository.AccountRepository;
-import com.bmarket.securityservice.api.security.controller.requestForm.RequestLoginForm;
-import com.bmarket.securityservice.api.security.service.JwtService;
+import com.bmarket.securityservice.domain.security.controller.LoginResult;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.security.controller.requestForm.RequestLoginForm;
+import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +23,7 @@ import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatu
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -50,7 +51,7 @@ class JwtAuthenticationFilterTest {
 
         mockMvc.perform(post("/login")
                         .content(value).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk()).andDo(print());
         //when
 
         //then
@@ -65,7 +66,7 @@ class JwtAuthenticationFilterTest {
         mockMvc.perform(get("/account/" + result.getAccountId())
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(EMPTY_BOTH.getUrl()));
+                .andExpect(redirectedUrl(EMPTY_BOTH.getUrl())).andDo(print());
         //when
 
         //then
@@ -85,7 +86,7 @@ class JwtAuthenticationFilterTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .headers(headers)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(TOKEN_IS_EMPTY.getUrl()));
+                .andExpect(redirectedUrl(TOKEN_IS_EMPTY.getUrl())).andDo(print());
         //when
 
         //then
@@ -106,7 +107,7 @@ class JwtAuthenticationFilterTest {
                         .headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(CLIENT_ID_IS_INVALID.getUrl()));
+                .andExpect(redirectedUrl(CLIENT_ID_IS_INVALID.getUrl())).andDo(print());
 
         //then
 
@@ -125,7 +126,7 @@ class JwtAuthenticationFilterTest {
         mockMvc.perform(get("/account/" + result.getAccountId())
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isOk()).andDo(print());
 
         //then
     }
@@ -143,7 +144,7 @@ class JwtAuthenticationFilterTest {
         mockMvc.perform(get("/account/" + result.getAccountId())
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().is3xxRedirection());
+        ).andExpect(status().is3xxRedirection()).andDo(print());
 
         //then
     }
@@ -170,7 +171,7 @@ class JwtAuthenticationFilterTest {
         mockMvc.perform(get("/account/" + result.getAccountId())
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().is3xxRedirection());
+        ).andExpect(status().is3xxRedirection()).andDo(print());
         //when
 
         //then
@@ -196,7 +197,7 @@ class JwtAuthenticationFilterTest {
                 ).andExpect(status().isOk())
                 .andExpect(header().exists(CLIENT_ID))
                 .andExpect(header().exists(AUTHORIZATION_HEADER))
-                .andExpect(header().exists(REFRESH_HEADER));
+                .andExpect(header().exists(REFRESH_HEADER)).andDo(print());
         //when
 
         //then
@@ -221,7 +222,7 @@ class JwtAuthenticationFilterTest {
                         .headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(REFRESH_TOKEN_IS_EXPIRED.getUrl()));
+                .andExpect(redirectedUrl(REFRESH_TOKEN_IS_EXPIRED.getUrl())).andDo(print());
         //when
 
         //then
