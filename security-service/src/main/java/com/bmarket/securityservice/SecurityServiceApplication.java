@@ -52,24 +52,10 @@ public class SecurityServiceApplication {
             log.info("[MANAGER ID={}]", admin.getId());
         }
 
+
+
     }
-    public void initTestAccount() {
-        ArrayList<ResponseAccountForm.ResponseSignupForm> results = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
-                    .loginId("loginId" + i)
-                    .name("로그인")
-                    .password("login123")
-                    .nickname("nickname" + i)
-                    .email("login" + i + "@login.com")
-                    .contact("010-" + i + "-1313")
-                    .addressCode(1001)
-                    .city("서울")
-                    .district("강남구")
-                    .town("대치동")
-                    .build();
-            ResponseAccountForm.ResponseSignupForm responseSignupForm = accountCommandService.signUpProcessing(form);
-            results.add(responseSignupForm);
-        }
+    public void initSampleAccount() {
+
     }
 }

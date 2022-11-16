@@ -24,16 +24,11 @@ public class ProfileImageController {
     }
 
     /**
-     * 프로필 이미지 생성 요청
-     *
-     * @param id
-     * @param image
-     * @return ResponseEntity.ok , ResponseCreateProfileImage : imagePath
+     * 프로필 이미지 수정 요청
      */
-    @PostMapping(value = "/frm/profile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public String createProfileImage(@RequestParam(name = "profileId", defaultValue = "0") Long id,
+    @PutMapping(value = "/frm/profile/{accountId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public String createProfileImage(@PathVariable(name = "accountId") Long id,
                                      @RequestPart(name = "image") MultipartFile image) {
-
         String save = profileImageServiceV1.save(id, image);
         ResponseCreateProfileImage dto = new ResponseCreateProfileImage(true, save);
         return dto.imagePath;

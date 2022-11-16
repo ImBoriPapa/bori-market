@@ -14,7 +14,6 @@ import java.util.Optional;
 public interface AccountQueryRepository {
 
     Optional<UserDetailData> findAccountForLoadUser(Long accountId);
-
     Optional<FindOneAccountResult> findOneAccount(Long accountId);
 
     Page<AccountList> findAccountListByPageable(Pageable pageable, Authority authority);

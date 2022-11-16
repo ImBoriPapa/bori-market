@@ -11,6 +11,9 @@ import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import mockwebserver3.MockResponse;
+import mockwebserver3.MockWebServer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
@@ -54,27 +58,41 @@ class AccountControllerTest {
     LinkProvider linkProvider;
     @Autowired
     JwtService jwtService;
+    public MockWebServer mockWebServer;
+    String defaultImage = "http://localhost:8095/frm/default.img";
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws IOException {
         log.info("[BeforeEach]");
-        ArrayList<ResponseAccountForm.ResponseSignupForm> results = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
-                    .loginId("loginId" + i)
-                    .name("로그인")
-                    .password("login123")
-                    .nickname("nickname" + i)
-                    .email("login" + i + "@login.com")
-                    .contact("010-" + i + "-1313")
-                    .addressCode(1001)
-                    .city("서울")
-                    .district("강남구")
-                    .town("대치동")
-                    .build();
-            ResponseAccountForm.ResponseSignupForm responseSignupForm = accountCommandService.signUpProcessing(form);
-            results.add(responseSignupForm);
-        }
+        mockWebServer = new MockWebServer();
+        mockWebServer.start(8095);
+        mockWebServer.url("/frm/profile/default");
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setBody(defaultImage);
+        mockWebServer.enqueue(mockResponse);
+
+//        ArrayList<ResponseAccountForm.ResponseSignupForm> results = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) {
+//            RequestAccountForm.CreateForm form = RequestAccountForm.CreateForm.builder()
+//                    .loginId("loginId" + i)
+//                    .name("로그인")
+//                    .password("login123")
+//                    .nickname("nickname" + i)
+//                    .email("login" + i + "@login.com")
+//                    .contact("010-" + i + "-1313")
+//                    .addressCode(1001)
+//                    .city("서울")
+//                    .district("강남구")
+//                    .town("대치동")
+//                    .build();
+//            ResponseAccountForm.ResponseSignupForm responseSignupForm = accountCommandService.signUpProcessing(form);
+//            results.add(responseSignupForm);
+//        }
+    }
+
+    @AfterEach
+    void afterEach() throws IOException {
+    mockWebServer.shutdown();
     }
 
     @Test
@@ -357,8 +375,8 @@ class AccountControllerTest {
         String value = objectMapper.writeValueAsString(emailForm);
         //when
         mockMvc.perform(put("/account/" + loginResult.getAccountId() + "/email")
-                        .header(AUTHORIZATION_HEADER,loginResult.getAccessToken())
-                        .header(REFRESH_HEADER,loginResult.getRefreshToken())
+                        .header(AUTHORIZATION_HEADER, loginResult.getAccessToken())
+                        .header(REFRESH_HEADER, loginResult.getRefreshToken())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(value))
                 //then

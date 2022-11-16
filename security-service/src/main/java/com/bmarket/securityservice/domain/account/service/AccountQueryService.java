@@ -44,7 +44,6 @@ public class AccountQueryService {
     /**
      * 계정 목록 조회
      * Pageable 을 사용한 offSet 기반 페이징
-     *
      * @param pageable, Authority or Null
      * @return AccountListResult
      */

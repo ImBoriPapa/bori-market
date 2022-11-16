@@ -40,6 +40,7 @@ public class Profile {
         this.address = address;
         this.addressRange = ONLY;
     }
+
     public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -56,4 +57,8 @@ public class Profile {
         this.addressRange = range;
     }
 
+    public String getFullAddress() {
+        return this.address.getCity() + "-" + this.address.getDistrict() + "-" + this.address.getTown();
+
+    }
 }

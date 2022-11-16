@@ -26,5 +26,3 @@ spring:
         type.descriptor.sql: trace
         SQL: DEBUG
 
-url:
-  default-profile: http://localhost:8095/frm/profile/default

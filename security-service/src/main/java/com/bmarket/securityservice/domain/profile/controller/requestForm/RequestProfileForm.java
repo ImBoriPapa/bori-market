@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.*;
+
 
 @NoArgsConstructor
 @Getter
@@ -16,6 +18,7 @@ public class RequestProfileForm {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateNickname {
+        @NotBlank
         private String nickname;
     }
 
@@ -23,6 +26,7 @@ public class RequestProfileForm {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateEmail{
+        @Email
         private String email;
     }
 
@@ -30,6 +34,7 @@ public class RequestProfileForm {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateContact{
+        @NotBlank
         private String contact;
     }
 
@@ -44,9 +49,14 @@ public class RequestProfileForm {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateAddress{
+        @Min(1000)
+        @Max(5000)
         private Integer addressCode;
+        @NotBlank
         private String city;
+        @NotBlank
         private String district;
+        @NotBlank
         private String town;
     }
 

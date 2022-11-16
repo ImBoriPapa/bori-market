@@ -203,7 +203,7 @@ class TradeQueryRepositoryTest {
                 .isOffer(null)
                 .status(null)
                 .addressCode(1001)
-                .range(AddressRange.JUST).build();
+                .range(AddressRange.ONLY).build();
         int size = 10;
         Long tradId = 31L;
 
@@ -222,7 +222,7 @@ class TradeQueryRepositoryTest {
                 .isOffer(false)
                 .status(null)
                 .addressCode(1001)
-                .range(AddressRange.JUST).build();
+                .range(AddressRange.ONLY).build();
         int size = 30;
         Long tradId = 0L;
 

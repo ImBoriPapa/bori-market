@@ -37,8 +37,10 @@ public enum ResponseStatus {
 
     CLIENT_ID_IS_EMPTY(4022,"클라이언 아이디를 확인할 수 없습니다."),
     CLIENT_ID_IS_INVALID(4023,"잘못된 클라이언트 아이디입니다."),
-    MUST_NEED_TOKEN_AND_ID(4024,"요청에 토큰과 클라이언트 아이디를 찾을수 없습니다.")
-
+    MUST_NEED_TOKEN_AND_ID(4024,"요청에 토큰과 클라이언트 아이디를 찾을수 없습니다."),
+    //내부 api
+    FRM_WRONG_REQUEST(5010,"요청이 잘못되었습니다."),
+    FRM_SERVER_PROBLEM(5011,"frm-service 에 문제가 있습니다."),
     ;
     private int code;
     private String message;

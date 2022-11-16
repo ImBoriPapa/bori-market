@@ -110,7 +110,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
 
     private BooleanExpression addressSearchRange(AddressRange addressRange, int addressCode) {
 
-        if (addressRange == AddressRange.JUST) {
+        if (addressRange == AddressRange.ONLY) {
             return trade.addressCode.eq(addressCode);
         }
 

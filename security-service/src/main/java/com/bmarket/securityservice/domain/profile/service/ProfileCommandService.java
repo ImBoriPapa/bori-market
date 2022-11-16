@@ -9,19 +9,14 @@ import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
+import com.bmarket.securityservice.internal_api.RequestFrmApi;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 
 @Service
@@ -31,8 +26,7 @@ import reactor.core.publisher.Mono;
 public class ProfileCommandService {
     private final AccountRepository accountRepository;
 
-    @Value("${url.default-profile}")
-    private String GET_DEFAULT_IMAGE_URL;
+    private final RequestFrmApi requestFrmApi;
 
     /**
      * createProfile() 은 Account 를 저장시 같이 저장하기 때문에 저장로직이 없음
@@ -49,7 +43,7 @@ public class ProfileCommandService {
 
         return Profile.createProfile()
                 .nickname(form.getNickname())
-                .profileImage(getDefaultProfileImage())
+                .profileImage(requestFrmApi.getDefaultProfileImage())
                 .address(address)
                 .build();
     }
@@ -65,15 +59,19 @@ public class ProfileCommandService {
     /**
      * 프로필 이미지 수정
      * 프로필 이미지 파일의 처리와 저장은 f.r.m service 의 위임 하기 위하여 getProfileImage()을 사용
-     *
      */
     public void updateProfileImage(Long accountId, MultipartFile file) {
         Account account = findAccount(accountId);
-        Long id = account.getProfile().getId();
 
-        String profileImage = getProfileImage(id, file);
+        String profileImage = requestFrmApi.requestSaveImage(accountId, file);
 
         account.getProfile().updateProfileImage(profileImage);
+    }
+
+    public void deleteProfileImage(Long accountId){
+        Account account = findAccount(accountId);
+        String result = requestFrmApi.requestDeleteImage(accountId);
+        account.getProfile().updateProfileImage(result);
     }
 
     /**
@@ -95,30 +93,6 @@ public class ProfileCommandService {
     public void updateAddressSearchRange(Long accountId, AddressRange range) {
         findAccount(accountId)
                 .getProfile().updateAddressRange(range);
-    }
-
-    private String getDefaultProfileImage() {
-        return WebClient.create()
-                .get()
-                .uri(GET_DEFAULT_IMAGE_URL)
-                .retrieve()
-                .bodyToMono(String.class)
-                .onErrorReturn("http://localhost:8080/frm/default.jpg")
-                .block();
-    }
-
-    private String getProfileImage(Long profileId, MultipartFile file) {
-        Resource resource = file.getResource();
-        String profileImage = WebClient.create()
-                .post()
-                .uri("http://localhost:8095/frm/profile")
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromMultipartData("accountId", profileId)
-                        .with("image", resource))
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        return profileImage;
     }
 
 
