@@ -6,6 +6,7 @@ import com.bmarket.securityservice.domain.trade.service.form.RequestTradeForm;
 import com.bmarket.securityservice.domain.trade.service.form.SearchCondition;
 import com.bmarket.securityservice.domain.trade.service.form.TradeDetailResult;
 import com.bmarket.securityservice.domain.trade.service.form.TradeListResult;
+import com.bmarket.securityservice.exception.custom_exception.internal_api_ex.InternalRequestFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 import java.util.List;
+
+import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
 
 
 @Component
@@ -24,14 +29,18 @@ import java.util.List;
 @Slf4j
 public class RequestTradeApi {
 
+    public static final String TRADE_SERVICE_URL = "http://localhost:8081/internal/trade";
     // TODO: 2022/10/31 onStatus 에러 처리
     public WebClient tradeClient() {
         return WebClient.builder()
-                .baseUrl("http://localhost:8081/internal/trade")
+                .baseUrl(TRADE_SERVICE_URL)
                 .build();
     }
 
-    public ResponseCreateTradeResult RequestCreateTrade(RequestTradeForm form, List<MultipartFile> images) {
+    /**
+     * 거래 생성 요청 api
+     */
+    public ResponseCreateTradeResult requestCreateTrade(Long accountId,RequestTradeForm form, List<MultipartFile> images) {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
@@ -40,25 +49,34 @@ public class RequestTradeApi {
             builder.part("images", image.getResource());
         }
         return tradeClient()
-                .post()
+                .post().uri("/{accountId}",accountId)
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError,
-                        response -> response.bodyToMono(String.class).map(IllegalArgumentException::new))
+                        response -> Mono.error(()-> new InternalRequestFailException(TRADE_WRONG_REQUEST)))
+                .onStatus(HttpStatus::is5xxServerError,
+                        response -> Mono.error(()-> new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
                 .bodyToMono(ResponseCreateTradeResult.class)
                 .block();
     }
 
-    public RequestGetTradeListResult[] RequestGetSaleHistory(Long accountId) {
+    /**
+     * 거래 내역 요청 api
+     */
+    public List<RequestGetTradeListResult> requestGetSaleHistory(Long accountId) {
         return tradeClient()
                 .get()
-                .uri("/" + accountId + "/sale-history")
+                .uri("/{accountId}/sale-history",accountId)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError,
-                        response -> response.bodyToMono(String.class).map(IllegalArgumentException::new))
+                        response -> Mono.error(()-> new InternalRequestFailException(TRADE_WRONG_REQUEST)))
+                .onStatus(HttpStatus::is5xxServerError,
+                        response -> Mono.error(()-> new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
                 .bodyToMono(RequestGetTradeListResult[].class)
+                .map(Arrays::asList)
                 .block();
     }
+
 
     public ResponseEntity<TradeListResult> RequestGetTradeList(SearchCondition condition) {
         return WebClient.create("http://localhost:8081")

@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.domain.profile.controller.resultForm;
+package com.bmarket.securityservice.domain.profile.controller;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;

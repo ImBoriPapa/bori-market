@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class RequestTradeForm {
-    private Long accountId;
+
     private String nickname;
     private String title;
     private String context;

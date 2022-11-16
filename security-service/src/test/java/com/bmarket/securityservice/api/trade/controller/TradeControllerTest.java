@@ -9,6 +9,7 @@ import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestCreateTradeForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import mockwebserver3.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,7 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
@@ -49,6 +51,7 @@ class TradeControllerTest {
     AccountRepository accountRepository;
     @Autowired
     JwtService jwtService;
+    public MockWebServer mockWebServer;
 
     @BeforeEach
     void beforeEach() {
@@ -65,8 +68,9 @@ class TradeControllerTest {
         ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
     }
     @AfterEach
-    void AfterEach(){
+    void AfterEach() throws IOException {
         accountRepository.deleteAll();
+        mockWebServer.shutdown();
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.bmarket.securityservice.domain.trade.controller;
 
 import com.bmarket.securityservice.domain.common.ResponseForm;
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestCreateTradeForm;
+import com.bmarket.securityservice.domain.trade.entity.Category;
 import com.bmarket.securityservice.domain.trade.service.form.RequestTradeForm;
 
 import com.bmarket.securityservice.domain.trade.service.RequestTradeApi;
@@ -36,6 +37,14 @@ public class TradeController {
     private final RequestTradeApi requestTradeApi;
     private final JwtUtils jwtUtils;
 
+    @GetMapping("/trade/category")
+    public ResponseEntity getCategoryList(){
+
+        return ResponseEntity
+                .ok()
+                .body(Category.values());
+    }
+
     @PostMapping("/trade")
     public ResponseEntity<ResponseForm.Of> createTrade(@RequestPart RequestCreateTradeForm form,
                                                     @RequestPart List<MultipartFile> images,
@@ -45,7 +54,6 @@ public class TradeController {
         Account id = accountRepository.findById(accountId).get();
 
         RequestTradeForm requestTradeForm = RequestTradeForm.builder()
-                .accountId(id.getId())
                 .nickname(id.getProfile().getNickname())
                 .title(form.getTitle())
                 .context(form.getContext())
@@ -53,7 +61,8 @@ public class TradeController {
                 .category(form.getCategory())
                 .isShare(form.getIsShare())
                 .isOffer(form.getIsOffer()).build();
-        ResponseCreateTradeResult responseCreateTradeResult = requestTradeApi.RequestCreateTrade(requestTradeForm, images);
+        ResponseCreateTradeResult responseCreateTradeResult = requestTradeApi
+                .requestCreateTrade(accountId,requestTradeForm, images);
 
         return ResponseEntity
                 .ok()
@@ -87,11 +96,12 @@ public class TradeController {
         Long accountId = jwtUtils.getUserId(token);
         Account id = accountRepository.findById(accountId).get();
 
-        RequestGetTradeListResult[] history = requestTradeApi.RequestGetSaleHistory(id.getId());
+//        RequestGetTradeListResult[] history = requestTradeApi.RequestGetSaleHistory(id.getId());
+        List<RequestGetTradeListResult> requestGetTradeListResults = requestTradeApi.requestGetSaleHistory(id.getId());
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, history));
+                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, requestGetTradeListResults));
     }
 
 

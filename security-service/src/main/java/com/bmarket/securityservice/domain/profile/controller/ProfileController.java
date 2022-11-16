@@ -2,7 +2,6 @@ package com.bmarket.securityservice.domain.profile.controller;
 
 import com.bmarket.securityservice.domain.address.Address;
 import com.bmarket.securityservice.domain.common.ResponseForm;
-import com.bmarket.securityservice.domain.profile.controller.requestForm.RequestProfileForm;
 import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.service.ProfileCommandService;
 import com.bmarket.securityservice.domain.profile.service.ProfileQueryService;
@@ -28,6 +27,7 @@ import java.util.List;
 public class ProfileController {
     // TODO: 2022/11/16 validation test
     // TODO: 2022/11/16 변경시 연관된 서비스에 변경내용 전파 구현
+    // TODO: 2022/11/16 header 에 clientId 응답 추가
     private final ProfileCommandService profileCommandService;
     private final ProfileQueryService profileQueryService;
 

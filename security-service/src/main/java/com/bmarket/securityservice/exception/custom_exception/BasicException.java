@@ -29,13 +29,13 @@ public class BasicException extends RuntimeException {
     public int getErrorCode() {
         return errorCode;
     }
-
     public List<String> getErrorMessage() {
         return errorMessage;
     }
 
     public BasicException() {
     }
+
 
     public BasicException(ResponseStatus status) {
         this.status = status;

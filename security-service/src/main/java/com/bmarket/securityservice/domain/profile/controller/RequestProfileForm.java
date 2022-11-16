@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.domain.profile.controller.requestForm;
+package com.bmarket.securityservice.domain.profile.controller;
 
 
 
