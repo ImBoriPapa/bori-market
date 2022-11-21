@@ -5,6 +5,7 @@ import com.bmarket.securityservice.utils.status.ResponseStatus;
 import org.springframework.validation.BindingResult;
 
 public class FailLoginException extends BasicException {
+
     public FailLoginException() {
     }
 

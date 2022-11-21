@@ -24,6 +24,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/account/{accountId}/profile")
 public class ProfileController {
     // TODO: 2022/11/16 validation test
     // TODO: 2022/11/16 변경시 연관된 서비스에 변경내용 전파 구현
@@ -35,20 +36,36 @@ public class ProfileController {
      * 프로필 단건 조회
      */
     // TODO: 2022/11/16 링크, header 추가
-    @GetMapping(value = "/profile/{accountId}")
+    @GetMapping()
     public ResponseEntity getProfile(@PathVariable Long accountId) {
         ProfileResultForm.profileResult profile = profileQueryService.getProfile(accountId);
+
         EntityModel<ProfileResultForm.profileResult> entityModel = EntityModel.of(profile);
+
+        List<Link> links = getProfileLinks();
+
+        entityModel.add(links);
+
 
         return ResponseEntity.ok()
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
+    }
+
+    private static List<Link> getProfileLinks() {
+        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
+        Link link1 = webMvcLinkBuilder.slash("/nickname").withRel("PUT : nickname 변경");
+        Link link2 = webMvcLinkBuilder.slash("/image").withRel("PUT : image 변경");
+        Link link3 = webMvcLinkBuilder.slash("/address").withRel("PUT : 주소 변경");
+        Link link4 = webMvcLinkBuilder.slash("/range").withRel("PUT : 주소검색 범위 변경");
+        List<Link> links = List.of(link1, link2, link3, link4);
+        return links;
     }
 
     /**
      * 닉네임 수정 닉네임 리소스만 때문에 PutMapping
      */
     // TODO: 2022/11/16 헤더 추가
-    @PutMapping("/profile/{accountId}/nickname")
+    @PutMapping("/nickname")
     public ResponseEntity putNickname(@Validated @PathVariable Long accountId,
                                       @RequestBody RequestProfileForm.UpdateNickname form,
                                       BindingResult bindingResult) {
@@ -58,31 +75,29 @@ public class ProfileController {
 
         profileCommandService.updateNickname(accountId, form.getNickname());
 
-        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
-        Link link1 = webMvcLinkBuilder.slash("/profile").slash(accountId).withRel("GET : profile");
-        Link link2 = webMvcLinkBuilder.slash("/profile").slash(accountId).slash("/image").withRel("PUT : 프로필 이미지 변경");
-        List<Link> linkList = List.of(link1, link2);
-        return ResponseEntity.ok().body(new ResponseForm.Of(ResponseStatus.SUCCESS, linkList));
+        List<Link> links = getProfileLinks();
+
+
+        return ResponseEntity.ok().body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
     }
 
-    @PutMapping("/profile/{accountId}/range")
+    @PutMapping("/range")
     public ResponseEntity putAddressSearchRange(@PathVariable Long accountId
             , @RequestParam AddressRange addressRange) {
         profileCommandService.updateAddressSearchRange(accountId, addressRange);
-        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
-        Link link1 = webMvcLinkBuilder.slash("/profile").slash(accountId).withRel("GET : profile");
-        Link link2 = webMvcLinkBuilder.slash("/profile").slash(accountId).slash("/image").withRel("PUT : 프로필 이미지 변경");
-        List<Link> linkList = List.of(link1, link2);
+
+        List<Link> links = getProfileLinks();
+
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, linkList));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
     }
 
     /**
      * 주소 수정
      */
     // TODO: 2022/11/16 헤더 추가
-    @PutMapping("/profile/{accountId}/address")
+    @PutMapping("/address")
     public ResponseEntity putAddress(@Validated
                                      @PathVariable Long accountId,
                                      @RequestBody RequestProfileForm.UpdateAddress form,
@@ -99,33 +114,32 @@ public class ProfileController {
                 .town(form.getTown()).build();
         profileCommandService.updateAddress(accountId, address);
 
-        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
-        Link link1 = webMvcLinkBuilder.slash("/profile").slash(accountId).withRel("GET : profile");
-        Link link2 = webMvcLinkBuilder.slash("/profile").slash(accountId).slash("/image").withRel("PUT : 프로필 이미지 변경");
-        List<Link> linkList = List.of(link1, link2);
+        List<Link> links = getProfileLinks();
+
+
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, linkList));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
     }
 
     /**
      * 프로필 이미지 변경
      */
-    @PutMapping("/profile/{accountId}/image")
+    @PutMapping("/image")
     public ResponseEntity putImage(@PathVariable Long accountId,
                                    @RequestPart MultipartFile image) {
 
         profileCommandService.updateProfileImage(accountId, image);
 
         WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
-        Link link1 = webMvcLinkBuilder.slash("/profile").slash(accountId).withRel("GET : profile");
-        Link link2 = webMvcLinkBuilder.slash("/profile").slash(accountId).slash("/image").withRel("PUT : 프로필 이미지 변경");
-        List<Link> linkList = List.of(link1, link2);
+
+        List<Link> links = getProfileLinks();
+
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, linkList));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
     }
 
 }

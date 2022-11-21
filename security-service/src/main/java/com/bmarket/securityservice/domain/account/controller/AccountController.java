@@ -9,7 +9,7 @@ import com.bmarket.securityservice.domain.security.controller.LoginController;
 
 import com.bmarket.securityservice.domain.account.service.AccountQueryService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
-import com.bmarket.securityservice.exception.validator.CreateSignupFormValidator;
+import com.bmarket.securityservice.exception.validator.AccountDuplicateValidator;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.*;
@@ -21,6 +21,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,9 +29,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.CLIENT_ID;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -42,34 +45,32 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class AccountController {
     private final AccountQueryService accountQueryService;
     private final AccountCommandService accountCommandService;
-    private final CreateSignupFormValidator createSignupFormValidator;
+    private final AccountDuplicateValidator accountDuplicateValidator;
     private final LinkProvider linkProvider;
-
-    @InitBinder("CreateForm")
-    public void init(WebDataBinder dataBinder) {
-        log.info("WebDataBinder={}, target={}",dataBinder,dataBinder.getTarget());
-        dataBinder.addValidators(createSignupFormValidator);
-    }
 
     /**
      * POST : /ACCOUNT
      * 계정 생성 요청
-     *
-     * @param form
-     * @return ResponseForm
      */
     @PostMapping
     public ResponseEntity<ResponseForm.Of> createAccount(
             @Validated
-            @RequestBody RequestAccountForm.CreateForm form, BindingResult bindingResult) {
+            @RequestBody RequestAccountForm.CreateForm form, BindingResult bindingResult,
+            HttpServletRequest request
+
+    ) {
         log.info("[ACCOUNT CONTROLLER] createAccount");
+        String clientId = request.getHeader(CLIENT_ID);
 
         if (bindingResult.hasErrors()) {
-            log.info("Validation Error 발생");
+            log.info("Validation Error 발생 ClientId ={}", clientId);
             throw new FormValidationException(ResponseStatus.FAIL_VALIDATION, bindingResult);
         }
 
-        WebMvcLinkBuilder link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult));
+
+        accountDuplicateValidator.validate(form);
+
+        WebMvcLinkBuilder link = linkTo(methodOn(AccountController.class).createAccount(form, bindingResult, request));
 
         ResponseAccountForm.ResponseSignupForm result = accountCommandService.signUpProcessing(form);
 
@@ -80,7 +81,6 @@ public class AccountController {
 
         EntityModel<ResponseAccountForm.ResponseSignupForm> entityModel = EntityModel.of(result);
         entityModel.add(linkProvider.createOneLink(LoginController.class, "login", "POST : 로그인"));
-        entityModel.add(linkProvider.createCrudLink(AccountController.class, result.getAccountId(), "계정"));
 
         return ResponseEntity
                 .created(Location)
@@ -93,7 +93,7 @@ public class AccountController {
      * 계정 단건 조회
      */
     @GetMapping("/{accountId}")
-    public ResponseEntity<ResponseForm.Of> getAccount(@PathVariable Long accountId ) {
+    public ResponseEntity<ResponseForm.Of> getAccount(@PathVariable Long accountId) {
 
         FindOneAccountResult result = accountQueryService.findAccountDetail(accountId);
 
@@ -101,8 +101,6 @@ public class AccountController {
 
         EntityModel<FindOneAccountResult> entityModel = EntityModel.of(result)
                 .add(crudLink);
-
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -111,6 +109,7 @@ public class AccountController {
                 .headers(httpHeaders)
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
+    // TODO: 2022/11/21 admin 기능으로 변경하기
 
     /**
      * 계정 다건 조회
@@ -138,10 +137,10 @@ public class AccountController {
     }
 
     @DeleteMapping("/{accountId}")
-    public ResponseEntity deleteAccount(@Validated @PathVariable Long accountId, @RequestBody RequestAccountForm.DeleteForm form,BindingResult bindingResult) {
+    public ResponseEntity deleteAccount(@Validated @PathVariable Long accountId, @RequestBody RequestAccountForm.DeleteForm form, BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()){
-            log.error("error",bindingResult);
+        if (bindingResult.hasErrors()) {
+            log.error("error={}", bindingResult);
         }
 
         accountCommandService.deleteAccount(accountId, form.getPassword());
@@ -149,7 +148,7 @@ public class AccountController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseAccountForm.ResponseResultForm deleteForm = new ResponseAccountForm.ResponseResultForm("ok");
+        ResponseAccountForm.ResponseResultForm deleteForm = new ResponseAccountForm.ResponseResultForm(accountId);
         EntityModel<ResponseAccountForm.ResponseResultForm> entityModel = EntityModel.of(deleteForm);
 
         return ResponseEntity.ok()
@@ -159,31 +158,37 @@ public class AccountController {
 
     @PutMapping("/{accountId}/password")
     public ResponseEntity updatePassword(@PathVariable Long accountId,
-                               @RequestBody RequestAccountForm.UpdatePasswordForm form) {
+                                         @RequestBody RequestAccountForm.UpdatePasswordForm form) {
 
-        accountCommandService.updatePassword(accountId,form.getPassword(),form.getNewPassword());
+        accountCommandService.updatePassword(accountId, form.getPassword(), form.getNewPassword());
 
-        ResponseAccountForm.ResponseResultForm passwordForm = new ResponseAccountForm.ResponseResultForm("비밀번호 변경 성공");
+        ResponseAccountForm.ResponseResultForm passwordForm = new ResponseAccountForm.ResponseResultForm(accountId);
         EntityModel<ResponseAccountForm.ResponseResultForm> entityModel = EntityModel.of(passwordForm);
+        Link loginLink = linkProvider.createOneLink(LoginController.class, "login", "login");
+        entityModel.add(loginLink);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return ResponseEntity.ok().headers(headers).body(entityModel);
+        return ResponseEntity.ok().headers(headers).body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     @PutMapping("/{accountId}/email")
     public ResponseEntity updateEmail(@PathVariable Long accountId,
-                            @RequestBody RequestAccountForm.UpdateEmailForm form){
-        log.info("[UpdateEmail param= '{}']",form.getEmail());
-        accountCommandService.updateEmail(accountId,form.getEmail());
+                                      @RequestBody RequestAccountForm.UpdateEmailForm form) {
+        log.info("[UpdateEmail param= '{}']", form.getEmail());
+        accountCommandService.updateEmail(accountId, form.getEmail());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        ResponseAccountForm.ResponseResultForm resultForm = new ResponseAccountForm.ResponseResultForm(accountId);
 
-        ResponseAccountForm.ResponseResultForm resultForm = new ResponseAccountForm.ResponseResultForm("OK");
         EntityModel<ResponseAccountForm.ResponseResultForm> entityModel = EntityModel.of(resultForm);
 
-        return ResponseEntity.ok().headers(headers).body(entityModel);
+        Link loginLink = linkProvider.createOneLink(LoginController.class, "login", "login");
+        entityModel.add(loginLink);
+
+
+        return ResponseEntity.ok().headers(headers).body(new ResponseForm.Of(ResponseStatus.SUCCESS,entityModel));
     }
 }

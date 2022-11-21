@@ -1,32 +1,212 @@
-= Bori market REST DOCS
+= Bori Market API DOCS
 :toc: left
-:toclevels:
+:toclevels: 2
 :doctype: book
 ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
 
+- server : http://localhost:8080
+
 == ACCOUNT
 
+=== API 목록
 
-[[ACCOUNT_생성]]
-=== ACCOUNT 생성
-==== 요청
-include::{snippets}/account/curl-request.adoc[]
-==== 요청 헤더
+|===
+
+|API 종류|API |설명
+
+|계정 생성 |POST/account | 회원가입 요청
+|계정 단건 조회 |GET/account/{accountId} | 특정 계정 정보 조회요청 ex)자신의 계정정보
+|계정 비밀번호 변경 |PUT/account/{accountId}/password | 비밀번호 변경 요청
+|계정 이메일 변경 |PUT/account/{accountId}/email | 이메일 변경 요청
+
+|===
+
+=== 1.계정 생성
+
+==== 요청 예)
+
+POST- http://localhost:8080/account
+
 include::{snippets}/account/http-request.adoc[]
-==== 응답
-include::{snippets}/account/http-response.adoc[]
-include::{snippets}/account/request-body.adoc[]
-==== 요청 바디
+
+==== 필수 요청 헤더
+
+|===
+|헤더 |설명
+
+|Content-Type |application/json;charset=UTF-8
+|Content-Length |264
+
+|===
+
+==== 요청 필드
+
 include::{snippets}/account/request-fields.adoc[]
-==== 응답 바디
+
+==== 응답
+
+include::{snippets}/account/http-response.adoc[]
+
+==== 응답 헤더
+
+|===
+|헤더|설명
+|201 Created | 응답 상태
+|Location | 리소스 생성 위치
+|Content-Type | application/json
+|===
+
+==== 응답 필드
+
 include::{snippets}/account/response-fields.adoc[]
 
-== TRADE
+=== 2. 계정 조회
+
+==== 요청 예) GET- http://localhost:8080/account/1
+
+include::{snippets}/getOneAccount/http-request.adoc[]
+
+==== 필수 요청 헤더
+
+|===
+|헤더 |설명
+
+|Client-Id |클라이언트 요청 식별 아이디
+|Authorization | Access Token 헤더
+|Refresh | Refresh Token 헤더
+|Content-Type |application/json;charset=UTF-8
+
+|===
+
+==== 응답
+
+include::{snippets}/getOneAccount/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/getOneAccount/response-fields.adoc[]
+
+=== 3. 계정 비밀번호 변경
+
+==== 요청 예) PUT- http://localhost:8080/account/1/password
+
+include::{snippets}/accountPutPassword/http-request.adoc[]
+
+==== 필수 요청 헤더
+
+|===
+|헤더 |설명
+
+|Client-Id |클라이언트 요청 식별 아이디
+|Authorization | Access Token 헤더
+|Refresh | Refresh Token 헤더
+|Content-Type |application/json;charset=UTF-8
+
+|===
+
+==== 요청 필드
+
+include::{snippets}/accountPutPassword/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/accountPutPassword/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/accountPutPassword/response-fields.adoc[]
+
+=== 4. 계정 이메일 변경
+
+==== 요청 예)
+
+include::{snippets}/accountPutEmail/http-request.adoc[]
+
+==== 필수 요청 헤더
+
+|===
+|헤더 |설명
+
+|Client-Id |클라이언트 요청 식별 아이디
+|Authorization | Access Token 헤더
+|Refresh | Refresh Token 헤더
+|Content-Type |application/json;charset=UTF-8
+
+|===
+
+==== 요청 필드
+
+include::{snippets}/accountPutEmail/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/accountPutEmail/http-response.adoc[]
+==== 응답 필드::
+include::{snippets}/accountPutEmail/response-fields.adoc[]
+
+== PROFILE
+
+=== API 목록
+
+|===
+
+|API 종류|API |설명
+
+|프로필 단건 조회 |GET/profile/{accountId} | 프로필 정보 조회
+|프로필 이미지 변경 |PUT/profile/{accountId}/image | 프로필의 이미지 변경 요청
+|닉네임 변경 |PUT/profile/{accountId}/nickname | 닉네임 변경 요청
+|주소 변경 |PUT/profile/{accountId}/address | 주소 변경
+|주소 검색 범위 변경 |PUT/profile/{accountId}/range | 주소 검샘 범위 변경 요청
+
+|===
+
+=== 1. 프로필 단건 조회
+
+==== 요청 예)
+
+include::{snippets}/getProfile/http-request.adoc[]
+
+==== 필수 요청 헤더
+
+|===
+|헤더 |설명
+
+|Client-Id |클라이언트 요청 식별 아이디
+|Authorization | Access Token 헤더
+|Refresh | Refresh Token 헤더
+|Content-Type |application/json;charset=UTF-8
+
+|===
+
+==== 응답
+
+include::{snippets}/getProfile/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/getProfile/response-fields.adoc[]
 
 == CHAT
 
 == ADDRESS
 
 == ADMIN
+
+== ERROR
+
+=== 에러
+
+==== 잘못된 요청 예) 로그인 아이디 누락
+
+include::{snippets}/account-error/http-request.adoc[]
+
+==== 에러 응답
+
+include::{snippets}/account-error/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/account-error/response-fields.adoc[]
+

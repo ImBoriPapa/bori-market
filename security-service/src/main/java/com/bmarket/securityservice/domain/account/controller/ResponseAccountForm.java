@@ -21,8 +21,7 @@ public class ResponseAccountForm {
     @AllArgsConstructor
     @Getter
     public static class ResponseResultForm {
-
-        private String result;
+        private Long accountId;
     }
 
 

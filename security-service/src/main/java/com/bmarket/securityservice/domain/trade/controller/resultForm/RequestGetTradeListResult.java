@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Builder
-public class RequestGetTradeListResult extends ResultForm {
+public class RequestGetTradeListResult  {
 
     private Long tradeId;
     private String title;

@@ -11,7 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestApiController {
 
     @GetMapping("/test-profile-image")
-    public String getTestProfileImages(){
+    public String getTestProfileImages() {
         return "http://localhost:8080/test-profile-image";
+    }
+
+    @GetMapping("/hello")
+    public String greeting(){
+
+        return "Hello";
     }
 }

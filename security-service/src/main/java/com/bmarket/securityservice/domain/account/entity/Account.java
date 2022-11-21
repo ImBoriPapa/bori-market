@@ -80,14 +80,18 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Account(String loginId, String name, String password, String email, String contact) {
+    public static Account createAdmin(String loginId, String name, String password, String email, String contact,Authority authority) {
+        return new Account(loginId, name, password, email, contact,authority);
+    }
+
+    private Account(String loginId, String name, String password, String email, String contact,Authority authority) {
         this.clientId = generateSequentialUUID();
         this.loginId = loginId;
         this.name = name;
         this.password = password;
         this.email = email;
         this.contact = contact;
-        this.authority = Authority.ADMIN;
+        this.authority = authority;
         this.isLogin = false;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();

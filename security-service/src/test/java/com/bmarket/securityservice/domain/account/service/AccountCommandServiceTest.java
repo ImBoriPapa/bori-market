@@ -9,19 +9,28 @@ import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import lombok.extern.slf4j.Slf4j;
+import mockwebserver3.MockResponse;
+import mockwebserver3.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.*;
 
+// TODO: 2022/11/19 테스트 코드 보강
+@ActiveProfiles("test")
 @SpringBootTest
 @Slf4j
 @Transactional
@@ -37,36 +46,29 @@ class AccountCommandServiceTest {
     @Autowired
     EntityManager em;
 
+    public MockWebServer mockWebServer;
+
     @BeforeEach
-    void beforeEach() {
-        Account testAdmin = Account.createAccount()
-                .loginId("admin")
-                .email("admin@admin.com")
-                .contact("010-1213-4643")
-                .password("admin123")
-                .name("관리자1")
-                .build();
-        Account save1 = accountRepository.save(testAdmin);
-        save1.updateAuthority(Authority.ADMIN);
+    void beforeEach() throws IOException {
 
-        Account testUser = Account.createAccount()
-                .loginId("user")
-                .email("user@v.com")
-                .contact("010-5213-4643")
-                .password("user123")
-                .name("사용자1")
-                .build();
-        Account save2 = accountRepository.save(testUser);
+        accountRepository.save(
+                Account.createAdmin("admin1", "admin1", "!@admin1234", "admin1@admin.com", "01011111111", Authority.ADMIN)
+        );
 
-        em.flush();
-        em.clear();
-        System.out.println("================BEFORE EACH================");
+        mockWebServer = new MockWebServer();
+        mockWebServer.start(8095);
+        mockWebServer.url("/frm/profile/default");
 
+        MockResponse mockResponse = new MockResponse();
+        mockResponse.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        mockResponse.setBody("http://localhost:8095/frm/profile/default.jpg");
+
+        mockWebServer.enqueue(mockResponse);
     }
 
     @AfterEach
-    void afterEach() {
-        accountRepository.deleteAll();
+    void afterEach() throws IOException {
+        mockWebServer.shutdown();
     }
 
     @Test
@@ -100,11 +102,11 @@ class AccountCommandServiceTest {
         assertThat(findAccount.getEmail()).isEqualTo("bread@bread.com");
         assertThat(findAccount.getContact()).isEqualTo("010-2222-1234");
         //최초 가입시 권한은 ROLL_USER
-        assertThat(findAccount.getAuthorityList()).isEqualTo(Authority.USER);
+        assertThat(findAccount.getAuthority()).isEqualTo(Authority.USER);
         assertThat(findAccount.getRefreshToken()).isNull();
         assertThat(findAccount.getProfile().getNickname()).isEqualTo("브레드피트");
-        //최초 가입시 프로필 이미지는 기본이미지로 저장 : http://localhost:8095/file/default/default-profile.jpg
-        assertThat(findAccount.getProfile().getProfileImage()).startsWith("http");
+        assertThat(findAccount.getProfile().getProfileImage()).isEqualTo("http://localhost:8095/frm/profile/default.jpg");
+
         assertThat(findAccount.getProfile().getAddress().getAddressCode()).isNotNull();
         assertThat(findAccount.getProfile().getAddress().getCity()).isEqualTo("서울");
         assertThat(findAccount.getProfile().getAddress().getDistrict()).isEqualTo("종로구");
@@ -192,24 +194,34 @@ class AccountCommandServiceTest {
                 .district("종로구")
                 .town("암사동")
                 .build();
+
+        Account account = Account.createAccount()
+                .loginId("noAdmin")
+                .name("noAdmin")
+                .password("noAdmin1234")
+                .email("noAdmin@noAdmin.com")
+                .contact("01011114444").build();
+        Account noAdmin = accountRepository.save(account);
+
         //when
         ResponseAccountForm.ResponseSignupForm signupForm = accountCommandService.signUpProcessing(form);
+
+
         Account findUser = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
-        Account findAdmin = accountRepository.findByLoginId("manager")
-                .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
-        Account anotherUser = accountRepository.findByLoginId("user")
+        Account findAdmin = accountRepository.findByLoginId("admin1")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
 
         accountCommandService.changeAuthority(findAdmin.getId(), findUser.getId(), Authority.ADMIN);
+
         Account afterChange = accountRepository.findById(signupForm.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         //then
         // 권한이 있는 계정에서 권한 변경 요청
         assertThat(afterChange.getAuthority()).isEqualTo(Authority.ADMIN);
-        // 권한이 없는 계정에서 권한 변경 요청
         assertThatThrownBy(() ->
-                accountCommandService.changeAuthority(anotherUser.getId(), afterChange.getId(), Authority.USER)
-        ).isExactlyInstanceOf(BasicException.class);
+                accountCommandService.changeAuthority(noAdmin.getId(), findAdmin.getId(), Authority.SUPER_ADMIN)
+        );
+
     }
 }

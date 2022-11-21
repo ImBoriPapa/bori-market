@@ -19,5 +19,5 @@ public interface AccountQueryRepository {
     Page<AccountList> findAccountListByPageable(Pageable pageable, Authority authority);
 
     List<Account> useTransaction();
-    List<Account> donUseTransaction();
+    List<Account> doNotUseTransaction();
 }

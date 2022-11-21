@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BasicException extends RuntimeException {
 
+    public BasicException(String message) {
+        super(message);
+    }
+
     private  ResponseStatus status;
     private String errorType;
     private int errorCode;
@@ -38,6 +42,7 @@ public class BasicException extends RuntimeException {
 
 
     public BasicException(ResponseStatus status) {
+        super(status.getMessage());
         this.status = status;
         this.errorType = this.getClass().getName();
         this.errorCode = status.getCode();
@@ -46,6 +51,7 @@ public class BasicException extends RuntimeException {
     }
 
     public BasicException(ResponseStatus status, BindingResult bindingResult) {
+        super(status.getMessage());
         this.status = status;
         this.errorType = this.getClass().getName();
         this.errorCode = status.getCode();

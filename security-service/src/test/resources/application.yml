@@ -1,11 +1,14 @@
 
+
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
   token-validation-life: 10
   refresh-token-validation-life: 15
 
 spring:
-
+  config:
+    activate:
+      on-profile: test
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

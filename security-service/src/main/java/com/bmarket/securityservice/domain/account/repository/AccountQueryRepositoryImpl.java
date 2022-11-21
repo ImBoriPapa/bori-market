@@ -2,10 +2,7 @@ package com.bmarket.securityservice.domain.account.repository;
 
 import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.entity.Authority;
-import com.bmarket.securityservice.api.account.repository.dto.*;
-import com.bmarket.securityservice.domain.account.repository.dto.AccountList;
-import com.bmarket.securityservice.domain.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.domain.account.repository.dto.UserDetailData;
+import com.bmarket.securityservice.domain.account.repository.dto.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.*;
@@ -20,7 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.bmarket.securityservice.api.account.entity.QAccount.*;
+import static com.bmarket.securityservice.domain.account.entity.QAccount.account;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -104,7 +102,7 @@ public class AccountQueryRepositoryImpl implements AccountQueryRepository {
                 .fetch();
     }
 
-    public List<Account> donUseTransaction() {
+    public List<Account> doNotUseTransaction() {
         return queryFactory
                 .selectFrom(account)
                 .fetch();

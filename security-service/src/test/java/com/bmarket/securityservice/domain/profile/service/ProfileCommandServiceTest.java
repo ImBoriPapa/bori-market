@@ -7,24 +7,33 @@ import com.bmarket.securityservice.domain.address.Address;
 import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
-import com.bmarket.securityservice.exception.custom_exception.internal_api_ex.InternalRequestFailException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.bmarket.securityservice.domain.testdata.TestData;
 import lombok.extern.slf4j.Slf4j;
+
+import mockwebserver3.Dispatcher;
 import mockwebserver3.MockResponse;
 import mockwebserver3.MockWebServer;
+import mockwebserver3.RecordedRequest;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.io.IOException;
 
+import static com.bmarket.securityservice.internal_api.frm.RequestFrmFrmApiImpl.PUT_PROFILE_IMAGE_URL;
 import static org.assertj.core.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @Transactional
 @Slf4j
@@ -37,54 +46,51 @@ class ProfileCommandServiceTest {
     @Autowired
     AccountRepository accountRepository;
     @Autowired
-    ObjectMapper objectMapper;
+    TestData testData;
+
     public MockWebServer mockWebServer;
-    String defaultImageName = "http://localhost:8095/frm/default.jpg";
+    public Dispatcher dispatcher;
 
     @BeforeEach
-    void beforeEach() {
-        Address address = Address.createAddress()
-                .addressCode(1001)
-                .city("서울")
-                .district("종로구")
-                .town("종로동").build();
-        Profile profile = Profile.createProfile()
-                .nickname("변경전")
-                .address(address)
-                .profileImage(defaultImageName)
-                .build();
-        Account account = Account.createAccount()
-                .loginId("login")
-                .name("name")
-                .password("1234")
-                .email("email@email.com")
-                .contact("010-1213-1213")
-                .profile(profile)
-                .build();
-        accountRepository.save(account);
+    void beforeEach() throws IOException {
         mockWebServer = new MockWebServer();
-    }
+        mockWebServer.start(8095);
+        mockWebServer.url("/frm/profile/");
 
+        MockResponse getDefaultImg = new MockResponse();
+        getDefaultImg.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        getDefaultImg.setBody("http://localhost:8095/frm/profile/default.jpg");
+
+        MockResponse getSaveImg = new MockResponse();
+        getSaveImg.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+        getSaveImg.setBody("newImg");
+
+        dispatcher = new Dispatcher() {
+            @NotNull
+            @Override
+            public MockResponse dispatch(@NotNull RecordedRequest recordedRequest) throws InterruptedException {
+                if(recordedRequest.getPath().contains("/default"))
+                return getDefaultImg;
+                if (recordedRequest.getPath().contains("1")) {
+                    return getSaveImg;
+                }
+                return new MockResponse().setResponseCode(400);
+            }
+        };
+        mockWebServer.setDispatcher(dispatcher);
+
+        testData.initAccount();
+    }
     @AfterEach
     void afterEach() throws IOException {
-
-            mockWebServer.shutdown();
-
-        accountRepository.deleteAll();
+        testData.clearAccount();
+        mockWebServer.shutdown();
     }
 
     @Test
     @DisplayName("프로필 생성 테스트")
     void createProfileTest() throws Exception {
         //given
-
-        mockWebServer.start(8095);
-        mockWebServer.url("/frm/profile/default");
-        String response = "test-default";
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody(response);
-        mockWebServer.enqueue(mockResponse);
-
         RequestAccountForm.CreateForm createForm = RequestAccountForm.CreateForm.builder()
                 .name("고길동")
                 .loginId("KoKillDong")
@@ -112,15 +118,13 @@ class ProfileCommandServiceTest {
         assertThat(findProfile.getAddress().getCity()).isEqualTo(createForm.getCity());
         assertThat(findProfile.getAddress().getDistrict()).isEqualTo(createForm.getDistrict());
         assertThat(findProfile.getAddress().getTown()).isEqualTo(createForm.getTown());
-        log.info("default image ={}", findProfile.getProfileImage());
-
     }
 
     @Test
     @DisplayName("닉네임 수정 테스트")
     void updateNicknameTest() throws Exception {
         //given
-        Account account = accountRepository.findByLoginId("login")
+        Account account = accountRepository.findByLoginId("tester")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
         String beforeNick = account.getProfile().getNickname();
         //when
@@ -141,7 +145,7 @@ class ProfileCommandServiceTest {
     @DisplayName("주소 수정 테스트")
     void updateAddressTest() throws Exception {
         //given
-        Account account = accountRepository.findByLoginId("login")
+        Account account = accountRepository.findByLoginId("tester")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
 
         Address beforeAddress = account.getProfile().getAddress();
@@ -165,7 +169,7 @@ class ProfileCommandServiceTest {
     @DisplayName("주소 검색 범위 수정 테스트")
     void updateAddressSearchRangeTest() {
         //given
-        Account account = accountRepository.findByLoginId("login")
+        Account account = accountRepository.findByLoginId("tester")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
         AddressRange beforeRange = account.getProfile().getAddressRange();
         //when
@@ -183,79 +187,21 @@ class ProfileCommandServiceTest {
     @Test
     @DisplayName("프로필 이미지 수정 테스트")
     void updateProfileImageTest() throws Exception {
-        //given
 
-        mockWebServer.start(8095);
-        mockWebServer.url("/frm/profile");
-
-        Account account = accountRepository.findByLoginId("login")
+        Account account = accountRepository.findByLoginId("tester")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
 
         MockMultipartFile file = new MockMultipartFile("test", "test.jpg", "jpg", "test".getBytes());
         String newImageName = "after-image";
 
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody(newImageName);
-        mockWebServer.enqueue(mockResponse);
-
         //when
         String before = account.getProfile().getProfileImage();
         profileCommandService.updateProfileImage(account.getId(), file);
         Profile findProfile = profileRepository.findById(account.getProfile().getId())
-                .orElseThrow(() -> new IllegalArgumentException("ds"));
+                .orElseThrow(() -> new IllegalArgumentException("프로필을 찾을 수 없습니다."));
         //then
-        assertThat(before).isEqualTo(defaultImageName);
-        assertThat(findProfile.getNickname()).isNotEqualTo(defaultImageName);
+
         assertThat(findProfile.getNickname()).isNotEqualTo(newImageName);
     }
 
-    @Test
-    @DisplayName("프로필 이미지 수정 실패 테스트")
-    void updateProfileImageTest2() throws Exception{
-        //given
-
-        mockWebServer.start(8095);
-        mockWebServer.url("/frm/profile");
-
-        Account account = accountRepository.findByLoginId("login")
-                .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
-
-        MockMultipartFile file = new MockMultipartFile("test", "test.jpg", "jpg", "test".getBytes());
-
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setResponseCode(400);
-        mockWebServer.enqueue(mockResponse);
-
-        //when
-        Profile findProfile = profileRepository.findById(account.getProfile().getId())
-                .orElseThrow(() -> new IllegalArgumentException("ok"));
-        //then
-        assertThatThrownBy(() -> profileCommandService.updateProfileImage(account.getId(), file)
-        ).isInstanceOf(InternalRequestFailException.class);
-
-        assertThat(findProfile.getProfileImage()).isEqualTo(defaultImageName);
-    }
-
-    @Test
-    @DisplayName("프로필 이미지 삭제 테스트")
-    void deleteProfileImage() throws Exception{
-        //given
-        mockWebServer.start(8095);
-        mockWebServer.url("/frm/profile");
-
-        Account account = accountRepository.findByLoginId("login")
-                .orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
-        String deleteResult = "result";
-        MockResponse mockResponse = new MockResponse();
-        mockResponse.setBody(deleteResult);
-        mockWebServer.enqueue(mockResponse);
-
-        //when
-        Profile findProfile = profileRepository.findById(account.getProfile().getId())
-                .orElseThrow(() -> new IllegalArgumentException("ok"));
-        profileCommandService.deleteProfileImage(account.getId());
-        //then
-        log.info("default={}",findProfile.getProfileImage());
-
-    }
 }

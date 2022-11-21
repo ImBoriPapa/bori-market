@@ -9,7 +9,7 @@ import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
-import com.bmarket.securityservice.internal_api.RequestFrmApi;
+import com.bmarket.securityservice.internal_api.frm.RequestFrmApi;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

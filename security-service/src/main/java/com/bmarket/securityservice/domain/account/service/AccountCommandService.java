@@ -62,12 +62,14 @@ public class AccountCommandService {
      * @param password
      * @param newPassword
      */
-    public void updatePassword(Long accountId, String password, String newPassword) {
+    public Long updatePassword(Long accountId, String password, String newPassword) {
         Account account = findAccount(accountId);
 
         passwordCheck(password, account.getPassword());
 
         account.changePassword(passwordEncoder.encode(newPassword));
+
+        return accountId;
     }
 
     // TODO: 2022/11/02 SMS 인증 구현 공부하기
@@ -93,7 +95,6 @@ public class AccountCommandService {
      */
     public void deleteAccount(Long accountId, String password) {
         Account account = findAccount(accountId);
-
         passwordCheck(password, account.getPassword());
         accountRepository.delete(account);
     }
