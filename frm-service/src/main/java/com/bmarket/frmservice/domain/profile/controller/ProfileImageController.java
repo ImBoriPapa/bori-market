@@ -22,7 +22,7 @@ public class ProfileImageController {
     private String getDefault() {
         return profileImageServiceV1.findDefaultImage();
     }
-
+    // TODO: 2022/11/23 rest api 에 맞는 URL 고민해보기
     /**
      * 프로필 이미지 수정 요청
      */

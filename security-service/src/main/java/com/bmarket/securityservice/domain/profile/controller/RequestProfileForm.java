@@ -2,6 +2,7 @@ package com.bmarket.securityservice.domain.profile.controller;
 
 
 
+import com.bmarket.securityservice.domain.address.AddressRange;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,4 +61,10 @@ public class RequestProfileForm {
         private String town;
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateRange{
+        private AddressRange addressRange;
+    }
 }

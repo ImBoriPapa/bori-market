@@ -22,7 +22,7 @@ public class Trade {
     private String context;
     private Integer price;
     private Integer addressCode;
-    private String townName;
+    private String address;
     @Enumerated(EnumType.STRING)
     private Category category;
     private Boolean isShare;
@@ -34,7 +34,7 @@ public class Trade {
     private LocalDateTime updatedAt;
 
     @Builder(builderMethodName = "createTrade")
-    public Trade(Long accountId, String nickname, String profileImage, String title, String context, Integer price, Integer addressCode, String townName, Category category, Boolean isShare, Boolean isOffer, String representativeImage) {
+    public Trade(Long accountId, String nickname, String profileImage, String title, String context, Integer price, Integer addressCode, String address, Category category, Boolean isShare, Boolean isOffer, String representativeImage) {
         this.accountId = accountId;
         this.nickname = nickname;
         this.profileImage = profileImage;
@@ -42,7 +42,7 @@ public class Trade {
         this.context = context;
         this.price = price;
         this.addressCode = addressCode;
-        this.townName = townName;
+        this.address = address;
         this.category = category;
         this.isShare = isShare;
         this.isOffer = isOffer;

@@ -7,7 +7,7 @@ import com.bmarket.securityservice.domain.account.service.AccountCommandService;
 
 import com.bmarket.securityservice.domain.profile.controller.ProfileResultForm;
 
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -37,16 +37,16 @@ class ProfileQueryServiceTest {
     AccountRepository accountRepository;
 
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     @BeforeEach
     void beforeEach(){
-        testData.initAccount();
+        testDataProvider.initAccount();
     }
 
     @AfterEach
     void afterEach() {
-        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +57,7 @@ class ProfileQueryServiceTest {
         Account account = accountRepository.findByLoginId("tester")
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         //when
-        ProfileResultForm.profileResult profile = profileQueryService.getProfile(account.getId());
+        ProfileResultForm.ProfileResult profile = profileQueryService.getProfile(account.getId());
 
         //then
         assertThat(profile.getNickname()).isEqualTo(account.getProfile().getNickname());

@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.domain.testdata;
+package com.bmarket.securityservice.utils.testdata;
 
 
 import com.bmarket.securityservice.domain.account.service.AccountCommandService;

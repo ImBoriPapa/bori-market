@@ -49,8 +49,8 @@ public class TradeController {
         return ResponseEntity.ok().body(tradeDetail);
     }
 
-    @GetMapping("/internal/trade/{accountId}/sale-history")
-    public ResponseEntity getMyTradeList(@PathVariable Long accountId){
+    @GetMapping("/internal/trade")
+    public ResponseEntity getTradeListByAccountId(@RequestParam("accountId") Long accountId){
         List<TradeListDto> list = tradeQueryRepository.getTradeListByAccountId(accountId);
         for (TradeListDto tradeListDto : list) {
 
@@ -59,6 +59,11 @@ public class TradeController {
         return ResponseEntity.ok().body(list);
     }
 
+    // TODO: 2022/11/22 닉네임 ,주소 ,이미지 수정 만들기
+    @PutMapping("/internal/profile/account/{accountId}/nickname")
+    public String putNickname(@PathVariable Long accountId){
+        return "ok";
+    }
 
     @GetMapping("/test")
     public void getAllTrade(@RequestParam(defaultValue = "10") int size,

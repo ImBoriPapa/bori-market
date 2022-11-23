@@ -1,5 +1,6 @@
 package com.bmarket.securityservice.domain.security.controller;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
+@Builder
 public class LoginResult {
     private Long accountId;
     private String clientId;

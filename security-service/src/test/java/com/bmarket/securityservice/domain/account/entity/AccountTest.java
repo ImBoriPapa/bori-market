@@ -7,9 +7,8 @@ import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,11 +40,11 @@ class AccountTest {
     EntityManager em;
 
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     @BeforeEach
     void before(){
-     testData.clearAccount();
+     testDataProvider.clearAccount();
     }
 
     @Test

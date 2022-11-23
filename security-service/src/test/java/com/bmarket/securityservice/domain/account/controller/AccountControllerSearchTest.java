@@ -2,7 +2,7 @@ package com.bmarket.securityservice.domain.account.controller;
 
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.SUCCESS;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,19 +34,19 @@ class AccountControllerSearchTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     @BeforeEach
     void beforeEach() {
         log.info("[=========================TEST DATA INIT START=============================]");
-        testData.initAccountList(100);
+        testDataProvider.initAccountList(100);
         log.info("[=========================TEST DATA INIT FINISH=============================]");
     }
 
     @AfterEach
     void afterEach() {
         log.info("[=========================TEST DATA DELETE START=============================]");
-        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
     /**

@@ -61,7 +61,7 @@ public class TradeController {
                 .isOffer(form.getIsOffer()).build();
 
         ResponseCreateTradeResult responseCreateTradeResult = requestTradeApi
-                .requestCreateTrade(accountId,requestTradeForm, images);
+                .requestCreateTrade(requestTradeForm, images);
 
         return ResponseEntity
                 .ok()
@@ -95,7 +95,7 @@ public class TradeController {
         Long accountId = jwtUtils.getUserId(token);
         Account id = accountRepository.findById(accountId).get();
 
-        List<RequestGetTradeListResult> requestGetTradeListResults = requestTradeApi.requestGetSaleHistory(id.getId());
+        List<RequestGetTradeListResult> requestGetTradeListResults = requestTradeApi.requestTradeListByAccountId(id.getId());
 
         return ResponseEntity
                 .ok()

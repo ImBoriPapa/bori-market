@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class LoginResultForm {
-    private LocalDateTime loginTime;
+    private Long accountId;
+    private LocalDateTime loginAt;
 }

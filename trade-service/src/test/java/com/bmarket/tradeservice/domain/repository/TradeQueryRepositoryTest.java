@@ -47,7 +47,7 @@ class TradeQueryRepositoryTest {
                 .accountId(200L)
                 .profileImage("profile.jpg")
                 .nickname("nickname")
-                .townName("동네")
+                .address("동네")
                 .addressCode(1001)
                 .price(100000)
                 .title("제목")
@@ -78,7 +78,7 @@ class TradeQueryRepositoryTest {
                     .accountId(Long.valueOf(i))
                     .profileImage("profile.jpg")
                     .nickname("nickname" + i)
-                    .townName("동네" + i)
+                    .address("동네" + i)
                     .addressCode(1001)
                     .price(100000)
                     .title("제목" + i)
@@ -103,7 +103,7 @@ class TradeQueryRepositoryTest {
                     .accountId(Long.valueOf(i))
                     .profileImage("profile.jpg")
                     .nickname("nickname" + i)
-                    .townName("동네" + i)
+                    .address("동네" + i)
                     .addressCode(1001)
                     .price(100000)
                     .title("제목" + i)
@@ -127,7 +127,7 @@ class TradeQueryRepositoryTest {
                     .accountId(Long.valueOf(i))
                     .profileImage("profile.jpg")
                     .nickname("nickname" + i)
-                    .townName("동네" + i)
+                    .address("동네" + i)
                     .addressCode(1002)
                     .price(100000)
                     .title("제목" + i)
@@ -151,7 +151,7 @@ class TradeQueryRepositoryTest {
                     .accountId(Long.valueOf(i))
                     .profileImage("profile.jpg")
                     .nickname("nickname" + i)
-                    .townName("동네" + i)
+                    .address("동네" + i)
                     .addressCode(1010)
                     .price(100000)
                     .title("제목" + i)
@@ -176,7 +176,7 @@ class TradeQueryRepositoryTest {
                     .accountId(Long.valueOf(i))
                     .profileImage("profile.jpg")
                     .nickname("nickname" + i)
-                    .townName("동네" + i)
+                    .address("동네" + i)
                     .addressCode(1005)
                     .price(100000)
                     .title("제목" + i)
@@ -240,7 +240,7 @@ class TradeQueryRepositoryTest {
         log.info("trade id={}",tradeDetail.getTradeId());
         log.info("trade id={}",tradeDetail.getTitle());
         log.info("trade id={}",tradeDetail.getContext());
-        log.info("trade id={}",tradeDetail.getTownName());
+        log.info("trade id={}",tradeDetail.getAddress());
         log.info("trade id={}",tradeDetail.getNickName());
         log.info("trade id={}",tradeDetail.getCategory());
         tradeDetail.getImagePath().forEach(m->

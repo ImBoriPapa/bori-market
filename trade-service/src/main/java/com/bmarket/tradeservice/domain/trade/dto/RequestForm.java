@@ -18,7 +18,7 @@ public class RequestForm {
     private String context;
     private Integer price;
     private Integer addressCode;
-    private String townName;
+    private String address;
     private Category category;
     private Boolean isShare;
     private Boolean isOffer;

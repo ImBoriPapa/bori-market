@@ -3,7 +3,7 @@ package com.bmarket.securityservice.domain.account.controller;
 
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.account.service.AccountCommandService;
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +51,7 @@ class AccountControllerValidationTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     public MockWebServer mockWebServer;
     /**
@@ -79,13 +79,13 @@ class AccountControllerValidationTest {
 
         mockWebServer.enqueue(mockResponse);
 
-        testData.initAccount();
+        testDataProvider.initAccount();
     }
 
     @AfterEach
     void afterEach() throws IOException {
         mockWebServer.shutdown();
-        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
     @Test

@@ -36,7 +36,7 @@ public class TradeCommandService {
                 .context(form.getContext())
                 .price(form.getPrice())
                 .addressCode(form.getAddressCode())
-                .townName(form.getTownName())
+                .address(form.getAddress())
                 .category(form.getCategory())
                 .isShare(form.getIsShare())
                 .isOffer(form.getIsOffer())
@@ -56,7 +56,7 @@ public class TradeCommandService {
         return newTrade;
     }
 
-    public void deleteTrade(Long accountId){
+    public void deleteTrade(Long accountId) {
         Trade trade = tradeRepository.findByAccountId(accountId).get();
         tradeRepository.delete(trade);
         List<TradeImage> byTrade = tradeImageRepository.findByTrade(trade);

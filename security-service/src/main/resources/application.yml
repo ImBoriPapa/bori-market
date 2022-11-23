@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
   token-validation-life: 1800
@@ -31,3 +32,7 @@ spring:
         type.descriptor.sql: trace
         SQL: DEBUG
 
+internal:
+  trade: http://localhost:8081
+  address: http://localhost:8085
+  frm:   http://localhost:8095

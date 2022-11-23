@@ -18,12 +18,12 @@ public class ProfileQueryService {
     private final AccountRepository accountRepository;
 
     // TODO: 2022/11/16 성능 최적화
-    public ProfileResultForm.profileResult getProfile(Long accountId) {
+    public ProfileResultForm.ProfileResult getProfile(Long accountId) {
         log.info("[getProfile]");
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new IllegalArgumentException("계정을 찾을 수 없습니다."));
 
 
-        return ProfileResultForm.profileResult.builder()
+        return ProfileResultForm.ProfileResult.builder()
                 .accountId(account.getId())
                 .nickname(account.getProfile().getNickname())
                 .profileImage(account.getProfile().getProfileImage())

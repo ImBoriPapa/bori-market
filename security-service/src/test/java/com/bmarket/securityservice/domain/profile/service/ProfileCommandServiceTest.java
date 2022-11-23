@@ -5,10 +5,11 @@ import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.address.Address;
 import com.bmarket.securityservice.domain.address.AddressRange;
+import com.bmarket.securityservice.domain.profile.controller.RequestProfileForm;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
 
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import mockwebserver3.Dispatcher;
@@ -30,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
-import static com.bmarket.securityservice.internal_api.frm.RequestFrmFrmApiImpl.PUT_PROFILE_IMAGE_URL;
 import static org.assertj.core.api.Assertions.*;
 
 @ActiveProfiles("test")
@@ -46,7 +46,7 @@ class ProfileCommandServiceTest {
     @Autowired
     AccountRepository accountRepository;
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     public MockWebServer mockWebServer;
     public Dispatcher dispatcher;
@@ -79,11 +79,11 @@ class ProfileCommandServiceTest {
         };
         mockWebServer.setDispatcher(dispatcher);
 
-        testData.initAccount();
+        testDataProvider.initAccount();
     }
     @AfterEach
     void afterEach() throws IOException {
-        testData.clearAccount();
+        testDataProvider.clearAccount();
         mockWebServer.shutdown();
     }
 
@@ -130,8 +130,8 @@ class ProfileCommandServiceTest {
         //when
 
         String newNick = "변경후";
-
-        profileCommandService.updateNickname(account.getId(), newNick);
+        RequestProfileForm.UpdateNickname updateNickname = new RequestProfileForm.UpdateNickname(newNick);
+        profileCommandService.updateNickname(account.getId(),updateNickname);
 
         Profile after = profileRepository.findByNickname(newNick)
                 .orElseThrow(() -> new IllegalArgumentException("프로필을 찾을 수 없습니다."));

@@ -146,6 +146,33 @@ include::{snippets}/accountPutEmail/http-response.adoc[]
 ==== 응답 필드::
 include::{snippets}/accountPutEmail/response-fields.adoc[]
 
+== LOGIN
+
+=== API 목록
+
+|===
+|API 종류|API |설명
+|로그인 |POST /login | 로그인 기능
+|===
+
+=== 로그인
+
+==== 요청 예)
+
+include::{snippets}/login/http-request.adoc[]
+
+==== 요청 필드
+
+include::{snippets}/login/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/login/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/login/response-fields.adoc[]
+
 == PROFILE
 
 === API 목록
@@ -154,11 +181,11 @@ include::{snippets}/accountPutEmail/response-fields.adoc[]
 
 |API 종류|API |설명
 
-|프로필 단건 조회 |GET/profile/{accountId} | 프로필 정보 조회
-|프로필 이미지 변경 |PUT/profile/{accountId}/image | 프로필의 이미지 변경 요청
-|닉네임 변경 |PUT/profile/{accountId}/nickname | 닉네임 변경 요청
-|주소 변경 |PUT/profile/{accountId}/address | 주소 변경
-|주소 검색 범위 변경 |PUT/profile/{accountId}/range | 주소 검샘 범위 변경 요청
+|프로필 단건 조회 |GET /account/{accountId}/profile | 프로필 정보 조회
+|닉네임 변경 |PATCH /account/{accountId}/profile/nickname | 닉네임 변경 요청
+|주소 변경 |PATCH /account/{accountId}/profile/address | 주소 변경
+|주소 검색 범위 변경 |PATCH /account/{accountId}/profile/range | 주소 검샘 범위 변경 요청
+|프로필 이미지 변경 |PATCH /account/{accountId}/profile/image | 프로필의 이미지 변경 요청
 
 |===
 
@@ -187,6 +214,72 @@ include::{snippets}/getProfile/http-response.adoc[]
 ==== 응답 필드
 
 include::{snippets}/getProfile/response-fields.adoc[]
+
+=== 2. 프로필 닉네임 변경
+
+==== 요청 예)
+
+include::{snippets}/profile-update-nickname/http-request.adoc[]
+
+==== 요청 필드
+
+include::{snippets}/profile-update-nickname/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/profile-update-nickname/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/profile-update-nickname/response-fields.adoc[]
+
+=== 3.프로필 주소 변경
+
+==== 요청 예)
+
+include::{snippets}/profile-update-address/http-request.adoc[]
+
+==== 요청 필드
+
+include::{snippets}/profile-update-address/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/profile-update-address/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/profile-update-address/response-fields.adoc[]
+
+=== 4. 프로필 주소 검색 범위 수정
+
+==== 요청 예)
+
+include::{snippets}/profile-update-range/http-request.adoc[]
+
+==== 요청 필드
+
+include::{snippets}/profile-update-range/request-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/profile-update-range/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/profile-update-range/http-response.adoc[]
+
+=== 5.프로필 이미지 변경
+==== 요청 예)
+include::{snippets}/profile-update-image/http-request.adoc[]
+==== 요청 파트
+include::{snippets}/profile-update-image/request-parts.adoc[]
+
+==== 응답
+include::{snippets}/profile-update-image/http-response.adoc[]
+==== 응답 필드
+include::{snippets}/profile-update-image/response-fields.adoc[]
+
 
 == CHAT
 

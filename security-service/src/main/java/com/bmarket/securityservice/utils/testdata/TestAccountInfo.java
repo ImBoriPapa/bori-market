@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.domain.testdata;
+package com.bmarket.securityservice.utils.testdata;
 
 public class TestAccountInfo {
     public static final String TEST_ADMIN1_LOGIN_ID = "admin1";

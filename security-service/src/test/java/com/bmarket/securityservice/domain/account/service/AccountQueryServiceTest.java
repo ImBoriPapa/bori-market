@@ -6,7 +6,7 @@ import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.entity.Authority;
 import com.bmarket.securityservice.domain.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.domain.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,16 +36,16 @@ class AccountQueryServiceTest {
     @Autowired
     AccountCommandService accountCommandService;
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     @BeforeEach
     void beforeEach() throws IOException {
-        testData.initAccountList(100);
+        testDataProvider.initAccountList(100);
     }
 
     @AfterEach
     void afterEach() throws IOException {
-        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
 

@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.domain.testdata;
+package com.bmarket.securityservice.utils.testdata;
 
 import com.bmarket.securityservice.domain.account.entity.Account;
 
@@ -16,19 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.bmarket.securityservice.domain.account.entity.Authority.*;
-import static com.bmarket.securityservice.domain.testdata.TestAccountInfo.*;
 
 @Component
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class TestData {
+public class TestDataProvider {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
     private final EntityManager entityManager;
 
-    public void initTestAccount(){
+    public void initTestAccount() {
 
         resetIndex();
         Account account = Account.createAccount()
@@ -42,6 +41,7 @@ public class TestData {
         accountRepository.save(account);
         log.info("[initTestAccount 용 일반 계정 생성]");
     }
+
     public void initAccount() {
         /**
          * 테스트용 일반 계정 1개
@@ -87,9 +87,9 @@ public class TestData {
         resetIndex();
 
         log.info("[Test 용 관리자 계정 생성]");
-        Account admin1 = Account.createAdmin(TEST_ADMIN1_LOGIN_ID, "사장", passwordEncoder.encode(TEST_ADMIN_PASSWORD), "admin1@admin.com", "090111111111", SUPER_ADMIN);
-        Account admin2 = Account.createAdmin(TEST_ADMIN2_LOGIN_ID, "책임자1", passwordEncoder.encode(TEST_ADMIN_PASSWORD), "admin2@admin.com", "090111112222", ADMIN);
-        Account admin3 = Account.createAdmin(TEST_ADMIN3_LOGIN_ID, "책임자2", passwordEncoder.encode(TEST_ADMIN_PASSWORD), "admin3@admin.com", "090111113333", ADMIN);
+        Account admin1 = Account.createAdmin(TestAccountInfo.TEST_ADMIN1_LOGIN_ID, "사장", passwordEncoder.encode(TestAccountInfo.TEST_ADMIN_PASSWORD), "admin1@admin.com", "090111111111", SUPER_ADMIN);
+        Account admin2 = Account.createAdmin(TestAccountInfo.TEST_ADMIN2_LOGIN_ID, "책임자1", passwordEncoder.encode(TestAccountInfo.TEST_ADMIN_PASSWORD), "admin2@admin.com", "090111112222", ADMIN);
+        Account admin3 = Account.createAdmin(TestAccountInfo.TEST_ADMIN3_LOGIN_ID, "책임자2", passwordEncoder.encode(TestAccountInfo.TEST_ADMIN_PASSWORD), "admin3@admin.com", "090111113333", ADMIN);
         accountRepository.saveAll(List.of(admin1, admin2, admin3));
         log.info("[Test 용 관리자 계정 생성 완료]");
 
@@ -132,6 +132,12 @@ public class TestData {
     private void resetIndex() {
         entityManager
                 .createNativeQuery("ALTER TABLE account AUTO_INCREMENT= 0")
+                .executeUpdate();
+        entityManager
+                .createNativeQuery("ALTER TABLE profile AUTO_INCREMENT= 0")
+                .executeUpdate();
+        entityManager
+                .createNativeQuery("ALTER TABLE refresh_token AUTO_INCREMENT= 0")
                 .executeUpdate();
     }
 }

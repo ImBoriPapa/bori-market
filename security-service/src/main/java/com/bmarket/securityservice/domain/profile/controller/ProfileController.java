@@ -1,5 +1,6 @@
 package com.bmarket.securityservice.domain.profile.controller;
 
+import com.bmarket.securityservice.domain.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.domain.address.Address;
 import com.bmarket.securityservice.domain.common.ResponseForm;
 import com.bmarket.securityservice.domain.address.AddressRange;
@@ -7,7 +8,8 @@ import com.bmarket.securityservice.domain.profile.service.ProfileCommandService;
 import com.bmarket.securityservice.domain.profile.service.ProfileQueryService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -24,7 +26,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/account/{accountId}/profile")
+@RequestMapping("/account")
 public class ProfileController {
     // TODO: 2022/11/16 validation test
     // TODO: 2022/11/16 변경시 연관된 서비스에 변경내용 전파 구현
@@ -35,14 +37,14 @@ public class ProfileController {
     /**
      * 프로필 단건 조회
      */
-    // TODO: 2022/11/16 링크, header 추가
-    @GetMapping()
+    // TODO: 2022/11/16 header 추가
+    @GetMapping("/{accountId}/profile")
     public ResponseEntity getProfile(@PathVariable Long accountId) {
-        ProfileResultForm.profileResult profile = profileQueryService.getProfile(accountId);
+        ProfileResultForm.ProfileResult profile = profileQueryService.getProfile(accountId);
 
-        EntityModel<ProfileResultForm.profileResult> entityModel = EntityModel.of(profile);
+        EntityModel<ProfileResultForm.ProfileResult> entityModel = EntityModel.of(profile);
 
-        List<Link> links = getProfileLinks();
+        List<Link> links = getProfileLinks(accountId);
 
         entityModel.add(links);
 
@@ -51,12 +53,12 @@ public class ProfileController {
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
-    private static List<Link> getProfileLinks() {
+    private static List<Link> getProfileLinks(Long accountId) {
         WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
-        Link link1 = webMvcLinkBuilder.slash("/nickname").withRel("PUT : nickname 변경");
-        Link link2 = webMvcLinkBuilder.slash("/image").withRel("PUT : image 변경");
-        Link link3 = webMvcLinkBuilder.slash("/address").withRel("PUT : 주소 변경");
-        Link link4 = webMvcLinkBuilder.slash("/range").withRel("PUT : 주소검색 범위 변경");
+        Link link1 = webMvcLinkBuilder.slash(accountId).slash("/nickname").withRel("PATCH : nickname 변경");
+        Link link2 = webMvcLinkBuilder.slash(accountId).slash("/image").withRel("PATCH : image 변경");
+        Link link3 = webMvcLinkBuilder.slash(accountId).slash("/address").withRel("PATCH : 주소 변경");
+        Link link4 = webMvcLinkBuilder.slash(accountId).slash("/range").withRel("PATCH : 주소검색 범위 변경");
         List<Link> links = List.of(link1, link2, link3, link4);
         return links;
     }
@@ -64,44 +66,49 @@ public class ProfileController {
     /**
      * 닉네임 수정 닉네임 리소스만 때문에 PutMapping
      */
-    // TODO: 2022/11/16 헤더 추가
-    @PutMapping("/nickname")
-    public ResponseEntity putNickname(@Validated @PathVariable Long accountId,
-                                      @RequestBody RequestProfileForm.UpdateNickname form,
-                                      BindingResult bindingResult) {
+    // TODO: 2022/11/16 헤더 추가,반환값 추가
+    @PatchMapping("/{accountId}/profile/nickname")
+    public ResponseEntity patchNickname(@Validated @PathVariable Long accountId,
+                                        @RequestBody RequestProfileForm.UpdateNickname form,
+                                        BindingResult bindingResult) throws JsonProcessingException {
         if (bindingResult.hasErrors()) {
             throw new FormValidationException(ResponseStatus.FAIL_VALIDATION, bindingResult);
         }
 
-        profileCommandService.updateNickname(accountId, form.getNickname());
-
-        List<Link> links = getProfileLinks();
+        Long nickname = profileCommandService.updateNickname(accountId, form);
 
 
-        return ResponseEntity.ok().body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
+        return ResponseEntity.ok()
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, EntityModel.of(new ProfileResultForm.ProfileUpdateResult(nickname)).add(getProfileLinks(accountId))));
     }
 
-    @PutMapping("/range")
-    public ResponseEntity putAddressSearchRange(@PathVariable Long accountId
-            , @RequestParam AddressRange addressRange) {
-        profileCommandService.updateAddressSearchRange(accountId, addressRange);
+    @PatchMapping("/{accountId}/profile/range")
+    public ResponseEntity patchAddressSearchRange(@Validated @PathVariable Long accountId
+            , @RequestBody RequestProfileForm.UpdateRange form, BindingResult bindingResult) {
 
-        List<Link> links = getProfileLinks();
+        if (bindingResult.hasErrors()) {
+            throw new FormValidationException(ResponseStatus.FAIL_VALIDATION, bindingResult);
+        }
+
+        EntityModel<ProfileResultForm.ProfileUpdateResult> entityModel = EntityModel
+                .of(new ProfileResultForm.ProfileUpdateResult(profileCommandService.updateAddressSearchRange(accountId, form.getAddressRange())));
+
+        entityModel.add(getProfileLinks(accountId));
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     /**
      * 주소 수정
      */
     // TODO: 2022/11/16 헤더 추가
-    @PutMapping("/address")
-    public ResponseEntity putAddress(@Validated
-                                     @PathVariable Long accountId,
-                                     @RequestBody RequestProfileForm.UpdateAddress form,
-                                     BindingResult bindingResult) {
+    @PatchMapping("/{accountId}/profile/address")
+    public ResponseEntity patchAddress(@Validated
+                                       @PathVariable Long accountId,
+                                       @RequestBody RequestProfileForm.UpdateAddress form,
+                                       BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new FormValidationException(ResponseStatus.FAIL_VALIDATION, bindingResult);
@@ -112,34 +119,39 @@ public class ProfileController {
                 .city(form.getCity())
                 .district(form.getDistrict())
                 .town(form.getTown()).build();
-        profileCommandService.updateAddress(accountId, address);
-
-        List<Link> links = getProfileLinks();
 
 
+        EntityModel<ProfileResultForm.ProfileUpdateResult> entityModel = EntityModel
+                .of(new ProfileResultForm.ProfileUpdateResult(profileCommandService.updateAddress(accountId, address)));
+
+        entityModel.add(getProfileLinks(accountId));
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 
     /**
      * 프로필 이미지 변경
      */
-    @PutMapping("/image")
-    public ResponseEntity putImage(@PathVariable Long accountId,
-                                   @RequestPart MultipartFile image) {
+    @PatchMapping("/{accountId}/profile/image")
+    public ResponseEntity patchImage(@PathVariable Long accountId,
+                                     @RequestPart MultipartFile image) {
+        // TODO: 2022/11/23 아래 상황 별 대처 구현
+        /**
+         * 상황 1. 이미지가 정상
+         * 상황 2. 이미지가 여러개일 경우
+         * 상황 3. 이미지가 null 일 경우
+         */
 
-        profileCommandService.updateProfileImage(accountId, image);
 
-        WebMvcLinkBuilder webMvcLinkBuilder = WebMvcLinkBuilder.linkTo(ProfileController.class);
-
-        List<Link> links = getProfileLinks();
-
+        EntityModel<ProfileResultForm.ProfileUpdateResult> entityModel = EntityModel.of(new ProfileResultForm.ProfileUpdateResult(profileCommandService.updateProfileImage(accountId, image)));
+        entityModel.add(getProfileLinks(accountId));
 
         return ResponseEntity
                 .ok()
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, links));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
+
 
 }

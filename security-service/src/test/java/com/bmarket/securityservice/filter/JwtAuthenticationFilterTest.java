@@ -1,11 +1,10 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.security.controller.requestForm.RequestLoginForm;
 import com.bmarket.securityservice.domain.security.service.JwtService;
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -23,7 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 
-import static com.bmarket.securityservice.domain.testdata.TestAccountInfo.TEST_ADMIN_PASSWORD;
+import static com.bmarket.securityservice.utils.testdata.TestAccountInfo.TEST_ADMIN_PASSWORD;
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
 
 
@@ -51,7 +50,7 @@ class JwtAuthenticationFilterTest {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
 
     @BeforeEach
     void beforeEach(){

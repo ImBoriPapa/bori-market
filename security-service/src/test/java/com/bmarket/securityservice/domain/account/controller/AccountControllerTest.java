@@ -5,7 +5,7 @@ import com.bmarket.securityservice.domain.account.service.AccountCommandService;
 import com.bmarket.securityservice.domain.security.controller.LoginController;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,6 @@ import java.io.IOException;
 
 import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.SUCCESS;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -57,7 +56,7 @@ class AccountControllerTest {
     JwtService jwtService;
 
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
     public MockWebServer mockWebServer;
 
 
@@ -73,7 +72,7 @@ class AccountControllerTest {
 
         mockWebServer.enqueue(mockResponse);
         log.info("[Test Data Init Start]============================================");
-        testData.initAccountList(10);
+        testDataProvider.initAccountList(10);
         log.info("[Test Data Init Finish]============================================");
 
 
@@ -83,7 +82,7 @@ class AccountControllerTest {
     void afterEach() throws IOException {
         mockWebServer.shutdown();
         log.info("[Test Data Delete Start]============================================");
-        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
     @Test

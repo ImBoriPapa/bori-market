@@ -30,7 +30,7 @@ class TradeTest {
                 .context("가지고 싶다 서브마리너")
                 .price(100000000)
                 .addressCode(1001)
-                .townName("삼성동")
+                .address("삼성동")
                 .category(Category.ETC)
                 .isShare(false)
                 .isOffer(true)
@@ -47,7 +47,7 @@ class TradeTest {
         assertThat(trade1.getContext()).isEqualTo(trade.getContext());
         assertThat(trade1.getPrice()).isEqualTo(trade.getPrice());
         assertThat(trade1.getAddressCode()).isEqualTo(trade.getAddressCode());
-        assertThat(trade1.getTownName()).isEqualTo(trade.getTownName());
+        assertThat(trade1.getAddress()).isEqualTo(trade.getAddress());
         assertThat(trade1.getCategory()).isEqualTo(trade.getCategory());
         assertThat(trade1.getIsShare()).isEqualTo(trade.getIsShare());
         assertThat(trade1.getIsOffer()).isEqualTo(trade.getIsOffer());

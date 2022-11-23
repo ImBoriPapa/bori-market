@@ -18,16 +18,16 @@ public class TradeDetailDto {
     private String title;
     private String context;
     private Category category;
-    private String townName;
+    private String address;
     private List<String> imagePath;
     @QueryProjection
-    public TradeDetailDto(Long tradeId, String nickName, String title, String context, Category category, String townName) {
+    public TradeDetailDto(Long tradeId, String nickName, String title, String context, Category category, String address) {
         this.tradeId = tradeId;
         this.nickName = nickName;
         this.title = title;
         this.context = context;
         this.category = category;
-        this.townName = townName;
+        this.address = address;
     }
 
     public void addImagePath(List<String> imagePath){

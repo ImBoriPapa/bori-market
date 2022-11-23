@@ -4,7 +4,7 @@ import com.bmarket.securityservice.domain.account.controller.AccountController;
 import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
-import com.bmarket.securityservice.domain.testdata.TestData;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mockwebserver3.MockResponse;
 import mockwebserver3.MockWebServer;
@@ -38,9 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @AutoConfigureMockMvc
 @Transactional
-/**
- * 실제 서비스 Mock 서버가 아닌 실제 서비스 연동 테스트 후 성공시 api docs 수정
- */
+// TODO: 2022/11/21 변경 전파
 class ApiDocsAccount {
 
 
@@ -51,7 +49,7 @@ class ApiDocsAccount {
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    TestData testData;
+    TestDataProvider testDataProvider;
     @Autowired
     JwtService jwtService;
 
@@ -66,13 +64,13 @@ class ApiDocsAccount {
         mockResponse.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         mockResponse.setBody(objectMapper.writeValueAsString("http://localhost:8095//frm/profile/default.img"));
         mockWebServer.enqueue(mockResponse);
-        testData.initAccount();
+        testDataProvider.initAccount();
     }
 
     @AfterEach
     void afterEach() throws IOException {
         mockWebServer.shutdown();
-        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
     @Test

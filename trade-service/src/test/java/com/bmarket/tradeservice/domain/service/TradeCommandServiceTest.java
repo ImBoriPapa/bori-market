@@ -47,7 +47,7 @@ class TradeCommandServiceTest {
                 .context("내용")
                 .price(150000)
                 .addressCode(1001)
-                .townName("신월동")
+                .address("신월동")
                 .category(Category.BEAUTY)
                 .isShare(true)
                 .isOffer(true).build();
