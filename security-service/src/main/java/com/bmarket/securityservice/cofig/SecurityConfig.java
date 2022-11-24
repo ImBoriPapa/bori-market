@@ -40,26 +40,13 @@ public class SecurityConfig {
         security.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/docs/index.html").permitAll()
-                .antMatchers("/login", "/test","/exception","/exception/**","/api/address","/api/address/*","/image-test","/event","/event/*","/profile/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/account").permitAll()
+                .antMatchers("/docs/index.html").permitAll()// API 문서
+                .antMatchers("/login","/exception/**","/address").permitAll() //로그인, 에러처리, 주소검색
+                .antMatchers(HttpMethod.POST,"/account").permitAll()//계정생성(회원가입)
                 .antMatchers("/trade","/trade/**").hasAuthority("ROLL_USER")
-                .antMatchers("/redirect1","/redirect2").permitAll()
-                .antMatchers("/test-profile-image").permitAll()
-                .antMatchers("/jwt-test1").authenticated()
-                .antMatchers("/jwt-test1").hasAuthority("ROLL_USER")
-                .antMatchers("/jwt-test2").hasAuthority("ROLL_ADMIN")
-                .antMatchers("/hello").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated();
         return security.build();
     }
 
-    /**
-     * 정적 리소스 허용
-     */
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//    }
 }

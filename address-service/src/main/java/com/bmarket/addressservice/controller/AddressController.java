@@ -25,7 +25,7 @@ import java.util.List;
 public class AddressController {
     private final AddressService addressService;
 
-    @GetMapping("/addressData")
+    @GetMapping("/internal/address")
     public Flux<AddressResult> findOne(@RequestParam String town) {
         if (town.equals("ready")) {
             return Flux.empty();

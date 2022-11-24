@@ -281,9 +281,26 @@ include::{snippets}/profile-update-image/http-response.adoc[]
 include::{snippets}/profile-update-image/response-fields.adoc[]
 
 
-== CHAT
-
 == ADDRESS
+=== API 목록
+|===
+
+|API 종류|API |설명
+
+|주소 검색 |GET /address?town={townName} | 동네 이름으로 주소 찾기
+
+|===
+
+=== 1.주소 검색
+==== 요청 예) /address?town=우
+include::{snippets}/address/http-request.adoc[]
+==== 요청 파라미터
+include::{snippets}/address/request-parameters.adoc[]
+==== 응답
+include::{snippets}/address/http-response.adoc[]
+==== 응답 필드
+include::{snippets}/address/response-fields.adoc[]
+
 
 == ADMIN
 
