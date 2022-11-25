@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class TradeList {
     private Long tradeId;
     private String title;
-    private String townName;
+    private String address;
     private Integer price;
     private String representativeImage;
     private LocalDateTime createdAt;

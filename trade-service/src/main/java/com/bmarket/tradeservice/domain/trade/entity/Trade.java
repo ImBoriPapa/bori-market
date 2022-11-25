@@ -16,13 +16,11 @@ public class Trade {
     @Column(name = "TRADE_ID")
     private Long id;
     private Long accountId;
-    private String nickname;
-    private String profileImage;
     private String title;
     private String context;
     private Integer price;
-    private Integer addressCode;
-    private String address;
+    @Embedded
+    private Address address;
     @Enumerated(EnumType.STRING)
     private Category category;
     private Boolean isShare;
@@ -34,23 +32,23 @@ public class Trade {
     private LocalDateTime updatedAt;
 
     @Builder(builderMethodName = "createTrade")
-    public Trade(Long accountId, String nickname, String profileImage, String title, String context, Integer price, Integer addressCode, String address, Category category, Boolean isShare, Boolean isOffer, String representativeImage) {
+    public Trade(Long accountId, String title, String context, Integer price, Address address, Category category, Boolean isShare, Boolean isOffer, String representativeImage, TradeStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.accountId = accountId;
-        this.nickname = nickname;
-        this.profileImage = profileImage;
         this.title = title;
         this.context = context;
         this.price = price;
-        this.addressCode = addressCode;
         this.address = address;
         this.category = category;
         this.isShare = isShare;
         this.isOffer = isOffer;
         this.representativeImage = representativeImage;
-        this.status = TradeStatus.SALE;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
+
+
+
 
     public void changeStatus(TradeStatus status){
         this.status = status;

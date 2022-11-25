@@ -50,15 +50,11 @@ public class ProfileCommandService {
     }
 
     /**
-     * 1.계정에 저장된 프로필을 찾아 닉네임 수정
-     * 2.Trade 에 닉네임 변경 요청
+     * 계정에 저장된 프로필을 찾아 닉네임 수정
      */
     public Long updateNickname(Long accountId, RequestProfileForm.UpdateNickname form) throws JsonProcessingException {
         Account account = findAccount(accountId);
         account.getProfile().updateNickname(form.getNickname());
-
-        requestTradeApi.requestUpdateNickname(accountId, form);
-
         return account.getId();
     }
 
@@ -80,7 +76,6 @@ public class ProfileCommandService {
 
         String profileImage = requestFrmApi.requestSaveImage(accountId, file);
 
-        requestTradeApi.requestUpdateProfileImage(accountId, profileImage);
 
         account.getProfile().updateProfileImage(profileImage);
 

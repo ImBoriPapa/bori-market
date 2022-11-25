@@ -8,6 +8,28 @@ endif::[]
 
 - server : http://localhost:8080
 
+== OVERVIEW
+=== 1. 사용자 정의 응답 상태(ResponseStatus)
+==== GET : /info/response-status
+include::{snippets}/info-responseStatus/http-request.adoc[]
+-  커스텀 응답 상태에 대한 정보를 확인할 수 있습니다.
+include::{snippets}/info-responseStatus/http-response.adoc[]
+
+=== 2.에러
+- 에러의 경우에는 아래와 같은 양식으로 응답합니다.
+
+==== 잘못된 요청 예) 로그인 아이디 누락
+
+include::{snippets}/account-error/http-request.adoc[]
+
+==== 에러 응답
+
+include::{snippets}/account-error/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/account-error/response-fields.adoc[]
+
 == ACCOUNT
 
 === API 목록
@@ -270,19 +292,27 @@ include::{snippets}/profile-update-range/http-response.adoc[]
 include::{snippets}/profile-update-range/http-response.adoc[]
 
 === 5.프로필 이미지 변경
+
 ==== 요청 예)
+
 include::{snippets}/profile-update-image/http-request.adoc[]
+
 ==== 요청 파트
+
 include::{snippets}/profile-update-image/request-parts.adoc[]
 
 ==== 응답
+
 include::{snippets}/profile-update-image/http-response.adoc[]
+
 ==== 응답 필드
+
 include::{snippets}/profile-update-image/response-fields.adoc[]
 
-
 == ADDRESS
+
 === API 목록
+
 |===
 
 |API 종류|API |설명
@@ -292,31 +322,115 @@ include::{snippets}/profile-update-image/response-fields.adoc[]
 |===
 
 === 1.주소 검색
+
 ==== 요청 예) /address?town=우
+
 include::{snippets}/address/http-request.adoc[]
+
 ==== 요청 파라미터
+
 include::{snippets}/address/request-parameters.adoc[]
+
 ==== 응답
+
 include::{snippets}/address/http-response.adoc[]
+
 ==== 응답 필드
+
 include::{snippets}/address/response-fields.adoc[]
 
+== TRADE
 
-== ADMIN
+=== API 목록
 
-== ERROR
+|===
+|판매글 생성 |POST /account/{accountId}/trade | 계정 정보 기반으로 판매 글 생성
+|판매글 리스트 조회 |GET /account/{accountId}/trade | 계정 정보 기준 판매 글 리스트 조회
+|판매글 내용 조회 |GET /trade/{tradeId} | 판매 글 내용 조회
+|판매 글 수정 |PATCH /trade/{tradeId} | 판매 글 내용 수정
+|판매 글 삭제 |DELETE /trade/{tradeId} | 판매 글 단건 삭제
+|===
 
-=== 에러
+=== 1.판매 글 생성
 
-==== 잘못된 요청 예) 로그인 아이디 누락
+==== 요청 예)
 
-include::{snippets}/account-error/http-request.adoc[]
+include::{snippets}/trade-create/http-request.adoc[]
 
-==== 에러 응답
+==== 요청 파트
 
-include::{snippets}/account-error/http-response.adoc[]
+include::{snippets}/trade-create/request-parts.adoc[]
+
+==== 요청 파트 필드
+
+include::{snippets}/trade-create/request-part-form-fields.adoc[]
+
+=== 2. 판매 글 리스트 조회
+
+include::{snippets}/trade-list-withoutCon/http-request.adoc[]
+==== 요청 파라미터
+
+==== 응답
+
+include::{snippets}/trade-list-withoutCon/http-response.adoc[]
 
 ==== 응답 필드
 
-include::{snippets}/account-error/response-fields.adoc[]
+include::{snippets}/trade-list-withoutCon/response-fields.adoc[]
+
+=== 3.판매 글 내용 조회
+
+==== 요청 예)
+
+include::{snippets}/trade-one/http-request.adoc[]
+
+==== 응답
+
+include::{snippets}/trade-one/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/trade-one/response-fields.adoc[]
+
+=== 4.판매 글 수정
+
+==== 요청 예)
+
+include::{snippets}/trade-modify/http-request.adoc[]
+
+==== 요청 파트
+
+include::{snippets}/trade-modify/request-parts.adoc[]
+
+==== 요청 필드
+
+include::{snippets}/trade-modify/request-part-form-fields.adoc[]
+
+==== 응답
+
+include::{snippets}/trade-modify/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/trade-modify/response-fields.adoc[]
+
+=== 5.판매 글 삭제
+
+==== 요청 예)
+
+include::{snippets}/trade-delete/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/trade-delete/path-parameters.adoc[]
+
+==== 응답
+
+include::{snippets}/trade-delete/http-response.adoc[]
+
+==== 응답 필드
+
+include::{snippets}/trade-delete/response-fields.adoc[]
+
+
 

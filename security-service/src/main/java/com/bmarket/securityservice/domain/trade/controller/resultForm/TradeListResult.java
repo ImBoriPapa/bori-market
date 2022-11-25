@@ -1,6 +1,5 @@
 package com.bmarket.securityservice.domain.trade.controller.resultForm;
 
-import com.bmarket.securityservice.domain.common.ResultForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Builder
-public class RequestGetTradeListResult  {
+public class TradeListResult {
 
     private Long tradeId;
     private String title;

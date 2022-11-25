@@ -1,23 +1,20 @@
 package com.bmarket.securityservice.internal_api.trade.form;
 
-import com.bmarket.securityservice.domain.trade.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class RequestTradeForm {
-
-    private Long accountId;
-    private String nickname;
+public class TradeContentsResult {
+    private Long tradeId;
     private String title;
     private String context;
-    private Integer price;
-    private Category category;
-    private Boolean isShare;
-    private Boolean isOffer;
+    private String category;
+    private List<String> imagePath;
 }

@@ -1,6 +1,6 @@
 package com.bmarket.securityservice.docs;
 
-import com.bmarket.securityservice.domain.account.controller.AccountController;
+
 import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
@@ -42,8 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ApiDocsAccount {
 
 
-    @Autowired
-    AccountController accountController;
     @Autowired
     ObjectMapper objectMapper;
     @Autowired

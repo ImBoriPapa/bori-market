@@ -30,18 +30,16 @@ public class TradeCommandService {
     public Trade createTrade(RequestForm form, List<MultipartFile> files) {
         Trade trade = Trade.createTrade()
                 .accountId(form.getAccountId())
-                .profileImage(form.getProfileImage())
-                .nickname(form.getNickname())
                 .title(form.getTitle())
                 .context(form.getContext())
                 .price(form.getPrice())
-                .addressCode(form.getAddressCode())
-                .address(form.getAddress())
                 .category(form.getCategory())
                 .isShare(form.getIsShare())
                 .isOffer(form.getIsOffer())
                 .build();
+
         Trade newTrade = tradeRepository.save(trade);
+
         ArrayList<TradeImage> images = new ArrayList<>();
 
         requestImageApi.getImagePath(newTrade.getId(), files)

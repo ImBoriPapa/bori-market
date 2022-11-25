@@ -1,6 +1,7 @@
 package com.bmarket.tradeservice.domain.trade.controller;
 
 import com.bmarket.tradeservice.domain.trade.dto.RequestForm;
+import com.bmarket.tradeservice.domain.trade.entity.Address;
 import com.bmarket.tradeservice.domain.trade.entity.Category;
 import com.bmarket.tradeservice.domain.trade.entity.Trade;
 import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
@@ -28,11 +29,27 @@ public class TradeController {
     private final TradeQueryRepositoryImpl tradeQueryRepository;
 
     @PostMapping(value = "/internal/trade", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<ResultForm> createTrade(@RequestPart RequestForm form,
+    public ResponseEntity createTrade(@RequestPart RequestForm form,
                                                   @RequestPart(name = "images") List<MultipartFile> images) {
 
-        Trade trade = tradeCommandService.createTrade(form, images);
-        return ResponseEntity.ok().body(new ResultForm(trade.getId(), trade.getCreatedAt()));
+        log.info("form accountId = {}", form.getAccountId());
+        log.info("form getTitle= {}", form.getTitle());
+        log.info("form getContext= {}", form.getContext());
+        log.info("form getCategory= {}", form.getCategory());
+        log.info("form getIsShare= {}", form.getIsShare());
+        log.info("form getIsOffer= {}", form.getIsOffer());
+        log.info("form getPrice= {}", form.getPrice());
+        log.info("form getAddressCode= {}", form.getAddress().getAddressCode());
+        log.info("form getCity= {}", form.getAddress().getCity());
+        log.info("form getTown= {}", form.getAddress().getTown());
+        log.info("form getDistrict= {}", form.getAddress().getDistrict());
+
+        images.forEach(r->log.info("image name= {}",r.getOriginalFilename()));
+
+
+//        Trade trade = tradeCommandService.createTrade(form, images);
+//        return ResponseEntity.ok().body(new ResultForm(trade.getId(), trade.getCreatedAt()));
+        return ResponseEntity.ok().body("test");
     }
 
     @NoArgsConstructor
@@ -49,19 +66,19 @@ public class TradeController {
         return ResponseEntity.ok().body(tradeDetail);
     }
 
-    @GetMapping("/internal/trade")
-    public ResponseEntity getTradeListByAccountId(@RequestParam("accountId") Long accountId){
+    //    @GetMapping("/internal/trade/")
+    public ResponseEntity getTradeListByAccountId(@RequestParam("accountId") Long accountId) {
         List<TradeListDto> list = tradeQueryRepository.getTradeListByAccountId(accountId);
         for (TradeListDto tradeListDto : list) {
 
-            log.info("tradeId={}",tradeListDto.getTradeId());
+            log.info("tradeId={}", tradeListDto.getTradeId());
         }
         return ResponseEntity.ok().body(list);
     }
 
     // TODO: 2022/11/22 닉네임 ,주소 ,이미지 수정 만들기
     @PutMapping("/internal/profile/account/{accountId}/nickname")
-    public String putNickname(@PathVariable Long accountId){
+    public String putNickname(@PathVariable Long accountId) {
         return "ok";
     }
 
@@ -83,8 +100,8 @@ public class TradeController {
                 .range(range).build();
 
         ResponseResult<List<TradeListDto>> result = tradeQueryRepository.getTradeWithComplexCondition(size, lastIndex, condition);
-
     }
+
     @GetMapping("/internal/trade")
     public ResponseEntity test(@RequestParam(defaultValue = "10") int size,
                                @RequestParam(defaultValue = "0") Long lastIndex,
@@ -103,12 +120,12 @@ public class TradeController {
                 .addressCode(addressCode)
                 .range(range).build();
 
-        log.info("category={}",searchCondition.getCategory());
-        log.info("share={}",searchCondition.getIsShare());
-        log.info("offer={}",searchCondition.getIsOffer());
-        log.info("status={}",searchCondition.getStatus());
-        log.info("address code={}",searchCondition.getAddressCode());
-        log.info("address code={}",searchCondition.getRange());
+        log.info("category={}", searchCondition.getCategory());
+        log.info("share={}", searchCondition.getIsShare());
+        log.info("offer={}", searchCondition.getIsOffer());
+        log.info("status={}", searchCondition.getStatus());
+        log.info("address code={}", searchCondition.getAddressCode());
+        log.info("address code={}", searchCondition.getRange());
 
         ResponseResult result = tradeQueryRepository.getTradeWithComplexCondition(size, lastIndex, searchCondition);
         return ResponseEntity.ok().body(result);
