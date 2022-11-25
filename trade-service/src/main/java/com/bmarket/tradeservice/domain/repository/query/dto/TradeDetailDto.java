@@ -1,6 +1,6 @@
-package com.bmarket.tradeservice.domain.trade.repository.query.dto;
+package com.bmarket.tradeservice.domain.repository.query.dto;
 
-import com.bmarket.tradeservice.domain.trade.entity.Category;
+import com.bmarket.tradeservice.domain.entity.Category;
 
 import com.querydsl.core.annotations.QueryProjection;
 

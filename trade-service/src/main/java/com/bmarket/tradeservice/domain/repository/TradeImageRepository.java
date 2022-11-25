@@ -1,7 +1,7 @@
-package com.bmarket.tradeservice.domain.trade.repository;
+package com.bmarket.tradeservice.domain.repository;
 
-import com.bmarket.tradeservice.domain.trade.entity.Trade;
-import com.bmarket.tradeservice.domain.trade.entity.TradeImage;
+import com.bmarket.tradeservice.domain.entity.Trade;
+import com.bmarket.tradeservice.domain.entity.TradeImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.bmarket.tradeservice.domain.trade.internal;
+package com.bmarket.tradeservice.domain.internal;
 
-import com.bmarket.tradeservice.domain.trade.dto.ResponseImageDto;
+import com.bmarket.tradeservice.domain.dto.ResponseImageDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;

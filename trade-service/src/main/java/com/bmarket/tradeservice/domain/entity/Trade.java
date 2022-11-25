@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.trade.entity;
+package com.bmarket.tradeservice.domain.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -46,9 +46,6 @@ public class Trade {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-
-
 
     public void changeStatus(TradeStatus status){
         this.status = status;

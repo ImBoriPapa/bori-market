@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.trade.repository.query;
+package com.bmarket.tradeservice.domain.repository.query;
 
 import lombok.Getter;
 

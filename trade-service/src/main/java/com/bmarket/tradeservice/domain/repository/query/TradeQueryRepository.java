@@ -1,7 +1,7 @@
-package com.bmarket.tradeservice.domain.trade.repository.query;
+package com.bmarket.tradeservice.domain.repository.query;
 
 
-import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.TradeListDto;
 
 import java.util.List;
 

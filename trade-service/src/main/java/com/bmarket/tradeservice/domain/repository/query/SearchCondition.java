@@ -1,7 +1,7 @@
-package com.bmarket.tradeservice.domain.trade.repository.query;
+package com.bmarket.tradeservice.domain.repository.query;
 
-import com.bmarket.tradeservice.domain.trade.entity.Category;
-import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.entity.Category;
+import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import lombok.*;
 
 @Getter

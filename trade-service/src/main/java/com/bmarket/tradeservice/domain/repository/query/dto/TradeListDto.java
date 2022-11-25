@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.trade.repository.query.dto;
+package com.bmarket.tradeservice.domain.repository.query.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;

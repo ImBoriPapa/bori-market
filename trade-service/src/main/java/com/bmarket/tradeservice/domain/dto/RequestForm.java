@@ -1,7 +1,7 @@
-package com.bmarket.tradeservice.domain.trade.dto;
+package com.bmarket.tradeservice.domain.dto;
 
-import com.bmarket.tradeservice.domain.trade.entity.Address;
-import com.bmarket.tradeservice.domain.trade.entity.Category;
+import com.bmarket.tradeservice.domain.entity.Address;
+import com.bmarket.tradeservice.domain.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

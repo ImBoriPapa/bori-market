@@ -1,11 +1,11 @@
-package com.bmarket.tradeservice.domain.trade.repository.query;
+package com.bmarket.tradeservice.domain.repository.query;
 
-import com.bmarket.tradeservice.domain.trade.entity.Category;
-import com.bmarket.tradeservice.domain.trade.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
+import com.bmarket.tradeservice.domain.entity.Category;
 import com.bmarket.tradeservice.domain.trade.repository.query.dto.QTradeDetailDto;
 import com.bmarket.tradeservice.domain.trade.repository.query.dto.QTradeListDto;
-import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeDetailDto;
-import com.bmarket.tradeservice.domain.trade.repository.query.dto.TradeListDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.TradeListDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
