@@ -16,7 +16,7 @@ import java.util.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@EqualsAndHashCode(of = {"id", "clientId"})
+@EqualsAndHashCode(of = {"id"})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

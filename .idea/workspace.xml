@@ -4,28 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="API 문서 1차 마무리">
+    <list default="true" id="bc2836b9-0ad3-4ecb-afcb-e30f89024e8a" name="Changes" comment="trade-service readme 추가">
+      <change afterPath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/domain/controller/TradeControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/controller/TradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/controller/TradeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/dto/RequestForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/dto/RequestForm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/dto/ResponseImageDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/dto/ResponseImageDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/Trade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/TradeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/TradeImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/entity/TradeStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/TradeStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/internal/RequestImageApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/internal/RequestImageApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/TradeImageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/TradeImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/TradeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/TradeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/AddressRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/AddressRange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/ResponseResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/ResponseResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/SearchCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/SearchCondition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/TradeQueryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/TradeQueryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/TradeQueryRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/TradeQueryRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/dto/TradeDetailDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/dto/TradeDetailDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/repository/query/dto/TradeListDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/repository/query/dto/TradeListDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/trade/service/TradeCommandService.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/service/TradeCommandService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/domain/account/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/security-service/src/main/java/com/bmarket/securityservice/domain/account/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/Trade.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/java/com/bmarket/tradeservice/domain/entity/Trade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trade-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/TradeCommandServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/trade-service/src/test/java/com/bmarket/tradeservice/TradeCommandServiceApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,8 +91,8 @@
         <option value="Enum" />
         <option value="Interface" />
         <option value="HTML File" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -168,11 +153,11 @@
       <recent name="com.bmarket.securityservice.domain" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.bmarket.tradeservice.domain.entity" />
+      <recent name="com.bmarket.tradeservice.domain.controller" />
       <recent name="com.bmarket.securityservice.domain.trade.controller" />
       <recent name="com.bmarket.securityservice.domain.profile.controller" />
       <recent name="com.bmarket.securityservice.domain.account.controller" />
-      <recent name="com.bmarket.securityservice.internal_api" />
-      <recent name="com.bmarket.securityservice.domain.trade.service" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -182,7 +167,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ApiDocsInfo.responseStatus">
+  <component name="RunManager" selected="JUnit.TradeTest.modifyTest">
     <configuration name="ApiDocsInfo.responseStatus" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bori-market.security-service.test" />
       <extension name="coverage">
@@ -195,21 +180,6 @@
       <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.docs.ApiDocsInfo" />
       <option name="METHOD_NAME" value="responseStatus" />
       <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ApiDocsTrade" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bori-market.security-service.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.docs.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.docs" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.docs.ApiDocsTrade" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -230,22 +200,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ApiDocsTrade.createTrade" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="bori-market.security-service.test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.bmarket.securityservice.docs.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.bmarket.securityservice.docs" />
-      <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.docs.ApiDocsTrade" />
-      <option name="METHOD_NAME" value="createTrade" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ApiDocsTrade.modify" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="bori-market.security-service.test" />
       <extension name="coverage">
@@ -257,6 +211,38 @@
       <option name="PACKAGE_NAME" value="com.bmarket.securityservice.docs" />
       <option name="MAIN_CLASS_NAME" value="com.bmarket.securityservice.docs.ApiDocsTrade" />
       <option name="METHOD_NAME" value="modify" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TradeTest.createTradeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.trade-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.tradeservice.domain.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.tradeservice.domain.entity" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.tradeservice.domain.entity.TradeTest" />
+      <option name="METHOD_NAME" value="createTradeTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TradeTest.modifyTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bori-market.trade-service.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.bmarket.tradeservice.domain.entity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.bmarket.tradeservice.domain.entity" />
+      <option name="MAIN_CLASS_NAME" value="com.bmarket.tradeservice.domain.entity.TradeTest" />
+      <option name="METHOD_NAME" value="modifyTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -292,11 +278,11 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.TradeTest.createTradeTest" />
+      <item itemvalue="JUnit.TradeTest.modifyTest" />
       <item itemvalue="JUnit.ApiDocsInfo.responseStatus" />
-      <item itemvalue="JUnit.ApiDocsTrade" />
       <item itemvalue="JUnit.ApiDocsTrade.modify" />
       <item itemvalue="JUnit.ApiDocsTrade.판매글삭제" />
-      <item itemvalue="JUnit.ApiDocsTrade.createTrade" />
       <item itemvalue="Spring Boot.AddressServiceApplication" />
       <item itemvalue="Spring Boot.FrmServiceApplication" />
       <item itemvalue="Spring Boot.SecurityServiceApplication" />
@@ -304,11 +290,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TradeTest.modifyTest" />
+        <item itemvalue="JUnit.TradeTest.createTradeTest" />
         <item itemvalue="JUnit.ApiDocsInfo.responseStatus" />
         <item itemvalue="JUnit.ApiDocsTrade.판매글삭제" />
         <item itemvalue="JUnit.ApiDocsTrade.modify" />
-        <item itemvalue="JUnit.ApiDocsTrade" />
-        <item itemvalue="JUnit.ApiDocsTrade.createTrade" />
       </list>
     </recent_temporary>
   </component>
@@ -351,7 +337,8 @@
       <workItem from="1669079529702" duration="16322000" />
       <workItem from="1669202745752" duration="13257000" />
       <workItem from="1669249474655" duration="26155000" />
-      <workItem from="1669334853380" duration="22260000" />
+      <workItem from="1669334853380" duration="23017000" />
+      <workItem from="1669440593718" duration="6065000" />
     </task>
     <task id="LOCAL-00001" summary="프로젝트 모듈 구조 변경 -&gt; service-module 삭제">
       <created>1667919050176</created>
@@ -465,7 +452,21 @@
       <option name="project" value="LOCAL" />
       <updated>1669366572304</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="trade-service 1차 리팩토링">
+      <created>1669382753361</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1669382753361</updated>
+    </task>
+    <task id="LOCAL-00018" summary="trade-service readme 추가">
+      <created>1669382844613</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1669382844613</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -499,7 +500,9 @@
     <MESSAGE value="ProfileController Api 문서 작성" />
     <MESSAGE value="AddressController Api 문서 작성" />
     <MESSAGE value="API 문서 1차 마무리" />
-    <option name="LAST_COMMIT_MESSAGE" value="API 문서 1차 마무리" />
+    <MESSAGE value="trade-service 1차 리팩토링" />
+    <MESSAGE value="trade-service readme 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="trade-service readme 추가" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
