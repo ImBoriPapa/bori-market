@@ -1,5 +1,10 @@
 # Project exclude paths
 
+security-service/src/main/resources/application.yml
+trade-service/src/main/resources/application.yml
+frm-service/src/main/resources/application.yml
+address-service/src/main/resources/application.yml
+
 .idea
 build
 /build/
