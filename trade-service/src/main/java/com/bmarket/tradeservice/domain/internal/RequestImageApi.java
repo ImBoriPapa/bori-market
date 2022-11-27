@@ -1,6 +1,7 @@
 package com.bmarket.tradeservice.domain.internal;
 
 import com.bmarket.tradeservice.domain.dto.ResponseImageDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
@@ -13,21 +14,32 @@ import java.util.List;
 @Component
 public class RequestImageApi {
 
+    @Value("${internal.frm}")
+    String frmUrl;
+
+
     public ResponseImageDto getImagePath(Long tradeId, List<MultipartFile> files) {
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("tradeId", tradeId);
-        files.stream().forEach(m -> builder.part("images", m.getResource()));
+        files.forEach(m -> builder.part("images", m.getResource()));
 
-        ResponseImageDto dto = WebClient.create()
+        return WebClient.create(frmUrl)
                 .post()
-                .uri("http://localhost:8095/frm/trade")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromMultipartData(builder.build()))
                 .retrieve()
                 .bodyToMono(ResponseImageDto.class)
                 .block();
-        return dto;
     }
 
+    // TODO: 2022/11/26 이미지 수정,삭제 요청 구현
 
+    public void deleteImage(Long tradeId){
+        WebClient.create(frmUrl)
+                .delete()
+                .uri("/{tradeId}", tradeId)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
 }
