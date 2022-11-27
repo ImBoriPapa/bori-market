@@ -3,8 +3,11 @@
 .idea
 build
 /build/
-/gradle/
 
+gradle/wrapper
+gradlew
+gradlew.bat
+/gradle/
 /.gradle/
 /.gradle
 generated
