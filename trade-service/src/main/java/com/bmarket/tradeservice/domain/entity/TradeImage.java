@@ -17,14 +17,14 @@ public class TradeImage {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
-    private String imageName;
+    private String imagePath;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TRADE_ID")
     private Trade trade;
 
     @Builder(builderMethodName = "createImage")
-    public TradeImage(String imageName, Trade trade) {
-        this.imageName = imageName;
+    public TradeImage(String imagePath, Trade trade) {
+        this.imagePath = imagePath;
         this.trade = trade;
     }
 }

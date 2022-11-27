@@ -45,12 +45,12 @@ public class TradeCommandService {
         requestImageApi.getImagePath(newTrade.getId(), files)
                 .getImagePath().forEach(m -> {
                     TradeImage tradeImage = TradeImage.createImage()
-                            .imageName(m)
+                            .imagePath(m)
                             .trade(trade).build();
                     images.add(tradeImage);
                 });
         List<TradeImage> imageList = tradeImageRepository.saveAll(images);
-        newTrade.updateRepresentativeImage(imageList.get(0).getImageName());
+        newTrade.updateRepresentativeImage(imageList.get(0).getImagePath());
         return newTrade;
     }
 
