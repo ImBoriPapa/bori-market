@@ -1,6 +1,0 @@
-rootProject.name = 'bori-market'
-
-include 'address-service'
-include 'frm-service'
-include 'trade-service'
-include 'security-service'
