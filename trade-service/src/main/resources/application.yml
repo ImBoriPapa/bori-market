@@ -26,6 +26,9 @@ spring:
       org.hibernate.SQL:
         type.descriptor.sql: trace
         SQL: DEBUG
+
+internal:
+  frm: "http://localhost:8095/frm/trade"
 ---
 server:
   port: 8081
@@ -55,6 +58,9 @@ spring:
       org.hibernate.SQL:
         type.descriptor.sql: trace
         SQL: DEBUG
+
+internal:
+  frm: "http://localhost:8095/frm/trade"
 ---
 server:
   port: 8081
@@ -85,6 +91,7 @@ spring:
         type.descriptor.sql: trace
         SQL: ERROR
 
-
+internal:
+  frm: "http://localhost:8095/frm/trade"
 
 
