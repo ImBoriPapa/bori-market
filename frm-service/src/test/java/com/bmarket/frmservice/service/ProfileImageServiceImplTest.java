@@ -1,7 +1,7 @@
 package com.bmarket.frmservice.service;
 
 import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
-import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceV1;
+import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceImpl;
 import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
 import com.bmarket.frmservice.utils.FileManager;
 import org.junit.jupiter.api.DisplayName;
@@ -20,10 +20,10 @@ import static com.bmarket.frmservice.utils.Patterns.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class ProfileImageServiceV1Test {
+class ProfileImageServiceImplTest {
 
     @Autowired
-    ProfileImageServiceV1 profileImageServiceV1;
+    ProfileImageServiceImpl profileImageServiceImpl;
     @Autowired
     ProfileImageRepository profileImageRepository;
     @Autowired
@@ -39,8 +39,8 @@ class ProfileImageServiceV1Test {
         long accountId = 1L;
         MockMultipartFile image = new MockMultipartFile("image", "test-image.jpg", MediaType.MULTIPART_FORM_DATA_VALUE, "test-image".getBytes(StandardCharsets.UTF_8));
         //when
-        String save = profileImageServiceV1.save(accountId, image);
-        ProfileImage findProfile = profileImageServiceV1.findByAccountId(accountId);
+        String save = profileImageServiceImpl.saveImage(accountId, image);
+        ProfileImage findProfile = profileImageServiceImpl.findByAccountId(accountId);
         File file = new File(generator.generatedFullPath(IMAGE_PATH, findProfile.getStoredImageName()));
 
         //then
@@ -59,13 +59,13 @@ class ProfileImageServiceV1Test {
         //given
         long accountId = 1L;
         MockMultipartFile image = new MockMultipartFile("image", "test-image.jpg", MediaType.MULTIPART_FORM_DATA_VALUE, "test-image".getBytes(StandardCharsets.UTF_8));
-        profileImageServiceV1.save(accountId, image);
+        profileImageServiceImpl.saveImage(accountId, image);
 
         ProfileImage findBeforeDelete = profileImageRepository.findByAccountId(accountId).get();
         File file = new File(generator.generatedFullPath(IMAGE_PATH, findBeforeDelete.getStoredImageName()));
         //when
-        String result = profileImageServiceV1.deleteProfileImage(accountId);
-        ProfileImage find = profileImageServiceV1.findByAccountId(accountId);
+        String result = profileImageServiceImpl.deleteProfileImage(accountId);
+        ProfileImage find = profileImageServiceImpl.findByAccountId(accountId);
         //then
         assertThat(result).isEqualTo(SEARCH_DEFAULT_PATTERN + find.getStoredImageName());
         assertThat(file.exists()).isFalse();
@@ -81,10 +81,10 @@ class ProfileImageServiceV1Test {
         MockMultipartFile image = new MockMultipartFile("image", "test-image.jpg", MediaType.MULTIPART_FORM_DATA_VALUE, "test-image".getBytes(StandardCharsets.UTF_8));
         MockMultipartFile newImage = new MockMultipartFile("image", "test-newImage.jpg", MediaType.MULTIPART_FORM_DATA_VALUE, "test-image".getBytes(StandardCharsets.UTF_8));
         //when
-        String beforeUpdate = profileImageServiceV1.save(accountId, image);
+        String beforeUpdate = profileImageServiceImpl.saveImage(accountId, image);
         ProfileImage findBefore = profileImageRepository.findByAccountId(1L).get();
         File beforeFile = new File(generator.generatedFullPath(IMAGE_PATH, findBefore.getStoredImageName()));
-        String afterUpdate = profileImageServiceV1.updateProfileImage(1L, newImage);
+        String afterUpdate = profileImageServiceImpl.updateProfileImage(1L, newImage);
         ProfileImage findAfter = profileImageRepository.findByAccountId(1L).get();
         File afterFile = new File(generator.generatedFullPath(IMAGE_PATH, findAfter.getStoredImageName()));
 
@@ -104,9 +104,9 @@ class ProfileImageServiceV1Test {
         //given
         long accountId = 1L;
         MockMultipartFile image = new MockMultipartFile("image", "test-image.jpg", MediaType.MULTIPART_FORM_DATA_VALUE, "test-image".getBytes(StandardCharsets.UTF_8));
-        profileImageServiceV1.save(accountId,image);
+        profileImageServiceImpl.saveImage(accountId,image);
         //when
-        byte[] imageByByte = profileImageServiceV1.getImageByByte(accountId);
+        byte[] imageByByte = profileImageServiceImpl.getImageByByte(accountId);
         //then
         assertThat(imageByByte).isEqualTo(image.getBytes());
     }
