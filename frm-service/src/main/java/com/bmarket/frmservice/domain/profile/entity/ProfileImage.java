@@ -25,9 +25,8 @@ public class ProfileImage {
      * 프로필 이미지 생성
      */
     @Builder(builderMethodName = "createProfileImage")
-    public ProfileImage(Long accountId,String uploadImageName, String storedImageName) {
+    public ProfileImage(Long accountId, String storedImageName) {
         this.accountId = accountId;
-        this.uploadImageName = uploadImageName;
         this.storedImageName = storedImageName;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();

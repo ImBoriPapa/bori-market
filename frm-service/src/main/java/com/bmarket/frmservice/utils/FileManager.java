@@ -59,6 +59,7 @@ public class FileManager {
 
         return new UploadFile(file.getOriginalFilename(), storedName);
     }
+
     /**
      * MultipartFile 이 한개 이상일 경우 때 저장 로직
      */
@@ -86,11 +87,11 @@ public class FileManager {
      */
     public void deleteFile(String path, String storedName) {
         File target = new File(generatedFullPath(path, storedName));
-        if (target.exists()) {
-            log.info("exists={}", target.exists());
-            target.delete();
+        if (!target.exists()) {
+            throw new IllegalArgumentException("삭제할 파일이 존재하지 않습니다.");
         }
-        throw new IllegalArgumentException("삭제할 파일이 존재하지 않습니다.");
+        log.info("exists={}", target.exists());
+        target.delete();
     }
 
     /**
