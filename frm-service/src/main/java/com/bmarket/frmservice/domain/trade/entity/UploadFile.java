@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class UploadFile {
 
-    private String uploadName;
-    private String storedName;
+    private String uploadImageName;
+    private String storedImageName;
 
-    public UploadFile(String uploadName, String storedName) {
-        this.uploadName = uploadName;
-        this.storedName = storedName;
+    public UploadFile(String uploadImageName, String storedImageName) {
+        this.uploadImageName = uploadImageName;
+        this.storedImageName = storedImageName;
     }
 }

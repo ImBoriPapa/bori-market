@@ -112,7 +112,7 @@ class ProfileImageServiceImplTest {
 
         ProfileImage profileImage = ProfileImage.createProfileImage()
                 .accountId(accountId)
-                .storedImageName(uploadFile.getStoredName())
+                .storedImageName(uploadFile.getStoredImageName())
                 .build();
         ProfileImage save = profileImageRepository.save(profileImage);
         //when

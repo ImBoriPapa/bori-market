@@ -21,9 +21,7 @@ public class TradeImage {
     private String id;
     private Long tradeId;
     private List<UploadFile> images = new ArrayList<>();
-
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
     @Builder(builderMethodName = "createTradeImage")
@@ -31,6 +29,12 @@ public class TradeImage {
         this.tradeId = tradeId;
         this.images = images;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateTradeImage(List<UploadFile> images) {
+        this.images.clear();
+        this.images = images;
         this.updatedAt = LocalDateTime.now();
     }
 }

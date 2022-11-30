@@ -2,7 +2,6 @@ package com.bmarket.frmservice.utils;
 
 import com.bmarket.frmservice.domain.trade.entity.UploadFile;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,10 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -43,11 +40,11 @@ class FileManagerTest {
         MockMultipartFile image = new MockMultipartFile("image", "image.png", "image/png", "image".getBytes());
         //when
         UploadFile uploadFile = fileManager.saveFile(path, image);
-        File storedFile = new File(path, uploadFile.getStoredName());
+        File storedFile = new File(path, uploadFile.getStoredImageName());
         //then
-        assertThat(uploadFile.getUploadName()).isEqualTo(image.getOriginalFilename());
+        assertThat(uploadFile.getUploadImageName()).isEqualTo(image.getOriginalFilename());
         assertThat(storedFile.exists()).isTrue();
-        log.info("[Stored Name ={}]", uploadFile.getStoredName());
+        log.info("[Stored Name ={}]", uploadFile.getStoredImageName());
     }
 
     @Test
@@ -64,11 +61,11 @@ class FileManagerTest {
         List<UploadFile> uploadFiles = fileManager.saveFile(path, files);
         File[] listFiles = new File(path).listFiles();
         //then
-        assertThat(uploadFiles.get(0).getUploadName()).isEqualTo(image1.getOriginalFilename());
-        assertThat(uploadFiles.get(1).getUploadName()).isEqualTo(image2.getOriginalFilename());
-        assertThat(uploadFiles.get(2).getUploadName()).isEqualTo(image3.getOriginalFilename());
-        assertThat(uploadFiles.get(3).getUploadName()).isEqualTo(image4.getOriginalFilename());
-        assertThat(uploadFiles.get(4).getUploadName()).isEqualTo(image5.getOriginalFilename());
+        assertThat(uploadFiles.get(0).getUploadImageName()).isEqualTo(image1.getOriginalFilename());
+        assertThat(uploadFiles.get(1).getUploadImageName()).isEqualTo(image2.getOriginalFilename());
+        assertThat(uploadFiles.get(2).getUploadImageName()).isEqualTo(image3.getOriginalFilename());
+        assertThat(uploadFiles.get(3).getUploadImageName()).isEqualTo(image4.getOriginalFilename());
+        assertThat(uploadFiles.get(4).getUploadImageName()).isEqualTo(image5.getOriginalFilename());
 
         Arrays.stream(listFiles).map(File::getName).forEach(m -> log.info("[Stored Name={}]", m));
     }

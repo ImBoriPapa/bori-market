@@ -1,0 +1,24 @@
+### 판매상품 이미지 생성
+POST http://localhost:8095/frm/trade/1/trade-image
+Content-Type: multipart/form-data;  boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="IMG_6414.JPG"
+
+< ./IMG_6414.JPG
+
+### 판매 이미지 삭제
+DELETE http://localhost:8095/frm/trade/1/trade-image
+
+### 판매 이미지 수정
+PUT http://localhost:8095/frm/trade/1/trade-image
+Content-Type: multipart/form-data;  boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="new-image04.jpeg"
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="new-image05.jpeg"
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="new-image06.jpeg"

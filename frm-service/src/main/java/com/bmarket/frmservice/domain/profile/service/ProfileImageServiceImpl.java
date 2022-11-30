@@ -1,6 +1,5 @@
 package com.bmarket.frmservice.domain.profile.service;
 
-import com.bmarket.frmservice.domain.profile.controller.ProfileImageController;
 import com.bmarket.frmservice.domain.profile.dto.ResponseProfile;
 import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
 import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
@@ -67,7 +66,7 @@ public class ProfileImageServiceImpl {
         //새 이미지 파일 저장
         UploadFile uploadFile = manager.saveFile(IMAGE_PATH, newImages);
         //엔티티에 새 파일명과 경로 업데이트
-        profileImage.updateProfileImage(uploadFile.getUploadName(), uploadFile.getStoredName());
+        profileImage.updateProfileImage(uploadFile.getUploadImageName(), uploadFile.getStoredImageName());
 
         ProfileImage updatedProfileImage = profileImageRepository.save(profileImage);
 
