@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,16 @@ public class TradeImage {
     private Long tradeId;
     private List<UploadFile> images = new ArrayList<>();
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     @Builder(builderMethodName = "createTradeImage")
     public TradeImage(Long tradeId, List<UploadFile> images) {
         this.tradeId = tradeId;
         this.images = images;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
 

@@ -46,7 +46,7 @@ public class ProfileImageServiceImpl {
         return ResponseProfile.builder()
                 .success(true)
                 .accountId(accountId)
-                .imagePath(DEFAULT_IMAGE_NAME)
+                .imagePath(SEARCH_DEFAULT_PATTERN+DEFAULT_IMAGE_NAME)
                 .build();
     }
 
@@ -56,19 +56,17 @@ public class ProfileImageServiceImpl {
      */
     public ResponseProfile updateProfileImage(Long accountId, MultipartFile newImages) {
 
-        ProfileImage profileImage = profileImageRepository.findByAccountId(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("프로필 이미지가 존재하지 않습니다."));
+        ProfileImage profileImage = findProfileByAccountId(accountId);
+        //기존에 저장공간에 저장된 이미지 삭제
+        deleteStoredImage(profileImage);
 
         //수정할 이미지가 null 일 경우 default 이미지경로 반환
         if (newImages == null) {
             return returnDefaultImagePath(profileImage);
         }
-
-        //기존에 저장된 이미지 삭제
-        deleteStoredImage(profileImage);
-
+        //새 이미지 파일 저장
         UploadFile uploadFile = manager.saveFile(IMAGE_PATH, newImages);
-
+        //엔티티에 새 파일명과 경로 업데이트
         profileImage.updateProfileImage(uploadFile.getUploadName(), uploadFile.getStoredName());
 
         ProfileImage updatedProfileImage = profileImageRepository.save(profileImage);
@@ -80,8 +78,35 @@ public class ProfileImageServiceImpl {
                 .build();
     }
 
-    private ResponseProfile returnDefaultImagePath(ProfileImage profileImage) {
+    /**
+     * 계정 아이디로 프로필 이미지를 삭제
+     */
+    public ResponseProfile deleteProfileImage(Long accountId) {
+        ProfileImage profileImage = findProfileByAccountId(accountId);
+
         deleteStoredImage(profileImage);
+
+        profileImageRepository.deleteById(profileImage.getId());
+
+        return ResponseProfile
+                .builder()
+                .success(true)
+                .accountId(accountId)
+                .build();
+    }
+
+    /**
+     * 계정 아이디로 프로필 이미지 조회
+     */
+    private ProfileImage findProfileByAccountId(Long accountId) {
+        return profileImageRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("프로필 이미지가 존재하지 않습니다."));
+    }
+
+    /**
+     * 기본 이미지 경로 반환
+     */
+    private ResponseProfile returnDefaultImagePath(ProfileImage profileImage) {
 
         profileImage.updateProfileImage(null, DEFAULT_IMAGE_NAME);
 
@@ -94,33 +119,15 @@ public class ProfileImageServiceImpl {
                 .build();
     }
 
+    /**
+     * 저장공간에 저장된 파일 삭제
+     */
     private void deleteStoredImage(ProfileImage profileImage) {
         try {
             manager.deleteFile(IMAGE_PATH, profileImage.getStoredImageName());
         } catch (IllegalArgumentException e) {
             log.info("삭제할 파일이 존재 하지 않습니다. ={}", e.getMessage());
         }
-    }
-
-    public String deleteProfileImage(Long accountId) {
-        ProfileImage profileImage = profileImageRepository.findByAccountId(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("프로필 이미지가 존재하지 않습니다."));
-
-        String storedImageName = profileImage.getStoredImageName();
-
-        manager.deleteFile(IMAGE_PATH, storedImageName);
-
-        profileImageRepository.deleteById(profileImage.getId());
-
-        return "ok";
-    }
-
-    public ProfileImage findByAccountId(Long accountId) {
-        return profileImageRepository.findByAccountId(accountId).orElseThrow(() -> new IllegalArgumentException("해당 계정 아이디로 이미지를 찾을수 없습니다."));
-    }
-
-    public String findDefaultImage() {
-        return SEARCH_DEFAULT_PATTERN + DEFAULT_IMAGE_NAME;
     }
 
 

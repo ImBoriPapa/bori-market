@@ -1,7 +1,6 @@
 package com.bmarket.frmservice.domain.profile.controller;
 
 import com.bmarket.frmservice.domain.profile.dto.ResponseProfile;
-import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
 import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceImpl;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -10,19 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.bmarket.frmservice.utils.Patterns.SEARCH_DEFAULT_PATTERN;
-import static com.bmarket.frmservice.utils.Patterns.SEARCH_PROFILE_PATTERN;
-
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class ProfileImageController {
     private final ProfileImageServiceImpl profileImageServiceImpl;
-
-    @GetMapping("/frm/profile/default")
-    private String getDefault() {
-        return profileImageServiceImpl.findDefaultImage();
-    }
 
     /**
      * 프로필 이미지 저장 및 경로 반환
@@ -43,8 +34,8 @@ public class ProfileImageController {
      * 프로필 이미지 수정
      */
     @PutMapping("/frm/account/{accountId}/profile")
-    public ResponseEntity updateProfileImage(@PathVariable Long accountId,
-                                             @RequestPart(name = "image", required = false) MultipartFile image) {
+    public ResponseEntity putProfileImage(@PathVariable Long accountId,
+                                          @RequestPart(name = "image", required = false) MultipartFile image) {
 
         ResponseProfile responseProfile = profileImageServiceImpl.updateProfileImage(accountId, image);
 
@@ -52,12 +43,14 @@ public class ProfileImageController {
     }
 
     /**
-     * 프로필 이미지 삭제
+     * 계정 아이디로 프로필 이미지 삭제
      */
-    @DeleteMapping("/frm/profile/{accountId}")
-    public String deleteProfileImage(@PathVariable Long accountId) {
-        return profileImageServiceImpl.deleteProfileImage(accountId);
-    }
+    @DeleteMapping("/frm/account/{accountId}/profile")
+    public ResponseEntity deleteProfileImage(@PathVariable Long accountId) {
 
+        ResponseProfile responseProfile = profileImageServiceImpl.deleteProfileImage(accountId);
+
+        return ResponseEntity.ok().body(responseProfile);
+    }
 
 }

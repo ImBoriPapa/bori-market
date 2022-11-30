@@ -29,6 +29,7 @@ import static com.bmarket.frmservice.utils.Patterns.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -141,6 +142,26 @@ class ProfileImageControllerTest {
                 .andExpect(jsonPath("imagePath").value(SEARCH_DEFAULT_PATTERN+DEFAULT_IMAGE_NAME))
                 .andDo(print());
 
+    }
+
+    @Test
+    @DisplayName("프로필 이미지 삭제 테스트")
+    void deleteProfileImageTest() throws Exception{
+        //given
+        ProfileImage profileImage = ProfileImage.createProfileImage()
+                .accountId(1L)
+                .storedImageName(DEFAULT_IMAGE_NAME).build();
+
+        //when
+        ProfileImage save = profileImageRepository.save(profileImage);
+
+        //then
+        mockMvc.perform(delete("/frm/account/{accountId}/profile", save.getAccountId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("success").value("true"))
+                .andExpect(jsonPath("accountId").value(save.getAccountId()))
+                .andExpect(jsonPath("imagePath").doesNotExist())
+                .andDo(print());
     }
 
 }

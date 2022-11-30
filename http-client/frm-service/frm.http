@@ -13,3 +13,7 @@ Content-Type: multipart/form-data;  boundary=boundary
 Content-Disposition: form-data; name="image"; filename="IMG_6418.JPG"
 
 < ./IMG_6418.JPG
+
+
+###
+DELETE http://localhost:8095/frm/account/1/profile
