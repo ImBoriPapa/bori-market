@@ -35,25 +35,6 @@
 ### 요청
 #### URL: GET /address/search-form - 주소를 검색할 수 있는 form을 제공합니다.
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-검색 기능
-<form class="form">
-    <input type="text" name="town" id="town" placeholder="검색할 동네를 입력하세요">
-    <button type="submit">검색</button>
-</form>
-
-<p class="contents"></p>
-
-</body>
-
-</html>
-
     <!DOCTYPE html>
     <html lang="en">
     <head>
