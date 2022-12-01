@@ -7,8 +7,8 @@
 
 ## API
 ### 요청
-#### URI: GET /address - 주소 전체를 조회합니다. 
-#### URI: GET /address?town=삼성동 - 동네 이름으로 주소를 검색합니다.
+#### URL: GET /address - 주소 전체를 조회합니다. 
+#### URL: GET /address?town=삼성동 - 동네 이름으로 주소를 검색합니다.
 
 ### 응답 아래와 같은 데이터가 응답됩니다.
 
@@ -33,7 +33,7 @@
 
 ## 검색창
 ### 요청
-#### URI: GET /address/search-form - 주소를 검색할 수 있는 form을 제공합니다.
+#### URL: GET /address/search-form - 주소를 검색할 수 있는 form을 제공합니다.
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,25 +51,6 @@
 <p class="contents"></p>
 
 </body>
-
-<script>
-    const form = document.querySelector('.form');
-    const contents = document.querySelector('.contents');
-    const keyword = document.getElementById("town");
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const value = keyword.value;
-        fetch(`/address?town=${value}`)
-            .then((resonse) => resonse.json())
-            .then(renderContents)
-    });
-
-    function renderContents(data) {
-        contents.textContent = JSON.stringify(data);
-    }
-
-
-</script>
 
 </html>
 
