@@ -1,7 +1,7 @@
 package com.bmarket.addressservice;
 
-import com.bmarket.addressservice.domain.entity.Address;
-import com.bmarket.addressservice.domain.repository.AddressRepository;
+import com.bmarket.addressservice.entity.Address;
+import com.bmarket.addressservice.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,28 +19,35 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AddressServiceApplication {
 
-	private final AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
 
-	public static void main(String[] args) {
-		SpringApplication.run(AddressServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AddressServiceApplication.class, args);
+    }
 
-	@PostConstruct
-	public void initAddressData() throws IOException {
-		if(addressRepository.count().block() ==0){
-			AtomicInteger addressCode = new AtomicInteger(1000);
-			ClassPathResource resource = new ClassPathResource("seoul_address.csv");
-			List<Address> list = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
-					.stream().map(line -> {
-						String[] split = line.split(",");
-						return Address.builder()
-								.city(split[0])
-								.district(split[1])
-								.town(split[2])
-								.addressCode(addressCode.getAndIncrement())
-								.build();
-					}).collect(Collectors.toList());
-			addressRepository.saveAll(list).collectList().block();
-		}
-	}
+    @PostConstruct
+    public void init() throws IOException {
+        addressData();
+    }
+
+    private void addressData()throws IOException {
+        if (addressRepository.count().block() == 0) {
+            AtomicInteger addressCode = new AtomicInteger(1000);
+
+            ClassPathResource resource = new ClassPathResource("seoul_address.csv");
+
+            List<Address> list = Files.readAllLines(resource.getFile().toPath(), StandardCharsets.UTF_8)
+                    .stream().map(line -> {
+                        String[] split = line.split(",");
+                        return Address.builder()
+                                .city(split[0])
+                                .district(split[1])
+                                .town(split[2])
+                                .addressCode(addressCode.getAndIncrement())
+                                .build();
+                    }).collect(Collectors.toList());
+
+			addressRepository.saveAll(list);
+        }
+    }
 }

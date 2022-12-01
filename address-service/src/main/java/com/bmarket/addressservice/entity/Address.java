@@ -1,4 +1,4 @@
-package com.bmarket.addressservice.domain.entity;
+package com.bmarket.addressservice.entity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -1,0 +1,8 @@
+### 주소 전체 검색
+GET http://localhost:8085/address
+
+### 동네 이름으로 주소 검색
+GET http://localhost:8085/address?town=삼성
+
+### 주소 폼
+GET http://localhost:8085/address/search-form

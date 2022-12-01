@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+검색 기능
+<form class="form">
+    <input type="text" name="town" id="town" placeholder="검색할 동네를 입력하세요">
+    <button type="submit">검색</button>
+</form>
+
+<p class="contents"></p>
+
+</body>
+
+<script>
+    const form = document.querySelector('.form');
+    const contents = document.querySelector('.contents');
+    const keyword = document.getElementById("town");
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const value = keyword.value;
+        fetch(`/address?town=${value}`)
+            .then((resonse) => resonse.json())
+            .then(renderContents)
+    })
+
+    function renderContents(data) {
+        contents.textContent = JSON.stringify(data);
+    }
+
+
+
+</script>
+
+</html>
