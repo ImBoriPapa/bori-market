@@ -7,13 +7,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
-public class RequestForm {
+public class RequestUpdateForm {
 
-    private Long accountId;
     private String title;
     private String context;
     private Integer price;

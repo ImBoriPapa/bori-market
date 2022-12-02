@@ -1,10 +1,11 @@
 package com.bmarket.tradeservice.domain.repository.query;
 
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.repository.query.dto.QTradeDetailDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.QTradeListDto;
 import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
 import com.bmarket.tradeservice.domain.entity.Category;
-import com.bmarket.tradeservice.domain.trade.repository.query.dto.QTradeDetailDto;
-import com.bmarket.tradeservice.domain.trade.repository.query.dto.QTradeListDto;
+
 import com.bmarket.tradeservice.domain.repository.query.dto.TradeListDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,49 +15,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.bmarket.tradeservice.domain.trade.entity.QTrade.trade;
-import static com.bmarket.tradeservice.domain.trade.entity.QTradeImage.tradeImage;
+import static com.bmarket.tradeservice.domain.entity.QTrade.trade;
+import static com.bmarket.tradeservice.domain.entity.QTradeImage.tradeImage;
 
 
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TradeQueryRepositoryImpl implements TradeQueryRepository {
-
     private final JPAQueryFactory queryFactory;
 
-    public List<TradeListDto> getTradeListByAccountId(Long accountId) {
-        return queryFactory
-                .select(new QTradeListDto(
-                        trade.id,
-                        trade.title,
-                        trade.townName,
-                        trade.price,
-                        trade.representativeImage,
-                        trade.createdAt
-                ))
-                .from(trade)
-                .where(trade.accountId.eq(accountId))
-                .orderBy(trade.id.desc())
-                .fetch();
-    }
-
+    /**
+     * 판매글 상세 조회
+     */
     public TradeDetailDto getTradeDetail(Long tradeId) {
         TradeDetailDto tradeDetailDto = queryFactory
                 .select(new QTradeDetailDto(
                         trade.id,
-                        trade.nickname,
                         trade.title,
                         trade.context,
                         trade.category,
-                        trade.townName
+                        trade.address.town
                 ))
                 .from(trade)
                 .where(trade.id.eq(tradeId))
                 .fetchOne();
 
         List<String> images = queryFactory
-                .select(tradeImage.imageName)
+                .select(tradeImage.imagePath)
                 .from(tradeImage)
                 .where(tradeImage.trade.id.eq(tradeId))
                 .fetch();
@@ -65,6 +51,10 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
         return tradeDetailDto;
     }
 
+    /**
+     * 판매글 리스트 조회
+     * SearchCondition : 검색조건
+     */
     @Override
     public ResponseResult<List<TradeListDto>> getTradeWithComplexCondition(int size, Long lastIndex, SearchCondition searchCondition) {
 
@@ -73,7 +63,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                         new QTradeListDto(
                                 trade.id,
                                 trade.title,
-                                trade.townName,
+                                trade.address.town,
                                 trade.price,
                                 trade.representativeImage,
                                 trade.createdAt
@@ -91,15 +81,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                 .limit(size + 1)
                 .fetch();
 
-        boolean hasNext = false;
-        //list 11 > size 10
-        //list.remove(10)4
-        if (list.size() > size) {
-            System.out.println("size=" + size);
-            String title = list.remove(size).getTitle();
-            System.out.println("target=" + title);
-            hasNext = true;
-        }
+        boolean hasNext = list.size() > size;
 
         return new ResponseResult<>(list.size(), hasNext, list);
     }
@@ -111,15 +93,15 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
     private BooleanExpression addressSearchRange(AddressRange addressRange, int addressCode) {
 
         if (addressRange == AddressRange.ONLY) {
-            return trade.addressCode.eq(addressCode);
+            return trade.address.addressCode.eq(addressCode);
         }
 
         if (addressRange == AddressRange.FIVE) {
-            return trade.addressCode.between(addressCode - 2, addressCode + 3);
+            return trade.address.addressCode.between(addressCode - 2, addressCode + 3);
         }
 
         if (addressRange == AddressRange.TEN) {
-            return trade.addressCode.between(addressCode - 5, addressCode + 5);
+            return trade.address.addressCode.between(addressCode - 5, addressCode + 5);
         }
 
         throw new IllegalArgumentException("Address 검색 값은 필수 입니다.");
@@ -139,5 +121,22 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
 
     private BooleanExpression shareEp(Boolean isShare) {
         return isShare != null ? trade.isShare.eq(isShare) : null;
+    }
+
+    // TODO: 2022/12/02 고민해보자
+    public List<TradeListDto> getTradeListByAccountId(Long accountId) {
+        return queryFactory
+                .select(new QTradeListDto(
+                        trade.id,
+                        trade.title,
+                        trade.address.town,
+                        trade.price,
+                        trade.representativeImage,
+                        trade.createdAt
+                ))
+                .from(trade)
+                .where(trade.accountId.eq(accountId))
+                .orderBy(trade.id.desc())
+                .fetch();
     }
 }

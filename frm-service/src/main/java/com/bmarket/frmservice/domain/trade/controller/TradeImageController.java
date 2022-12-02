@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class TradeImageController {
      * 이미지 파일은 최대 10개 까지 저장
      */
     @PostMapping("/frm/trade-image")
-    public ResponseEntity postTradeImage(@RequestPart(name = "images", required = false) List<MultipartFile> images) {
+    public ResponseEntity postTradeImage(@RequestPart(name = "images", required = false) List<MultipartFile> images,HttpServletRequest request) {
 
         validateImages(images);
 
@@ -38,7 +39,7 @@ public class TradeImageController {
      * 판매 이미지 삭제 요청
      */
     @DeleteMapping("/frm/trade-image/{image-id}")
-    public ResponseEntity deleteTradeImage(@PathVariable(name = "image-id") String id) {
+    public ResponseEntity deleteTradeImage(@PathVariable(name = "image-id") String id, HttpServletRequest request) {
 
         ResponseTradeImage responseTradeImage = tradeImageService.deleteImages(id);
 

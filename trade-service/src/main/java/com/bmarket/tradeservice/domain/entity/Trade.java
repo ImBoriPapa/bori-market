@@ -1,6 +1,7 @@
 package com.bmarket.tradeservice.domain.entity;
 
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -60,39 +61,61 @@ public class Trade {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateTitle(String title) {
-        this.title = title;
+
+    /**
+     * Trade 수정
+     */
+    public void updateTrade(UpdateBuilder builder) {
+        updateTitle(builder.getTitle());
+        updateContext(builder.getContext());
+        updatePrice(builder.getPrice());
+        updateAddress(builder.getAddress());
+        updateCategory(builder.getCategory());
+        updateIsShare(builder.getIsShare());
+        updateIsOffer(builder.getIsOffer());
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateContext(String context) {
-        this.context = context;
-        this.updatedAt = LocalDateTime.now();
+    private void updateIsShare(Boolean isShare) {
+        if (isShare != null) {
+            this.isShare = isShare;
+        }
     }
 
-    public void updatePrice(int price) {
-        this.price = price;
-        this.updatedAt = LocalDateTime.now();
+    private void updateIsOffer(Boolean isOffer) {
+        if (isOffer != null) {
+            this.isOffer = isOffer;
+        }
     }
 
-    public void updateAddress(Address address) {
-        this.address = address;
-        this.updatedAt = LocalDateTime.now();
+    private void updateCategory(Category category) {
+        if (category != null) {
+            this.category = category;
+        }
     }
 
-    public void updateCategory(Category category){
-        this.category = category;
-        this.updatedAt = LocalDateTime.now();
+    private void updateAddress(Address address) {
+        if (address != null) {
+            this.address = address;
+        }
     }
 
-    public void updateShare(boolean isShare) {
-        this.isShare = isShare;
-        this.updatedAt = LocalDateTime.now();
+    private void updatePrice(Integer price) {
+        if (price != null) {
+            this.price = price;
+        }
     }
 
-    public void updateOffer(boolean isOffer) {
-        this.isOffer = isOffer;
-        this.updatedAt = LocalDateTime.now();
+    private void updateContext(String context) {
+        if (StringUtils.hasLength(context)) {
+            this.context = context;
+        }
+    }
+
+    private void updateTitle(String title) {
+        if (StringUtils.hasLength(title)) {
+            this.title = title;
+        }
     }
 
     public void updateRepresentativeImage(String representativeImage) {
@@ -105,5 +128,29 @@ public class Trade {
         this.updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * Trade 수정을 위한 빑더 클래스
+     */
+    @Getter
+    public static class UpdateBuilder {
+        private String title;
+        private String context;
+        private Integer price;
+        private Category category;
+        private Address address;
+        private Boolean isShare;
+        private Boolean isOffer;
+
+        @Builder(builderClassName = "updateBuilder")
+        public UpdateBuilder(String title, String context, Integer price, Category category, Address address, Boolean isShare, Boolean isOffer) {
+            this.title = title;
+            this.context = context;
+            this.price = price;
+            this.category = category;
+            this.address = address;
+            this.isShare = isShare;
+            this.isOffer = isOffer;
+        }
+    }
 
 }

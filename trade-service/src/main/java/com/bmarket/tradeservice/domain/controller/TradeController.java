@@ -1,6 +1,7 @@
 package com.bmarket.tradeservice.domain.controller;
 
 import com.bmarket.tradeservice.domain.dto.RequestForm;
+import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.repository.query.AddressRange;
@@ -15,8 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,36 +35,70 @@ public class TradeController {
     /**
      * 판매글 생성
      */
-    @PostMapping(value = "/internal/trade", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/trade", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity postTrade(@RequestPart RequestForm form,
                                     @RequestPart(name = "images") List<MultipartFile> images) {
-
-        log.info("form accountId = {}", form.getAccountId());
-        log.info("form getTitle= {}", form.getTitle());
-        log.info("form getContext= {}", form.getContext());
-        log.info("form getCategory= {}", form.getCategory());
-        log.info("form getIsShare= {}", form.getIsShare());
-        log.info("form getIsOffer= {}", form.getIsOffer());
-        log.info("form getPrice= {}", form.getPrice());
-        log.info("form getAddressCode= {}", form.getAddress().getAddressCode());
-        log.info("form getCity= {}", form.getAddress().getCity());
-        log.info("form getTown= {}", form.getAddress().getTown());
-        log.info("form getDistrict= {}", form.getAddress().getDistrict());
 
         images.forEach(r -> log.info("image name= {}", r.getOriginalFilename()));
 
         Trade trade = tradeCommandService.createTrade(form, images);
-        return ResponseEntity.ok().body(new ResultForm(trade.getId(), trade.getCreatedAt()));
 
+        ResultForm resultForm = ResultForm.builder()
+                .success(true)
+                .tradeId(trade.getId())
+                .createdAt(trade.getCreatedAt())
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .body(resultForm);
     }
 
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Builder
     public static class ResultForm {
+        private Boolean success;
         private Long tradeId;
         private LocalDateTime createdAt;
     }
+
+    /**
+     * 판매글 삭제
+     */
+    @DeleteMapping("/trade/{tradeId}")
+    public ResponseEntity deleteTrade(@PathVariable Long tradeId) {
+        tradeCommandService.deleteTrade(tradeId);
+
+        ResultForm resultForm = ResultForm.builder()
+                .success(true)
+                .tradeId(tradeId)
+                .createdAt(null)
+                .build();
+        return ResponseEntity
+                .ok()
+                .body(resultForm);
+    }
+
+    /**
+     * 판매글 수정
+     */
+    @PutMapping("/trade/{tradeId}")
+    public ResponseEntity putTrade(@PathVariable Long tradeId,
+                                   @RequestPart RequestUpdateForm form,
+                                   @RequestPart List<MultipartFile> images) {
+        Trade trade = tradeCommandService.updateTrade(tradeId, form, images);
+
+        ResultForm resultForm = ResultForm.builder()
+                .success(true)
+                .tradeId(trade.getId())
+                .createdAt(trade.getCreatedAt())
+                .build();
+
+        return ResponseEntity.ok().body(resultForm);
+    }
+
 
     /**
      * 내용 조회
@@ -71,7 +108,6 @@ public class TradeController {
         TradeDetailDto tradeDetail = tradeQueryRepository.getTradeDetail(tradeId);
         return ResponseEntity.ok().body(tradeDetail);
     }
-
 
     /**
      * 리스트 조회

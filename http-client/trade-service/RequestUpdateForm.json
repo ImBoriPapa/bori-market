@@ -1,0 +1,14 @@
+{
+  "title": "제목 변경",
+  "context": "내용 변경",
+  "price": 100000,
+  "address": {
+    "addressCode": 2001,
+    "city": "인천",
+    "district": "강서구",
+    "town": "화곡동"
+  },
+  "category": "ETC",
+  "isShare": true,
+  "isOffer": true
+}

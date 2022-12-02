@@ -11,5 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponseImageDto {
 
+    private Boolean success;
+    private String imageId;
     private List<String> imagePath;
 }

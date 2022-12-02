@@ -1,0 +1,32 @@
+### POST API
+POST http://localhost:8081/trade
+Content-Type: multipart/form-data;  boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="IMG_6414.JPG"
+
+< ./IMG_6414.JPG
+
+--boundary
+Content-Disposition: form-data; name="form"; filename="ResultForm.json"
+Content-Type: application/json
+
+< ./ResultForm.json
+
+### DELETE API
+DELETE http://localhost:8081/trade/1
+
+### PUT API
+PUT http://localhost:8081/trade/1
+Content-Type: multipart/form-data;  boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="IMG_6415.JPG"
+
+< ./IMG_6414.JPG
+
+--boundary
+Content-Disposition: form-data; name="form"; filename="RequestUpdateForm.json"
+Content-Type: application/json
+
+< ./RequestUpdateForm.json
