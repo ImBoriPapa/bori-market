@@ -14,7 +14,7 @@ import java.util.List;
 public class ResponseTradeImage {
 
     private Boolean success;
-    private Long tradeId;
+    private String imageId;
     private List<String> imagePath;
 
 }

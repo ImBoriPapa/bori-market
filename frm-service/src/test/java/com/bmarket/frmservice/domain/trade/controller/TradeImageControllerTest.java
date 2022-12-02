@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("local")
 @AutoConfigureMockMvc
+@TestPropertySource(properties = "spring.mongodb.embedded.version=3.5.5")
 @Slf4j
 class TradeImageControllerTest {
 
@@ -140,7 +142,7 @@ class TradeImageControllerTest {
         List<UploadFile> uploadFiles = fileManager.saveFile(path, files);
 
         TradeImage tradeImage = TradeImage.createTradeImage()
-                .tradeId(tradeId)
+
                 .images(uploadFiles)
                 .build();
 
@@ -168,7 +170,6 @@ class TradeImageControllerTest {
         List<UploadFile> uploadFiles = fileManager.saveFile(path, files);
 
         TradeImage tradeImage = TradeImage.createTradeImage()
-                .tradeId(tradeId)
                 .images(uploadFiles).build();
 
         tradeImageRepository.save(tradeImage);

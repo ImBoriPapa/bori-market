@@ -67,45 +67,44 @@
 
 ### 1.판매 상품 이미지 저장 및 경로 생성
 
-#### URI : POST /frm/trade/{tradeId}/trade-image
-- tradeId 를 저장한 객체 생성 후 전송 받은 이미지를 저장 이미지 접근 경로를 반환합니다.
+#### URI : POST /frm/trade-image
+- 이미지를 저장 후 tradeImageId를 반환 합니다.
 
 #### Request header
 - Content-Type : multipart/form-data
 
 #### Request parameter
-- path parameter : tradeId -판매 아이디
 - images : 저장할 이미지 파일 최대 10개 
 #### Response parameter
 - success : 응답 성공 여부
-- tradeId : 계정 아이디
+- tradeImageId : 계정 아이디
 - imagePath[] : 이미지 경로 배열
 
 ### 2.판매 상품 이미지 수정
 
-#### URI : PUT /frm/trade/{tradeId}/trade-image
+#### URI : PUT /frm/trade-image/{image-id}
 - 판매 상품 이미지 수정 요청 저장된 이미지를 삭제하고 새로운 이미지 경로를 반환합니다.
 
 #### Request header
 - Content-Type : multipart/form-data
 
 #### Request parameter
-- path parameter : tradeId -판매 아이디
+- path parameter : tradeImageId -판매 이미지 아이디
 - images : 저장할 이미지 파일 최대 10개
 #### Response parameter
 - success : 응답 성공 여부
-- tradeId : 계정 아이디
+- tradeImageId : 판매 이미지 아이디
 - imagePath[] : 이미지 경로 배열
 
 ### 3.판매 상품 이미지 삭제
 
-#### URI : DELETE /frm/trade/{tradeId}/trade-image
+#### URI : DELETE /frm/trade-image/{image-id}
 - 판매 상품 이미지 삭제 요청 저장된 이미지를 삭제
 
 #### Request parameter
-- path parameter : tradeId -판매 아이디
+- path parameter : tradeImageId -판매 이미지 아이디
 
 #### Response parameter
 - success : 응답 성공 여부
-- tradeId : 계정 아이디
+- tradeImageId : 판매 이미지 아이디
 - imagePath[] : null

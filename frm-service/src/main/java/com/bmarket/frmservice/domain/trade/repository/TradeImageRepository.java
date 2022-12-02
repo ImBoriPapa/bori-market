@@ -6,5 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface TradeImageRepository extends MongoRepository<TradeImage,String> {
-    Optional<TradeImage> findByTradeId(Long tradeId);
+
 }

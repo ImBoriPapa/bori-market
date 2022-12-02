@@ -1,5 +1,5 @@
 ### 판매상품 이미지 생성
-POST http://localhost:8095/frm/trade/1/trade-image
+POST http://localhost:8095/frm/trade-image
 Content-Type: multipart/form-data;  boundary=boundary
 
 --boundary
@@ -8,17 +8,17 @@ Content-Disposition: form-data; name="images"; filename="IMG_6414.JPG"
 < ./IMG_6414.JPG
 
 ### 판매 이미지 삭제
-DELETE http://localhost:8095/frm/trade/1/trade-image
+DELETE http://localhost:8095/frm/trade-image/63895d7274556b1fd5340cf8
 
 ### 판매 이미지 수정
-PUT http://localhost:8095/frm/trade/1/trade-image
+PUT http://localhost:8095/frm/trade-image/63895e9a74556b1fd5340cf9
 Content-Type: multipart/form-data;  boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="images"; filename="new-image04.jpeg"
+Content-Disposition: form-data; name="images"; filename="IMG_6415.JPG"
 
 --boundary
-Content-Disposition: form-data; name="images"; filename="new-image05.jpeg"
+Content-Disposition: form-data; name="images"; filename="IMG_6416.JPG"
 
 --boundary
-Content-Disposition: form-data; name="images"; filename="new-image06.jpeg"
+Content-Disposition: form-data; name="images"; filename="IMG_6417.JPG"

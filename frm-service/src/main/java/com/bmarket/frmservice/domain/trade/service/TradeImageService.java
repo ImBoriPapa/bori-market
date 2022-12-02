@@ -31,19 +31,13 @@ public class TradeImageService {
 
     /**
      * tradeImage 생성
-     * 만약 tradeId 가 중복된다면 업데이트
      * tradeId, 이미지 파일 저장 후 저장된 이미지 파일 경로 반환
      */
-    public ResponseTradeImage createTradeImage(Long tradeId, List<MultipartFile> files) {
-
-        if (tradeImageRepository.findByTradeId(tradeId).isPresent()) {
-            return updateTradeImage(tradeId, files);
-        }
+    public ResponseTradeImage createTradeImage(List<MultipartFile> files) {
 
         List<UploadFile> uploadFiles = fileManager.saveFile(IMAGE_PATH, files);
 
         TradeImage tradeImage = TradeImage.createTradeImage()
-                .tradeId(tradeId)
                 .images(uploadFiles).build();
 
         TradeImage save = tradeImageRepository.save(tradeImage);
@@ -53,7 +47,7 @@ public class TradeImageService {
         return ResponseTradeImage
                 .builder()
                 .success(true)
-                .tradeId(save.getTradeId())
+                .imageId(save.getId())
                 .imagePath(imagePathList)
                 .build();
     }
@@ -74,8 +68,8 @@ public class TradeImageService {
     /**
      * TradeImage 수정
      */
-    public ResponseTradeImage updateTradeImage(Long tradeId, List<MultipartFile> files) {
-        TradeImage tradeImage = findProfileImageByTradeId(tradeId);
+    public ResponseTradeImage updateTradeImage(String id, List<MultipartFile> files) {
+        TradeImage tradeImage = findProfileImage(id);
         //저장된 파일 삭제
         deleteStoredImage(tradeImage.getImages());
         //새 파일 저장
@@ -90,7 +84,7 @@ public class TradeImageService {
 
         return ResponseTradeImage.builder()
                 .success(true)
-                .tradeId(updated.getTradeId())
+                .imageId(id)
                 .imagePath(imagePathList)
                 .build();
     }
@@ -98,8 +92,8 @@ public class TradeImageService {
     /**
      * 판매 상품 이미지 삭제
      */
-    public ResponseTradeImage deleteImages(Long tradeId) {
-        TradeImage tradeImage = findProfileImageByTradeId(tradeId);
+    public ResponseTradeImage deleteImages(String id) {
+        TradeImage tradeImage = findProfileImage(id);
 
         List<UploadFile> images = tradeImage.getImages();
 
@@ -109,7 +103,7 @@ public class TradeImageService {
 
         return ResponseTradeImage.builder()
                 .success(true)
-                .tradeId(tradeId)
+                .imageId(id)
                 .imagePath(Collections.emptyList())
                 .build();
     }
@@ -118,8 +112,8 @@ public class TradeImageService {
         images.forEach(image -> fileManager.deleteFile(IMAGE_PATH, image.getStoredImageName()));
     }
 
-    private TradeImage findProfileImageByTradeId(Long tradeId) {
-        TradeImage tradeImage = tradeImageRepository.findByTradeId(tradeId)
+    private TradeImage findProfileImage(String id) {
+        TradeImage tradeImage = tradeImageRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("trade image 를 찾을 수 없습니다."));
         return tradeImage;
     }

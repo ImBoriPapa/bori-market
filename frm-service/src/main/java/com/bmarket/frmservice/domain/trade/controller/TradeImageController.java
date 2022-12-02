@@ -22,19 +22,14 @@ public class TradeImageController {
      * tradeImage 생성
      * 이미지 파일은 최대 10개 까지 저장
      */
-    @PostMapping("/frm/trade/{tradeId}/trade-image")
-    public ResponseEntity postTradeImage(@PathVariable(name = "tradeId") Long id,
-                                         @RequestPart(name = "images", required = false) List<MultipartFile> images) {
+    @PostMapping("/frm/trade-image")
+    public ResponseEntity postTradeImage(@RequestPart(name = "images", required = false) List<MultipartFile> images) {
 
         validateImages(images);
 
-        log.info("tradeId={}", id);
         images.forEach(i -> log.info("file name ={}", i.getOriginalFilename()));
 
-
-
-
-        ResponseTradeImage responseTradeImage = tradeImageService.createTradeImage(id, images);
+        ResponseTradeImage responseTradeImage = tradeImageService.createTradeImage(images);
 
         return ResponseEntity.ok().body(responseTradeImage);
     }
@@ -42,8 +37,8 @@ public class TradeImageController {
     /**
      * 판매 이미지 삭제 요청
      */
-    @DeleteMapping("/frm/trade/{tradeId}/trade-image")
-    public ResponseEntity deleteTradeImage(@PathVariable(name = "tradeId") Long id) {
+    @DeleteMapping("/frm/trade-image/{image-id}")
+    public ResponseEntity deleteTradeImage(@PathVariable(name = "image-id") String id) {
 
         ResponseTradeImage responseTradeImage = tradeImageService.deleteImages(id);
 
@@ -55,8 +50,8 @@ public class TradeImageController {
     /**
      * tradeImage 수정
      */
-    @PutMapping("/frm/trade/{tradeId}/trade-image")
-    public ResponseEntity putTradeImage(@PathVariable(name = "tradeId") Long id,
+    @PutMapping("/frm/trade-image/{image-id}")
+    public ResponseEntity putTradeImage(@PathVariable(name = "image-id") String id,
                                         @RequestPart List<MultipartFile> images){
 
         validateImages(images);

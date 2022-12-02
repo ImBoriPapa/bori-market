@@ -14,18 +14,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("local")
+@TestPropertySource(properties = "spring.mongodb.embedded.version=3.5.5")
 @Slf4j
 class TradeImageServiceTest {
 
@@ -49,17 +52,18 @@ class TradeImageServiceTest {
     @DisplayName("trade 이미지 저장 테스트")
     void successSave() throws Exception {
         //given
-        Long tradeId = 1L;
+        String tradeImageId = UUID.randomUUID().toString();
         MockMultipartFile file1 = new MockMultipartFile("test1", "test1.jpg", "jpg", "fsafaf".getBytes());
         MockMultipartFile file2 = new MockMultipartFile("test2", "test2.jpg", "jpg", "fsafaf".getBytes());
         MockMultipartFile file3 = new MockMultipartFile("test3", "test3.jpg", "jpg", "fsafaf".getBytes());
 
         List<MultipartFile> files = List.of(file1, file2, file3);
         //when
-        ResponseTradeImage tradeImage = tradeImageService.createTradeImage(tradeId, files);
+        ResponseTradeImage tradeImage = tradeImageService.createTradeImage(files);
+        TradeImage findTrade = tradeImageRepository.findById(tradeImageId).orElseThrow(() -> new IllegalArgumentException("찾지 못했습니다."));
         //then
         assertThat(tradeImage.getSuccess()).isTrue();
-        assertThat(tradeImage.getTradeId()).isEqualTo(tradeId);
+        assertThat(tradeImage.getImageId()).isEqualTo(findTrade.getId());
         assertThat(tradeImage.getImagePath().size()).isEqualTo(3);
     }
 
@@ -67,7 +71,7 @@ class TradeImageServiceTest {
     @DisplayName("이미지 삭제 테스트")
     void successDelete() throws Exception {
         //given
-        Long tradeId = 1L;
+        String tradeImageId = UUID.randomUUID().toString();
         MockMultipartFile file1 = new MockMultipartFile("test1", "test1.jpg", "jpg", "fsafaf".getBytes());
         MockMultipartFile file2 = new MockMultipartFile("test2", "test2.jpg", "jpg", "fsafaf".getBytes());
         MockMultipartFile file3 = new MockMultipartFile("test3", "test3.jpg", "jpg", "fsafaf".getBytes());
@@ -77,14 +81,13 @@ class TradeImageServiceTest {
         List<UploadFile> uploadFiles = fileManager.saveFile(path, files);
 
         TradeImage tradeImage = TradeImage.createTradeImage()
-                .tradeId(tradeId)
                 .images(uploadFiles)
                 .build();
         TradeImage save = tradeImageRepository.save(tradeImage);
 
-        ResponseTradeImage deleteImages = tradeImageService.deleteImages(tradeId);
+        ResponseTradeImage deleteImages = tradeImageService.deleteImages(tradeImageId);
         //then
-        assertThat(deleteImages.getTradeId()).isEqualTo(save.getTradeId());
+        assertThat(deleteImages.getImageId()).isEqualTo(save.getId());
         assertThat(deleteImages.getSuccess()).isTrue();
         assertThat(deleteImages.getImagePath()).isEqualTo(Collections.EMPTY_LIST);
 
@@ -97,7 +100,7 @@ class TradeImageServiceTest {
     @DisplayName("이미지 수정 테스트")
     void updateTradeImageTest() throws Exception {
         //given
-        Long tradeId = 1L;
+        String tradeImageId = UUID.randomUUID().toString();
         MockMultipartFile file1 = new MockMultipartFile("test1", "test1.jpg", "jpg", "fsafaf".getBytes());
         MockMultipartFile file2 = new MockMultipartFile("test2", "test2.jpg", "jpg", "fsafaf".getBytes());
         MockMultipartFile file3 = new MockMultipartFile("test3", "test3.jpg", "jpg", "fsafaf".getBytes());
@@ -106,7 +109,6 @@ class TradeImageServiceTest {
         List<UploadFile> uploadFiles = fileManager.saveFile(path, files);
 
         TradeImage tradeImage = TradeImage.createTradeImage()
-                .tradeId(tradeId)
                 .images(uploadFiles)
                 .build();
 
@@ -118,9 +120,9 @@ class TradeImageServiceTest {
         MockMultipartFile newFile3 = new MockMultipartFile("test3", "new3.jpg", "jpg", "fsafaf".getBytes());
         List<MultipartFile> newFiles = List.of(newFile1, newFile2, newFile3);
 
-        ResponseTradeImage responseTradeImage = tradeImageService.updateTradeImage(tradeId, newFiles);
+        ResponseTradeImage responseTradeImage = tradeImageService.updateTradeImage(tradeImageId, newFiles);
 
-        TradeImage updated = tradeImageRepository.findByTradeId(tradeId)
+        TradeImage updated = tradeImageRepository.findById(tradeImageId)
                 .orElseThrow(() -> new IllegalArgumentException("판매 상품 이미지를 찾을 수 없습니다."));
 
         updated.getImages().forEach(m -> log.info("image={}", m.getUploadImageName()));
