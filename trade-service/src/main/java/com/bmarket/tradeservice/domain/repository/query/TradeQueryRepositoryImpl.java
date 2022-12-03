@@ -2,11 +2,11 @@ package com.bmarket.tradeservice.domain.repository.query;
 
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.repository.query.dto.QTradeDetailDto;
-import com.bmarket.tradeservice.domain.repository.query.dto.QTradeListDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.QTradeListResult;
 import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
 import com.bmarket.tradeservice.domain.entity.Category;
 
-import com.bmarket.tradeservice.domain.repository.query.dto.TradeListDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.TradeListResult;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.bmarket.tradeservice.domain.entity.QTrade.trade;
 import static com.bmarket.tradeservice.domain.entity.QTradeImage.tradeImage;
@@ -28,14 +29,18 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
     /**
      * 판매글 상세 조회
      */
-    public TradeDetailDto getTradeDetail(Long tradeId) {
+    @Override
+    public Optional<TradeDetailDto> findTradeDetailById(Long tradeId) {
         TradeDetailDto tradeDetailDto = queryFactory
                 .select(new QTradeDetailDto(
                         trade.id,
+                        trade.accountId,
                         trade.title,
                         trade.context,
                         trade.category,
-                        trade.address.town
+                        trade.address,
+                        trade.isShare,
+                        trade.isOffer
                 ))
                 .from(trade)
                 .where(trade.id.eq(tradeId))
@@ -48,7 +53,8 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                 .fetch();
 
         tradeDetailDto.addImagePath(images);
-        return tradeDetailDto;
+
+        return Optional.of(tradeDetailDto);
     }
 
     /**
@@ -56,11 +62,11 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
      * SearchCondition : 검색조건
      */
     @Override
-    public ResponseResult<List<TradeListDto>> getTradeWithComplexCondition(int size, Long lastIndex, SearchCondition searchCondition) {
+    public TradeListDto findTradeListWithCondition(int size, Long lastIndex, SearchCondition searchCondition) {
 
-        List<TradeListDto> list = queryFactory
+        List<TradeListResult> list = queryFactory
                 .select(
-                        new QTradeListDto(
+                        new QTradeListResult(
                                 trade.id,
                                 trade.title,
                                 trade.address.town,
@@ -83,7 +89,8 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
 
         boolean hasNext = list.size() > size;
 
-        return new ResponseResult<>(list.size(), hasNext, list);
+        return new TradeListDto(list.size(), hasNext, list);
+
     }
 
     private BooleanExpression cursor(Long tradeId) {
@@ -123,20 +130,5 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
         return isShare != null ? trade.isShare.eq(isShare) : null;
     }
 
-    // TODO: 2022/12/02 고민해보자
-    public List<TradeListDto> getTradeListByAccountId(Long accountId) {
-        return queryFactory
-                .select(new QTradeListDto(
-                        trade.id,
-                        trade.title,
-                        trade.address.town,
-                        trade.price,
-                        trade.representativeImage,
-                        trade.createdAt
-                ))
-                .from(trade)
-                .where(trade.accountId.eq(accountId))
-                .orderBy(trade.id.desc())
-                .fetch();
-    }
+
 }

@@ -4,9 +4,11 @@ import com.bmarket.tradeservice.domain.dto.RequestForm;
 import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.exception.ExceptionMessage;
 import com.bmarket.tradeservice.domain.repository.query.AddressRange;
-import com.bmarket.tradeservice.domain.repository.query.ResponseResult;
+
 import com.bmarket.tradeservice.domain.repository.query.SearchCondition;
+import com.bmarket.tradeservice.domain.repository.query.TradeListDto;
 import com.bmarket.tradeservice.domain.repository.query.TradeQueryRepositoryImpl;
 import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
 import com.bmarket.tradeservice.domain.service.TradeCommandService;
@@ -16,19 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
 
+import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/internal")
 public class TradeController {
-
     private final TradeCommandService tradeCommandService;
     private final TradeQueryRepositoryImpl tradeQueryRepository;
 
@@ -101,28 +102,35 @@ public class TradeController {
 
 
     /**
-     * 내용 조회
+     * 상세 내용 조회
      */
-    @GetMapping("/internal/trade/{tradeId}")
+    @GetMapping("/trade/{tradeId}")
     public ResponseEntity getTrade(@PathVariable Long tradeId) {
-        TradeDetailDto tradeDetail = tradeQueryRepository.getTradeDetail(tradeId);
+
+        TradeDetailDto tradeDetail = tradeQueryRepository.findTradeDetailById(tradeId)
+                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessage.NOTFOUND_TRADE.getMessage()));
+
         return ResponseEntity.ok().body(tradeDetail);
     }
 
     /**
      * 리스트 조회
+     * 필수 파라미터
+     * size  : 요청 페이지 크기
+     * l-idx : 페이징을 위한 마지막 페이지 인덱스
+     * code  : 주소코드 - 계정 정보의 주소코드를 기준으로 데이터 제공하기 위하여 필수로 받아야함
+     * range : 주소 검색 범위
      */
-    @GetMapping("/internal/trade")
+    @GetMapping("/trade")
     public ResponseEntity getTradeList(
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "0") Long lastIndex,
-            @RequestParam(required = false) Category category,
-            @RequestParam(required = false) Boolean isShare,
-            @RequestParam(required = false) Boolean isOffer,
-            @RequestParam(required = false) TradeStatus status,
-            @RequestParam Integer addressCode,
-            @RequestParam AddressRange range
-    ) {
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "l-idx", defaultValue = "0") Long lastIndex,
+            @RequestParam(name = "category", required = false) Category category,
+            @RequestParam(name = "share", required = false) Boolean isShare,
+            @RequestParam(name = "offer", required = false) Boolean isOffer,
+            @RequestParam(name = "status", required = false) TradeStatus status,
+            @RequestParam(name = "code") Integer addressCode,
+            @RequestParam(name = "range", defaultValue = "ONLY") AddressRange range) {
         SearchCondition searchCondition = SearchCondition.builder()
                 .category(category)
                 .isShare(isShare)
@@ -131,27 +139,9 @@ public class TradeController {
                 .addressCode(addressCode)
                 .range(range).build();
 
-        log.info("category={}", searchCondition.getCategory());
-        log.info("share={}", searchCondition.getIsShare());
-        log.info("offer={}", searchCondition.getIsOffer());
-        log.info("status={}", searchCondition.getStatus());
-        log.info("address code={}", searchCondition.getAddressCode());
-        log.info("address code={}", searchCondition.getRange());
 
-        ResponseResult result = tradeQueryRepository.getTradeWithComplexCondition(size, lastIndex, searchCondition);
+        TradeListDto result = tradeQueryRepository.findTradeListWithCondition(size, lastIndex, searchCondition);
+
         return ResponseEntity.ok().body(result);
-    }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Getter
-    public static class requestCondition {
-        private int page;
-        private int size;
-        private int addressCode;
-        private Category category;
-        private Boolean isShare;
-        private Boolean isOffer;
-        private TradeStatus status;
     }
 }

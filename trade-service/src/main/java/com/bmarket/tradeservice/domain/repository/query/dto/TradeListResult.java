@@ -10,17 +10,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Getter
-public class TradeListDto {
+public class TradeListResult {
     private Long tradeId;
     private String title;
-
     private String townName;
     private int price;
     private String representativeImage;
     private LocalDateTime createdAt;
 
     @QueryProjection
-    public TradeListDto(Long tradeId, String title, String townName, int price, String representativeImage, LocalDateTime createdAt) {
+    public TradeListResult(Long tradeId, String title, String townName, int price, String representativeImage, LocalDateTime createdAt) {
         this.tradeId = tradeId;
         this.title = title;
         this.townName = townName;

@@ -19,9 +19,8 @@ public enum Category {
     BOOK,
     TICKET,
     FOOD,
-    FAT,
+    PAT,
     ETC,
     BUY
-
 
 }

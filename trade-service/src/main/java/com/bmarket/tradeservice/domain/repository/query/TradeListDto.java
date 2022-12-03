@@ -1,6 +1,6 @@
 package com.bmarket.tradeservice.domain.repository.query;
 
-import com.bmarket.tradeservice.domain.repository.query.dto.TradeListDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.TradeListResult;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,13 +9,13 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class ResponseResult<T> {
+public class TradeListDto {
 
     private Integer size;
     private Boolean hasNext;
-    private List<TradeListDto> result = new ArrayList<>();
+    private List<TradeListResult> result = new ArrayList<>();
 
-    public ResponseResult(int size, Boolean hasNext, List<TradeListDto> result) {
+    public TradeListDto(int size, Boolean hasNext, List<TradeListResult> result) {
         this.size = size;
         this.hasNext = hasNext;
         this.result = result;

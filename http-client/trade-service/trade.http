@@ -1,5 +1,5 @@
 ### POST API
-POST http://localhost:8081/trade
+POST http://localhost:8081/internal/trade
 Content-Type: multipart/form-data;  boundary=boundary
 
 --boundary
@@ -14,10 +14,11 @@ Content-Type: application/json
 < ./ResultForm.json
 
 ### DELETE API
-DELETE http://localhost:8081/trade/1
+DELETE http://localhost:8081/internal/trade/1
+
 
 ### PUT API
-PUT http://localhost:8081/trade/1
+PUT http://localhost:8081/internal/trade/1
 Content-Type: multipart/form-data;  boundary=boundary
 
 --boundary
@@ -30,3 +31,9 @@ Content-Disposition: form-data; name="form"; filename="RequestUpdateForm.json"
 Content-Type: application/json
 
 < ./RequestUpdateForm.json
+
+### GET API LIST
+GET  http://localhost:8081/internal/trade?size=5&l-idx=0&code=1001&range=ONLY
+
+### GET API
+GET http://localhost:8081/internal/trade/1

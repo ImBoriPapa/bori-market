@@ -6,6 +6,7 @@ import com.bmarket.tradeservice.domain.dto.ResponseImageDto;
 import com.bmarket.tradeservice.domain.entity.Address;
 import com.bmarket.tradeservice.domain.entity.Category;
 import com.bmarket.tradeservice.domain.entity.Trade;
+import com.bmarket.tradeservice.domain.sample.SampleProvider;
 import com.bmarket.tradeservice.domain.service.TradeCommandService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mockwebserver3.Dispatcher;
@@ -21,12 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
+
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
@@ -42,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -59,6 +60,8 @@ class TradeControllerTest {
     ObjectMapper objectMapper;
     @Autowired
     TradeCommandService tradeCommandService;
+    @Autowired
+    SampleProvider sampleProvider;
     private MockWebServer mockWebServer;
     private Dispatcher dispatcher;
 
@@ -142,7 +145,7 @@ class TradeControllerTest {
         MockMultipartFile form = new MockMultipartFile("form", "form", MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(requestForm));
         //when
         //then
-        mockMvc.perform(multipart("/trade")
+        mockMvc.perform(multipart("/internal/trade")
                         .file(images1)
                         .file(images2)
                         .file(images3)
@@ -185,7 +188,7 @@ class TradeControllerTest {
         Trade trade = tradeCommandService.createTrade(requestForm, List.of(images1, images2, images3));
 
         //then
-        mockMvc.perform(delete("/trade/{tradeId}", trade.getId()))
+        mockMvc.perform(delete("/internal/trade/{tradeId}", trade.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value(true))
                 .andExpect(jsonPath("tradeId").value(trade.getId()))
@@ -242,7 +245,7 @@ class TradeControllerTest {
         Trade savedTrade = tradeCommandService.createTrade(requestForm, List.of(images1, images2, images3));
 
         //then
-        MockMultipartHttpServletRequestBuilder builder = multipart("/trade/{tradeId}", savedTrade.getId());
+        MockMultipartHttpServletRequestBuilder builder = multipart("/internal/trade/{tradeId}", savedTrade.getId());
         builder.with(new RequestPostProcessor() {
 
             @Override
@@ -260,6 +263,54 @@ class TradeControllerTest {
                 .andExpect(jsonPath("success").value(true))
                 .andExpect(jsonPath("tradeId").value(savedTrade.getId()))
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("리스트 조회 테스트")
+    void getTradeListTest() throws Exception {
+        //given
+        sampleProvider.initSampleData();
+        //when
+
+        //then
+        mockMvc.perform(get("/internal/trade")
+                        .param("l-idx", "0")
+                        .param("code", "1001")
+                ).andExpect(status().isOk())
+                .andExpect(jsonPath("size").exists())
+                .andExpect(jsonPath("hasNext").value(true))
+                .andExpect(jsonPath("result").isArray())
+                .andExpect(jsonPath("result.[0].tradeId").isNotEmpty())
+                .andExpect(jsonPath("result.[0].title").isNotEmpty())
+                .andExpect(jsonPath("result.[0].townName").isNotEmpty())
+                .andExpect(jsonPath("result.[0].price").isNumber())
+                .andExpect(jsonPath("result.[0].representativeImage").isString())
+                .andDo(print());
+        sampleProvider.deleteSampleData();
+    }
+
+    @Test
+    @DisplayName("상세 조회 테스트")
+    void getTradeTest() throws Exception{
+        //given
+        sampleProvider.initSampleData();
+        //when
+
+        //then
+        mockMvc.perform(get("/internal/trade/{tradeId}", 1L)
+                ).andExpect(status().isOk())
+                .andExpect(jsonPath("tradeId").isNotEmpty())
+                .andExpect(jsonPath("accountId").isNotEmpty())
+                .andExpect(jsonPath("title").isNotEmpty())
+                .andExpect(jsonPath("context").isNotEmpty())
+                .andExpect(jsonPath("category").exists())
+                .andExpect(jsonPath("address").exists())
+                .andExpect(jsonPath("isShare").isBoolean())
+                .andExpect(jsonPath("isOffer").isBoolean())
+                .andExpect(jsonPath("imagePath").isArray())
+                .andDo(print());
+        sampleProvider.deleteSampleData();
+
     }
 
 }

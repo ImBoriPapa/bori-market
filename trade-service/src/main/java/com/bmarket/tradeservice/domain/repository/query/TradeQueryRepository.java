@@ -1,11 +1,13 @@
 package com.bmarket.tradeservice.domain.repository.query;
 
 
-import com.bmarket.tradeservice.domain.repository.query.dto.TradeListDto;
+import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface TradeQueryRepository {
-
-    ResponseResult<List<TradeListDto>> getTradeWithComplexCondition(int size , Long tradeId , SearchCondition searchCondition);
+    Optional<TradeDetailDto> findTradeDetailById(Long tradeId);
+    TradeListDto findTradeListWithCondition(int size , Long tradeId , SearchCondition searchCondition);
 }
+
+
