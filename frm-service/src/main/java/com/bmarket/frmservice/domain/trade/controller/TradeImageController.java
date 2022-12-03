@@ -40,7 +40,7 @@ public class TradeImageController {
      * 판매 이미지 삭제 요청
      */
     @DeleteMapping("/frm/trade-image/{image-id}")
-    public ResponseEntity deleteTradeImage(@PathVariable(name = "image-id") String id, HttpServletRequest request) {
+    public ResponseEntity deleteTradeImage(@PathVariable(name = "image-id") String id) {
 
         ResponseTradeImage responseTradeImage = tradeImageService.deleteImages(id);
 

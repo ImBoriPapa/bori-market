@@ -1,12 +1,12 @@
 
 ### 프로필 이미지 생성
-POST http://localhost:8095/frm/account/1/profile
+POST http://localhost:8095/internalfrm/account/1/profile
 
 
 
 
 ### 프로필 이미지 수정
-PUT http://localhost:8095/frm/account/1/profile
+PUT http://localhost:8095/internal/frm/account/1/profile
 Content-Type: multipart/form-data;  boundary=boundary
 
 --boundary
