@@ -79,22 +79,22 @@ class RequestImageApiTest {
             @Override
             public MockResponse dispatch(@NotNull RecordedRequest request) throws InterruptedException {
 
-                if (request.getMethod().equals("POST") && request.getPath().equals("/frm/trade-image")) {
+                if (request.getMethod().equals("POST") && request.getPath().equals("/internal/frm/trade-image")) {
                     log.info("successMockResponse");
                     return postResponse;
                 }
 
-                if (request.getMethod().equals("DELETE") && request.getPath().equals("/frm/trade-image/" + imageId)) {
+                if (request.getMethod().equals("DELETE") && request.getPath().equals("/internal/frm/trade-image/" + imageId)) {
                     log.info("deleteResponse");
                     return deleteResponse;
                 }
 
-                if(request.getMethod().equals("PUT") && request.getPath().equals("/frm/trade-image/" + imageId)) {
+                if(request.getMethod().equals("PUT") && request.getPath().equals("/internal/frm/trade-image/" + imageId)) {
                     log.info("putResponse");
                     return putResponse;
                 }
                 // TODO: 2022/12/02 요청에 파일이 없을 경우 어떻게 해야할지 고민해보자
-                if (request.getMethod().equals("POST") && request.getPath().equals("/frm/trade-image/??")) {
+                if (request.getMethod().equals("POST") && request.getPath().equals("/internal/frm/trade-image/??")) {
                     log.info("badRequestResponse");
                     return badRequestResponse;
                 }
