@@ -67,7 +67,7 @@ class ProfileImageControllerTest {
         //when
 
         //then
-        mockMvc.perform(post("/frm/account/{accountId}/profile", accountId))
+        mockMvc.perform(post("/internal/frm/account/{accountId}/profile", accountId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value(true))
                 .andExpect(jsonPath("imagePath").isNotEmpty())
@@ -85,7 +85,7 @@ class ProfileImageControllerTest {
         ProfileImage savedProfile = profileImageRepository.save(image);
 
         //then
-        mockMvc.perform(post("/frm/account/{accountId}/profile", savedProfile.getAccountId()))
+        mockMvc.perform(post("/internal/frm/account/{accountId}/profile", savedProfile.getAccountId()))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("success").value(false))
                 .andExpect(jsonPath("message").isNotEmpty())
@@ -104,7 +104,7 @@ class ProfileImageControllerTest {
         //when
         ProfileImage save = profileImageRepository.save(profileImage);
 
-        MockMultipartHttpServletRequestBuilder builder = multipart("/frm/account/{accountId}/profile", save.getAccountId());
+        MockMultipartHttpServletRequestBuilder builder = multipart("/internal/frm/account/{accountId}/profile", save.getAccountId());
         builder.with(new RequestPostProcessor() {
 
             @Override
@@ -135,7 +135,7 @@ class ProfileImageControllerTest {
         ProfileImage save = profileImageRepository.save(profileImage);
 
         //then
-        mockMvc.perform(put("/frm/account/{accountId}/profile",save.getAccountId()))
+        mockMvc.perform(put("/internal/frm/account/{accountId}/profile",save.getAccountId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value("true"))
                 .andExpect(jsonPath("accountId").value(save.getAccountId()))
@@ -156,7 +156,7 @@ class ProfileImageControllerTest {
         ProfileImage save = profileImageRepository.save(profileImage);
 
         //then
-        mockMvc.perform(delete("/frm/account/{accountId}/profile", save.getAccountId()))
+        mockMvc.perform(delete("/internal/frm/account/{accountId}/profile", save.getAccountId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value("true"))
                 .andExpect(jsonPath("accountId").value(save.getAccountId()))

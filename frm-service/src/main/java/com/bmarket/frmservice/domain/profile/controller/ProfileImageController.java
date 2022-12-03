@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/internal")
 public class ProfileImageController {
     private final ProfileImageServiceImpl profileImageServiceImpl;
 

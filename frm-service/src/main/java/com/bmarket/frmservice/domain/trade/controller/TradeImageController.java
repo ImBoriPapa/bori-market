@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/internal")
 public class TradeImageController {
 
     private final TradeImageService tradeImageService;

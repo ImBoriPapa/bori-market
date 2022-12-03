@@ -69,7 +69,7 @@ class TradeImageControllerTest {
         //when
 
         //then
-        mockMvc.perform(multipart("/frm/trade/{tradeId}/trade-image", tradeId)
+        mockMvc.perform(multipart("/internal/frm/trade/{tradeId}/trade-image", tradeId)
                         .file(image1)
                         .file(image2)
                         .file(image3)
@@ -92,7 +92,7 @@ class TradeImageControllerTest {
 
         //when
         //then
-        mockMvc.perform(multipart("/frm/trade/{tradeId}/trade-image", tradeId)
+        mockMvc.perform(multipart("/internal/frm/trade/{tradeId}/trade-image", tradeId)
                         .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("success").value(false))
@@ -109,7 +109,7 @@ class TradeImageControllerTest {
 
         //when
         //then
-        mockMvc.perform(multipart("/frm/trade/{tradeId}/trade-image", tradeId)
+        mockMvc.perform(multipart("/internal/frm/trade/{tradeId}/trade-image", tradeId)
                         .file(image1)
                         .file(image1)
                         .file(image1)
@@ -149,7 +149,7 @@ class TradeImageControllerTest {
         TradeImage save = tradeImageRepository.save(tradeImage);
 
         //then
-        mockMvc.perform(delete("/frm/trade/{tradeId}/trade-image", tradeId))
+        mockMvc.perform(delete("/internal/frm/trade/{tradeId}/trade-image", tradeId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value(true))
                 .andExpect(jsonPath("tradeId").value(tradeId))
@@ -180,7 +180,7 @@ class TradeImageControllerTest {
 
 
         //then
-        MockMultipartHttpServletRequestBuilder builder = multipart("/frm/trade/{tradeId}/trade-image", tradeId);
+        MockMultipartHttpServletRequestBuilder builder = multipart("/internal/frm/trade/{tradeId}/trade-image", tradeId);
         builder.with(new RequestPostProcessor() {
 
             @Override

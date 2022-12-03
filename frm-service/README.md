@@ -19,7 +19,7 @@
 
 ### 1.프로필 이미지 저장 및 경로 생성
 
-#### URI : POST /frm/account/{accountId}/profile
+#### URI : POST /internal/frm/account/{accountId}/profile
 - 프로필 이미지 객체 생성 요청 
 - 계정 아이디를 저장한 ProfileImage 객체를 생성 후 기본 프로필 이미지 경로를 반환합니다.
 
@@ -32,7 +32,7 @@
 
 ### 2.프로필 이미지 수정
 
-#### URI : PUT /frm/account/{accountId}/profile
+#### URI : PUT /internal/frm/account/{accountId}/profile
 - 프로필 이미지 수정 요청
 - 수정할 이미지를 전송하면 수정된 이미지의 경로를 반환 합니다.
 - 수정할 이미지를 전송하지 않으면 기본 이미지를 반환 합니다.
@@ -51,7 +51,7 @@
 
 ### 3.프로필 이미지 삭제
 
-#### URI : DELETE /frm/account/{accountId}/profile
+#### URI : DELETE /internal/frm/account/{accountId}/profile
 - 프로필 이미지 수정 삭제
 - 프로필 이미지 객체를 삭제 합니다.
 
@@ -67,7 +67,7 @@
 
 ### 1.판매 상품 이미지 저장 및 경로 생성
 
-#### URI : POST /frm/trade-image
+#### URI : POST /internal/frm/trade-image
 - 이미지를 저장 후 tradeImageId를 반환 합니다.
 
 #### Request header
@@ -82,7 +82,7 @@
 
 ### 2.판매 상품 이미지 수정
 
-#### URI : PUT /frm/trade-image/{image-id}
+#### URI : PUT /internal/frm/trade-image/{image-id}
 - 판매 상품 이미지 수정 요청 저장된 이미지를 삭제하고 새로운 이미지 경로를 반환합니다.
 
 #### Request header
@@ -98,7 +98,7 @@
 
 ### 3.판매 상품 이미지 삭제
 
-#### URI : DELETE /frm/trade-image/{image-id}
+#### URI : DELETE /internal/frm/trade-image/{image-id}
 - 판매 상품 이미지 삭제 요청 저장된 이미지를 삭제
 
 #### Request parameter
