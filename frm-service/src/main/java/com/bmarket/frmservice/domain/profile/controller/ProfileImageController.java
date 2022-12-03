@@ -17,15 +17,14 @@ public class ProfileImageController {
     private final ProfileImageServiceImpl profileImageServiceImpl;
 
     /**
-     * 프로필 이미지 저장 및 경로 반환
+     * 프로필 이미지 생성 및 경로 반환
      */
-    @PostMapping(value = "/frm/account/{accountId}/profile")
-    public ResponseEntity postProfileImage(@PathVariable(name = "accountId") Long id) {
+    @PostMapping(value = "/frm/profile")
+    public ResponseEntity postProfileImage() {
 
         log.info("[createProfileImage]");
-        log.info("accountId= {}", id);
 
-        ResponseProfile profileImage = profileImageServiceImpl.createProfileImage(id);
+        ResponseProfile profileImage = profileImageServiceImpl.createProfileImage();
 
         return ResponseEntity.ok().body(profileImage);
     }
@@ -34,11 +33,11 @@ public class ProfileImageController {
     /**
      * 프로필 이미지 수정
      */
-    @PutMapping("/frm/account/{accountId}/profile")
-    public ResponseEntity putProfileImage(@PathVariable Long accountId,
+    @PutMapping("/frm/profile/{imageId}")
+    public ResponseEntity putProfileImage(@PathVariable(name = "imageId") String id,
                                           @RequestPart(name = "image", required = false) MultipartFile image) {
 
-        ResponseProfile responseProfile = profileImageServiceImpl.updateProfileImage(accountId, image);
+        ResponseProfile responseProfile = profileImageServiceImpl.updateProfileImage(id, image);
 
         return ResponseEntity.ok().body(responseProfile);
     }
@@ -46,10 +45,10 @@ public class ProfileImageController {
     /**
      * 계정 아이디로 프로필 이미지 삭제
      */
-    @DeleteMapping("/frm/account/{accountId}/profile")
-    public ResponseEntity deleteProfileImage(@PathVariable Long accountId) {
+    @DeleteMapping("/frm/profile/{imageId}")
+    public ResponseEntity deleteProfileImage(@PathVariable(name = "imageId") String id) {
 
-        ResponseProfile responseProfile = profileImageServiceImpl.deleteProfileImage(accountId);
+        ResponseProfile responseProfile = profileImageServiceImpl.deleteProfileImage(id);
 
         return ResponseEntity.ok().body(responseProfile);
     }

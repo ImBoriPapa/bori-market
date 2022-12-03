@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 public class ResponseProfile {
 
     private boolean success;
-    private Long accountId;
+    private String imageId;
     private String imagePath;
 }

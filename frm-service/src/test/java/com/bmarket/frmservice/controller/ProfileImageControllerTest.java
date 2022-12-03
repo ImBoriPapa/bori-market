@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequ
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.bmarket.frmservice.utils.Patterns.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -63,48 +64,34 @@ class ProfileImageControllerTest {
     @DisplayName("프로필 이미지 저장 성공 테스트")
     void successSave() throws Exception {
         //given
-        Long accountId = 1L;
+
         //when
 
         //then
-        mockMvc.perform(post("/internal/frm/account/{accountId}/profile", accountId))
+        mockMvc.perform(post("/internal/frm/profile"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value(true))
+                .andExpect(jsonPath("imageId").exists())
                 .andExpect(jsonPath("imagePath").isNotEmpty())
                 .andDo(print());
     }
 
-    @Test
-    @DisplayName("프로필 이미지 저장 실패 테스트 계정 아이디 중복")
-    void failSave() throws Exception {
-        //given
-        ProfileImage image = ProfileImage.createProfileImage()
-                .accountId(1L)
-                .build();
-        //when
-        ProfileImage savedProfile = profileImageRepository.save(image);
 
-        //then
-        mockMvc.perform(post("/internal/frm/account/{accountId}/profile", savedProfile.getAccountId()))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("success").value(false))
-                .andExpect(jsonPath("message").isNotEmpty())
-                .andDo(print());
-    }
 
     @Test
     @DisplayName("프로필 이미지 수정 테스트")
     void putProfileImageTest() throws Exception {
         //given
         ProfileImage profileImage = ProfileImage.createProfileImage()
-                .accountId(1L)
                 .storedImageName(DEFAULT_IMAGE_NAME).build();
 
         MockMultipartFile newImage = new MockMultipartFile("image", "newImage.png", "image/png", "image".getBytes());
         //when
         ProfileImage save = profileImageRepository.save(profileImage);
 
-        MockMultipartHttpServletRequestBuilder builder = multipart("/internal/frm/account/{accountId}/profile", save.getAccountId());
+        ProfileImage findProfile = profileImageRepository.findById(save.getId()).orElseThrow(() -> new IllegalArgumentException("프로필 이미지를 찾을 수 없습니다."));
+
+        MockMultipartHttpServletRequestBuilder builder = multipart("/internal/frm/profile/{imageId}", findProfile.getId());
         builder.with(new RequestPostProcessor() {
 
             @Override
@@ -118,7 +105,7 @@ class ProfileImageControllerTest {
                         .file(newImage))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value("true"))
-                .andExpect(jsonPath("accountId").value(save.getAccountId()))
+                .andExpect(jsonPath("imageId").value(findProfile.getId()))
                 .andExpect(jsonPath("imagePath").isNotEmpty())
                 .andDo(print());
     }
@@ -128,17 +115,16 @@ class ProfileImageControllerTest {
     void updateImageNoContainImage() throws Exception{
         //given
         ProfileImage profileImage = ProfileImage.createProfileImage()
-                .accountId(1L)
                 .storedImageName(DEFAULT_IMAGE_NAME).build();
 
         //when
         ProfileImage save = profileImageRepository.save(profileImage);
 
         //then
-        mockMvc.perform(put("/internal/frm/account/{accountId}/profile",save.getAccountId()))
+        mockMvc.perform(put("/internal/frm/profile/{imageId}",save.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value("true"))
-                .andExpect(jsonPath("accountId").value(save.getAccountId()))
+                .andExpect(jsonPath("imageId").value(save.getId()))
                 .andExpect(jsonPath("imagePath").value(SEARCH_DEFAULT_PATTERN+DEFAULT_IMAGE_NAME))
                 .andDo(print());
 
@@ -149,17 +135,16 @@ class ProfileImageControllerTest {
     void deleteProfileImageTest() throws Exception{
         //given
         ProfileImage profileImage = ProfileImage.createProfileImage()
-                .accountId(1L)
                 .storedImageName(DEFAULT_IMAGE_NAME).build();
 
         //when
         ProfileImage save = profileImageRepository.save(profileImage);
 
         //then
-        mockMvc.perform(delete("/internal/frm/account/{accountId}/profile", save.getAccountId()))
+        mockMvc.perform(delete("/internal/frm/profile/{imageId}", save.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value("true"))
-                .andExpect(jsonPath("accountId").value(save.getAccountId()))
+                .andExpect(jsonPath("imageId").doesNotExist())
                 .andExpect(jsonPath("imagePath").doesNotExist())
                 .andDo(print());
     }

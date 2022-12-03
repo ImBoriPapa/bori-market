@@ -8,5 +8,5 @@ import java.util.Optional;
 
 
 public interface ProfileImageRepository extends MongoRepository<ProfileImage,String> {
-    Optional<ProfileImage> findByAccountId(Long accountId);
+
 }

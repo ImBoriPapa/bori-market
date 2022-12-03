@@ -7,7 +7,7 @@
 ### 응답 예시  
     {
     "success": true,
-    "tradeId": 1,
+    "imageId": 1,
     "imagePath": [
     "http://localhost:8095/file/trade-images/58421c11-5ac8-4721-bd73-c68b9c215731.JPG"
     ]
@@ -19,20 +19,19 @@
 
 ### 1.프로필 이미지 저장 및 경로 생성
 
-#### URI : POST /internal/frm/account/{accountId}/profile
+#### URI : POST /internal/frm/profile
 - 프로필 이미지 객체 생성 요청 
-- 계정 아이디를 저장한 ProfileImage 객체를 생성 후 기본 프로필 이미지 경로를 반환합니다.
+- profileImage 객체를 생성 후 기본 프로필 이미지 경로를 반환합니다.
 
-#### Request parameter
-- path parameter : accountId -계정 아이디
+
 #### Response parameter
 - success : 응답 성공 여부
-- accountId : 계정 아이디
+- imageId : 계정 아이디
 - imagePath : 이미지 경로
 
 ### 2.프로필 이미지 수정
 
-#### URI : PUT /internal/frm/account/{accountId}/profile
+#### URI : PUT /internal/frm/profile/{imageId}
 - 프로필 이미지 수정 요청
 - 수정할 이미지를 전송하면 수정된 이미지의 경로를 반환 합니다.
 - 수정할 이미지를 전송하지 않으면 기본 이미지를 반환 합니다.
@@ -41,26 +40,26 @@
 - Content-Type : multipart/form-data
 
 #### Request parameter
-- path parameter : accountId -계정 아이디
+- path parameter : imageId -프로필 이미지 아이디
 - image :  수정할 프로필 이미지 파일
 
 #### Response parameter
 - success : 응답 성공 여부
-- accountId : 계정 아이디
+- imageId :  아이디
 - imagePath : 이미지 경로
 
 ### 3.프로필 이미지 삭제
 
-#### URI : DELETE /internal/frm/account/{accountId}/profile
+#### URI : DELETE /internal/frm/profile/{imageId}
 - 프로필 이미지 수정 삭제
 - 프로필 이미지 객체를 삭제 합니다.
 
 #### Request parameter
-- path parameter : accountId -계정 아이디
+- path parameter : imageId - 프로파일 이미지 아이디
 
 #### Response parameter
 - success : 응답 성공 여부
-- accountId : 계정 아이디
+- imageId : 아이디 
 - imagePath : null
 
 ## TradeImage

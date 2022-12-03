@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class ProfileImage {
     @Id
     private String id;
-    private Long accountId;
     private String uploadImageName;
     private String storedImageName;
     private LocalDateTime createdAt;
@@ -25,8 +24,7 @@ public class ProfileImage {
      * 프로필 이미지 생성
      */
     @Builder(builderMethodName = "createProfileImage")
-    public ProfileImage(Long accountId, String storedImageName) {
-        this.accountId = accountId;
+    public ProfileImage(String storedImageName) {
         this.storedImageName = storedImageName;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();

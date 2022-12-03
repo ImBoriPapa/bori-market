@@ -1,20 +1,17 @@
 
 ### 프로필 이미지 생성
-POST http://localhost:8095/internalfrm/account/1/profile
-
-
+POST http://localhost:8095/internal/frm/profile
 
 
 ### 프로필 이미지 수정
-PUT http://localhost:8095/internal/frm/account/1/profile
+PUT http://localhost:8095/internal/frm/profile/638b542a8ea50d6399172cf8
 Content-Type: multipart/form-data;  boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="image"; filename="IMG_6418.JPG"
+Content-Disposition: form-data; name="image"; filename="IMG_6417.JPG"
 
-< ./IMG_6418.JPG
-
+< ./IMG_6417.JPG
 
 ###
-DELETE http://localhost:8095/frm/account/1/profile
+DELETE http://localhost:8095/internal/frm/profile/638b55a78ea50d6399172cf9
 
