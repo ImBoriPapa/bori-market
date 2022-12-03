@@ -24,6 +24,8 @@ public class Profile {
     private Long id;
     @Column(name = "NICK_NAME")
     private String nickname;
+    @Column(name = "PROFILE_iMAGE_ID")
+    private String imageId;
     @Column(name = "PROFILE_IMAGE")
     private String profileImage;
     @Embedded
@@ -34,8 +36,9 @@ public class Profile {
     AddressRange addressRange;
 
     @Builder(builderMethodName = "createProfile")
-    public Profile(String nickname, String profileImage, Address address) {
+    public Profile(String nickname, String imageId, String profileImage, Address address) {
         this.nickname = nickname;
+        this.imageId = imageId;
         this.profileImage = profileImage;
         this.address = address;
         this.addressRange = ONLY;
@@ -45,7 +48,8 @@ public class Profile {
         this.nickname = nickname;
     }
 
-    public void updateProfileImage(String storedImageName) {
+    public void updateProfileImage(String imageId,String storedImageName) {
+        this.imageId = imageId;
         this.profileImage = storedImageName;
     }
 

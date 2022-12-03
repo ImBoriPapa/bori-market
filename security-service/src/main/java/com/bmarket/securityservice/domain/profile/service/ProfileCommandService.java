@@ -9,6 +9,7 @@ import com.bmarket.securityservice.domain.profile.controller.RequestProfileForm;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
 import com.bmarket.securityservice.internal_api.frm.RequestFrmApi;
+import com.bmarket.securityservice.internal_api.frm.ResponseImageForm;
 import com.bmarket.securityservice.internal_api.trade.RequestTradeApi;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,9 +43,12 @@ public class ProfileCommandService {
                 .district(form.getDistrict())
                 .town(form.getTown()).build();
 
+        ResponseImageForm profileImage = requestFrmApi.getProfileImage();
+
         return Profile.createProfile()
                 .nickname(form.getNickname())
-                .profileImage(requestFrmApi.getDefaultProfileImage())
+                .imageId(profileImage.getImageId())
+                .profileImage(profileImage.getImagePath())
                 .address(address)
                 .build();
     }
@@ -58,26 +62,18 @@ public class ProfileCommandService {
         return account.getId();
     }
 
-    // TODO: 2022/11/23 기능 구현할지 고민해보기
-    public void deleteProfileImage(Long accountId) {
-        Account account = findAccount(accountId);
-        String result = requestFrmApi.requestDeleteImage(accountId);
-        account.getProfile().updateProfileImage(result);
-    }
-
     /**
      * 1.프로필 이미지 수정
-     * 2.프로필 이미지 파일의 처리와 저장은 f.r.m service 의 위임 하기 위하여 getProfileImage()을 사용
-     * 3.수정된 이미지 경로 Trade 에 변경 요청
      */
-    // TODO: 2022/11/23 조건 추가 1. frm 서비스에서 에러가 발생했을경우 2. trade 에 생성된 거래가 없을 경우 또는 에러가 발생할 경우
+    // TODO: 2022/11/23 조건 추가  2. trade 에 생성된 거래가 없을 경우 또는 에러가 발생할 경우
     public Long updateProfileImage(Long accountId, MultipartFile file) {
         Account account = findAccount(accountId);
+        String imageId = account.getProfile().getImageId();
 
-        String profileImage = requestFrmApi.requestSaveImage(accountId, file);
+        ResponseImageForm profileImage = requestFrmApi.putProfileImage(imageId, file);
 
 
-        account.getProfile().updateProfileImage(profileImage);
+        account.getProfile().updateProfileImage(profileImage.getImageId(),profileImage.getImagePath());
 
         return accountId;
     }

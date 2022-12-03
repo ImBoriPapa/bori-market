@@ -69,7 +69,7 @@ class ProfileTest {
                 .address(address).build();
         Profile savedProfile = profileRepository.save(profile);
         savedProfile.updateNickname("변경된 닉네임");
-        savedProfile.updateProfileImage("isChanged");
+        savedProfile.updateProfileImage("fasfsaf","isChanged");
         Address newAddress = Address.createAddress()
                 .addressCode(1005)
                 .city("인천시")
