@@ -1,8 +1,7 @@
 package com.bmarket.securityservice.internal_api.trade;
 
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestTradeForm;
-import com.bmarket.securityservice.domain.trade.controller.resultForm.CreateTradeResult;
-import com.bmarket.securityservice.domain.trade.controller.resultForm.TradeModifyResult;
+import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTradeResult;
 import com.bmarket.securityservice.internal_api.trade.form.*;
 import com.bmarket.securityservice.exception.custom_exception.internal_api_ex.InternalRequestFailException;
 import lombok.RequiredArgsConstructor;
@@ -44,19 +43,51 @@ public class RequestTradeApi {
      * 거래 생성 요청 api
      * RequestTradeForm, List<MultipartFile>
      */
-    public CreateTradeResult requestCreateTrade(RequestTradeServiceForm form, List<MultipartFile> images) {
+    public ResponseTradeResult requestCreateTrade(CreateTradeServiceForm form, List<MultipartFile> images) {
 
-        MultiValueMap<String, HttpEntity<?>> map = getMultiValueMap(form, images);
+        MultiValueMap<String, HttpEntity<?>> map = makeMultiValueMap(form, images);
+
         return baseUrl()
                 .post()
-                .uri("/internal/trade")
                 .body(BodyInserters.fromMultipartData(map))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError,
                         response -> Mono.error(() -> new InternalRequestFailException(TRADE_WRONG_REQUEST)))
                 .onStatus(HttpStatus::is5xxServerError,
                         response -> Mono.error(() -> new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
-                .bodyToMono(CreateTradeResult.class)
+                .bodyToMono(ResponseTradeResult.class)
+                .block();
+    }
+
+    /**
+     * 판매 글 수정 요청 API
+     */
+    public ResponseTradeResult requestPutTrade(Long tradeId, RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images) {
+
+        MultiValueMap<String, HttpEntity<?>> map = makeMultiValueMap(form, images);
+
+        return baseUrl()
+                .put()
+                .uri("/internal/trade/{tradeId}", tradeId)
+                .body(BodyInserters.fromMultipartData(map))
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError,
+                        response -> Mono.error(() -> new InternalRequestFailException(TRADE_WRONG_REQUEST)))
+                .onStatus(HttpStatus::is5xxServerError,
+                        response -> Mono.error(() -> new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
+                .bodyToMono(ResponseTradeResult.class)
+                .block();
+    }
+
+    /**
+     * 판매글 삭제 API
+     */
+    public ResponseTradeResult requestDeleteTrade(Long tradeId) {
+        return baseUrl()
+                .delete()
+                .uri("/internal/trade/{tradeId}", tradeId)
+                .retrieve()
+                .bodyToMono(ResponseTradeResult.class)
                 .block();
     }
 
@@ -69,12 +100,12 @@ public class RequestTradeApi {
                 .get()
                 .uri(UriBuilder -> UriBuilder.path("/internal/trade")
                         .queryParam("size", condition.getSize())
-                        .queryParam("lastIndex", condition.getLastIndex())
+                        .queryParam("l-idx", condition.getLastIndex())
                         .queryParam("category", condition.getCategory())
-                        .queryParam("isShare", condition.getIsShare())
-                        .queryParam("isOffer", condition.getIsOffer())
+                        .queryParam("share", condition.getIsShare())
+                        .queryParam("offer", condition.getIsOffer())
                         .queryParam("status", condition.getStatus())
-                        .queryParam("addressCode", condition.getAddressCode())
+                        .queryParam("code", condition.getAddressCode())
                         .queryParam("range", condition.getRange())
                         .build()
                 )
@@ -92,48 +123,21 @@ public class RequestTradeApi {
      * private String category;
      * private List<String> imagePath;
      */
-    public TradeContentsResult requestGetTrade(Long tradeId) {
+    public TradeDetailResult requestGetTrade(Long tradeId) {
         return baseUrl()
                 .get()
                 .uri("/internal/trade/{tradeId}", tradeId)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, r -> Mono.just(new InternalRequestFailException(TRADE_WRONG_REQUEST)))
                 .onStatus(HttpStatus::is5xxServerError, r -> Mono.just(new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
-                .bodyToMono(TradeContentsResult.class)
+                .bodyToMono(TradeDetailResult.class)
                 .block();
     }
-
-    /**
-     * 판매 글 수정 요청 API
-     */
-    public TradeModifyResult requestPatchTrade(Long tradeId, RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images) {
-
-        MultiValueMap<String, HttpEntity<?>> map = getMultiValueMap(form, images);
-
-        return baseUrl()
-                .patch()
-                .uri("/internal/trade/{tradeId}", tradeId)
-                .body(BodyInserters.fromMultipartData(map))
-                .retrieve()
-                .bodyToMono(TradeModifyResult.class)
-                .block();
-    }
-
-    public TradeDeleteResult requestDeleteTrade(Long tradeId) {
-        return baseUrl()
-                .delete()
-                .uri("/internal/trade/{tradeId}", tradeId)
-                .retrieve()
-                .bodyToMono(TradeDeleteResult.class)
-                .block();
-    }
-    // TODO: 2022/11/25 리팩토링하자
-
     /**
      * RequestTradeServiceForm
      * 멀티파트 리스트 -> MultiValueMap
      */
-    private MultiValueMap<String, HttpEntity<?>> getMultiValueMap(RequestTradeServiceForm form, List<MultipartFile> images) {
+    private MultiValueMap<String, HttpEntity<?>> makeMultiValueMap(CreateTradeServiceForm form, List<MultipartFile> images) {
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
         builder.part("form", form);
@@ -148,7 +152,7 @@ public class RequestTradeApi {
      * CreateTradeForm
      * 멀티파트 리스트 -> MultiValueMap
      */
-    private MultiValueMap<String, HttpEntity<?>> getMultiValueMap(RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images) {
+    private MultiValueMap<String, HttpEntity<?>> makeMultiValueMap(RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images) {
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
 
         builder.part("form", form);

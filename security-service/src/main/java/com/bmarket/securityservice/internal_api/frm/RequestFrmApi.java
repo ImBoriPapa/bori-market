@@ -59,7 +59,7 @@ public class RequestFrmApi {
     /**
      *이미지 삭제 요청
      */
-    public ResponseImageForm requestDeleteImage(String imageId) {
+    public ResponseImageForm deleteProfileImage(String imageId) {
         return createBaseUrl()
                 .delete()
                 .uri("/{imageId}",imageId)

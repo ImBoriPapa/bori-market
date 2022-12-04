@@ -1,9 +1,7 @@
 package com.bmarket.securityservice.domain.profile.controller;
 
-import com.bmarket.securityservice.domain.account.controller.ResponseAccountForm;
 import com.bmarket.securityservice.domain.address.Address;
-import com.bmarket.securityservice.domain.common.ResponseForm;
-import com.bmarket.securityservice.domain.address.AddressRange;
+import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.profile.service.ProfileCommandService;
 import com.bmarket.securityservice.domain.profile.service.ProfileQueryService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;

@@ -1,7 +1,6 @@
 package com.bmarket.securityservice.domain.security.controller;
 
-import com.bmarket.securityservice.domain.account.controller.AccountController;
-import com.bmarket.securityservice.domain.common.ResponseForm;
+import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.security.controller.requestForm.RequestLoginForm;
 import com.bmarket.securityservice.domain.security.controller.requestResultForm.LoginResultForm;
 import com.bmarket.securityservice.domain.security.service.JwtService;

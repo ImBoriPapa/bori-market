@@ -18,7 +18,7 @@ public class AddressRouter {
     @Bean
     public RouterFunction<ServerResponse> search(AddressHandler addressHandler) {
         return route()
-                .GET("/address", addressHandler::searchByTown)
+                .GET("/internal/address", addressHandler::searchByTown)
                 .GET("/address/search-form",addressHandler::searchForm)
                 .build();
     }

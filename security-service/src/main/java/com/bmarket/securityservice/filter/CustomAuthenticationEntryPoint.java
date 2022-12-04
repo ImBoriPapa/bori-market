@@ -31,35 +31,26 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         log.info("[CustomAuthenticationEntryPoint 동작]");
         AuthenticationFilterStatus tokenStatus = (AuthenticationFilterStatus) request.getAttribute(FILTER_STATUS.name());
-        AuthenticationFilterStatus clientIdStatus = (AuthenticationFilterStatus) request.getAttribute(CLIENT_ID_STATUS.name());
 
         log.info("[request tokenStatus] ={}", tokenStatus);
-        log.info("[request clientIdStatus] ={}", clientIdStatus);
-
-        bothStatusEmpty(response, tokenStatus, clientIdStatus);
-
-        isClientIdEmpty(response, tokenStatus, clientIdStatus);
-
-        clientIdIsInvalid(response, clientIdStatus);
-
-        tokenHandle(response, tokenStatus, clientIdStatus);
+        tokenHandle(response, tokenStatus);
     }
 
     /**
-     * Client Id 에 문제가 없을시 token 문제 핸들링
+     * token 문제 핸들링
      */
-    private void tokenHandle(HttpServletResponse response, AuthenticationFilterStatus tokenStatus, AuthenticationFilterStatus clientIdStatus) throws IOException {
-        if (clientIdStatus == null) {
-            isAccessEmpty(response, tokenStatus);
+    private void tokenHandle(HttpServletResponse response, AuthenticationFilterStatus tokenStatus) throws IOException {
 
-            isAccessInvalid(response, tokenStatus);
+        isAccessEmpty(response, tokenStatus);
 
-            isRefreshEmpty(response, tokenStatus);
+        isAccessInvalid(response, tokenStatus);
 
-            isRefreshExpired(response, tokenStatus);
+        isRefreshEmpty(response, tokenStatus);
 
-            isRefreshInvalid(response, tokenStatus);
-        }
+        isRefreshExpired(response, tokenStatus);
+
+        isRefreshInvalid(response, tokenStatus);
+
     }
 
     /**
@@ -111,36 +102,4 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             response.sendRedirect(TOKEN_IS_EMPTY.getUrl());
         }
     }
-
-    /**
-     * clientIdIsInvalid  = 잘못된 클라이언트 아이디
-     */
-    private void clientIdIsInvalid(HttpServletResponse response, AuthenticationFilterStatus clientIdStatus) throws IOException {
-        if (clientIdStatus == CLIENT_ID_IS_INVALID) {
-            log.info("CLIENT_ID_IS_WRONG Handling");
-            response.sendRedirect(CLIENT_ID_IS_INVALID.getUrl());
-        }
-    }
-
-    /**
-     * isClientIdEmpty  = empty
-     */
-    private void isClientIdEmpty(HttpServletResponse response, AuthenticationFilterStatus tokenStatus, AuthenticationFilterStatus clientIdStatus) throws IOException {
-        if (clientIdStatus == CLIENT_ID_EMPTY && tokenStatus != TOKEN_IS_EMPTY) {
-            log.info("CLIENT_ID_IS_EMPTY Handling");
-            response.sendRedirect(CLIENT_ID_EMPTY.getUrl());
-        }
-    }
-
-    /**
-     * clientIdStatus,tokenStatus  = empty
-     */
-    private void bothStatusEmpty(HttpServletResponse response, AuthenticationFilterStatus tokenStatus, AuthenticationFilterStatus clientIdStatus) throws IOException {
-        if (clientIdStatus == CLIENT_ID_EMPTY && tokenStatus == TOKEN_IS_EMPTY) {
-            log.info("CLIENT_ID_IS_EMPTY Handling");
-            response.sendRedirect(EMPTY_BOTH.url);
-        }
-    }
-
-
 }

@@ -25,8 +25,6 @@ public class SecurityConfig {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security.httpBasic().disable();
@@ -43,7 +41,6 @@ public class SecurityConfig {
                 .antMatchers("/docs/index.html").permitAll()// API 문서
                 .antMatchers("/login","/exception/**","/address").permitAll() //로그인, 에러처리, 주소검색
                 .antMatchers(HttpMethod.POST,"/account").permitAll()//계정생성(회원가입)
-                .antMatchers("/account/*/trade").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/info/response-status").permitAll()
                 .anyRequest().authenticated();

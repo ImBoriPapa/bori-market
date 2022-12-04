@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.internal_api.trade.form;
+package com.bmarket.securityservice.domain.trade.controller.resultForm;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,15 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
-public class TradeList {
+public class ResponseTradeResult {
+    private Boolean success;
     private Long tradeId;
-    private String title;
-    private String address;
-    private Integer price;
-    private String representativeImage;
     private LocalDateTime createdAt;
 }

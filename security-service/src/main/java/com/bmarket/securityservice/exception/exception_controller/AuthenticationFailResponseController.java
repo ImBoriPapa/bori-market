@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.domain.common;
+package com.bmarket.securityservice.exception.exception_controller;
 
 
 import com.bmarket.securityservice.exception.custom_exception.security_ex.CustomAccessDeniedException;

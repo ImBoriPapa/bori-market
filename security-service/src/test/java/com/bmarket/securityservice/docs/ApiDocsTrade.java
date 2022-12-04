@@ -3,12 +3,12 @@ package com.bmarket.securityservice.docs;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestTradeForm;
-import com.bmarket.securityservice.domain.trade.controller.resultForm.CreateTradeResult;
+import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTradeResult;
 import com.bmarket.securityservice.domain.trade.controller.resultForm.TradeModifyResult;
 import com.bmarket.securityservice.domain.trade.entity.Category;
-import com.bmarket.securityservice.internal_api.trade.form.TradeContentsResult;
+import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
 import com.bmarket.securityservice.internal_api.trade.form.TradeDeleteResult;
-import com.bmarket.securityservice.internal_api.trade.form.TradeList;
+import com.bmarket.securityservice.internal_api.trade.form.TradeListDto;
 import com.bmarket.securityservice.internal_api.trade.form.TradeListResult;
 import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -408,7 +408,7 @@ public class ApiDocsTrade {
     }
 
     private String mockContentResponse() throws JsonProcessingException {
-        TradeContentsResult contentsResult = TradeContentsResult.builder()
+        TradeDetailResult contentsResult = TradeDetailResult.builder()
                 .tradeId(1L)
                 .title("한번쓴 치약팔아요")
                 .context("상태 A급 치약입니다.")
@@ -424,42 +424,42 @@ public class ApiDocsTrade {
     }
 
     private String mockListResponse() throws JsonProcessingException {
-        TradeList list1 = TradeList.builder()
+        TradeListDto list1 = TradeListDto.builder()
                 .tradeId(1L)
                 .title("아이폰 팔아요")
-                .address("서울시 무슨구 무슨동")
+                .townName("서울시 무슨구 무슨동")
                 .price(1000000)
                 .representativeImage("http://localhost:8095/frm/image/23414fqafafgg21.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeList list2 = TradeList.builder()
+        TradeListDto list2 = TradeListDto.builder()
                 .tradeId(2L)
                 .title("겔럭시 팔아요")
-                .address("서울시 무슨구 무슨동")
+                .townName("서울시 무슨구 무슨동")
                 .price(900000)
                 .representativeImage("http://localhost:8095/frm/image/glsgs24951n21j4kf.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeList list3 = TradeList.builder()
+        TradeListDto list3 = TradeListDto.builder()
                 .tradeId(3L)
                 .title("붕어빵 팔아요")
-                .address("서울시 무슨구 무슨동")
+                .townName("서울시 무슨구 무슨동")
                 .price(90000)
                 .representativeImage("http://localhost:8095/frm/image/jhjtrjt2314hshdh.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeList list4 = TradeList.builder()
+        TradeListDto list4 = TradeListDto.builder()
                 .tradeId(4L)
                 .title("초콜릿 팔아요")
-                .address("인천시 무슨구 무슨동")
+                .townName("인천시 무슨구 무슨동")
                 .price(12000000)
                 .representativeImage("http://localhost:8095/frm/image/fsafsaf2351251hdh.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeList list5 = TradeList.builder()
+        TradeListDto list5 = TradeListDto.builder()
                 .tradeId(5L)
                 .title("가죽자켓 팔아요")
-                .address("인천시 무슨구 무슨동")
+                .townName("인천시 무슨구 무슨동")
                 .price(100)
                 .representativeImage("http://localhost:8095/frm/image/gdsdsggsd1231312.jpg")
                 .createdAt(LocalDateTime.now()).build();
@@ -468,13 +468,13 @@ public class ApiDocsTrade {
                 .builder()
                 .size(5)
                 .hasNext(true)
-                .tradeLists(List.of(list1, list2, list3, list4, list5))
+                .tradeListResult(List.of(list1, list2, list3, list4, list5))
                 .build();
         return objectMapper.writeValueAsString(result);
     }
 
     private String mockCreateResponse() throws JsonProcessingException {
-        CreateTradeResult result = CreateTradeResult.builder()
+        ResponseTradeResult result = ResponseTradeResult.builder()
                 .tradeId(1L)
                 .createdAt(LocalDateTime.now()).build();
 

@@ -117,7 +117,7 @@ class RequestFrmApiTest {
         //given
         String imageId = UUID.randomUUID().toString();
         //when
-        ResponseImageForm responseImageForm = requestFrmApi.requestDeleteImage(imageId);
+        ResponseImageForm responseImageForm = requestFrmApi.deleteProfileImage(imageId);
         //then
         Assertions.assertThat(responseImageForm.getSuccess()).isTrue();
         Assertions.assertThat(responseImageForm.getImageId()).isNull();

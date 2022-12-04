@@ -11,14 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-public class RequestTradeServiceForm {
+public class CreateTradeServiceForm {
 
     private Long accountId;
-    private Integer addressCode;
-    private Address address;
     private String title;
     private String context;
     private Integer price;
+    private Address address;
     private Category category;
     private Boolean isShare;
     private Boolean isOffer;

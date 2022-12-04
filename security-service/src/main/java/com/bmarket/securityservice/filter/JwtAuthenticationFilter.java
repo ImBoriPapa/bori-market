@@ -37,57 +37,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("[JwtAuthenticationFilter]");
 
-        String clientId = clientIdCheck(request);
-
-        tokenAndIdHandle(request, response, clientId);
+        accessTokenHandle(request, response);
 
         filterChain.doFilter(request, response);
     }
 
     /**
-     * 토큰과 클라이언트 아이디가 존재할 경우 처리
+     * access 토큰 처리
      */
-    private void tokenAndIdHandle(HttpServletRequest request, HttpServletResponse response, String clientId) {
+    private void accessTokenHandle(HttpServletRequest request, HttpServletResponse response) {
         jwtUtils.resolveToken(request, AUTHORIZATION_HEADER)
                 .ifPresentOrElse(
-                        (t) -> clientIdAndAccessTokenExist(request, response, t, clientId),
+                        (t) -> accessTokenExist(request, response, t),
                         () -> isEmptyAccessToken(request)
                 );
     }
 
     /**
-     * 클라이언트 아이디가 존재하는지 확인
+     * access 토큰을 검사
      */
-    private String clientIdCheck(HttpServletRequest request) {
-        String clientId = request.getHeader(CLIENT_ID);
-        isClientIdExist(request, clientId);
-        return clientId;
-    }
-
-    /**
-     * 클라이언트 아이디가 존재하지 않을 경우 처리
-     */
-    private void isClientIdExist(HttpServletRequest request, String clientId) {
-        if (clientId == null)
-            request.setAttribute(CLIENT_ID_STATUS.name(), CLIENT_ID_EMPTY);
-    }
-
-    /**
-     * 클라이언트 아이디와 토큰을 검사 후 처리
-     */
-    private void clientIdAndAccessTokenExist(HttpServletRequest request, HttpServletResponse response, String token, String clientId) {
-        if (StringUtils.hasLength(token) && StringUtils.hasLength(clientId)) {
-
+    private void accessTokenExist(HttpServletRequest request, HttpServletResponse response, String token) {
+        if (StringUtils.hasLength(token)) {
+            log.info("[AccessToken= {}]",token);
             JwtCode jwtCode = jwtUtils.validateToken(token);
 
-            log.info("[CLIENT ID 검사]");
-            if (jwtService.clientIdCheck(clientId)) {
-                isAccessSuccessToken(token, jwtCode);
-                isAccessExpiredToken(request, response, jwtCode);
-                isAccessDENIED(request, jwtCode);
-            } else {
-                request.setAttribute(CLIENT_ID_STATUS.name(), CLIENT_ID_IS_INVALID);
-            }
+            isAccessSuccessToken(token, jwtCode);
+            isAccessExpiredToken(request, response, jwtCode);
+            isAccessDENIED(request, jwtCode);
 
         }
     }
@@ -177,10 +153,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
             String reissueRefreshToken = jwtService.reissueRefreshToken(token, accountId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
-            String clientId = jwtService.reGenerateClientId(accountId);
-            log.info("Client Id 를 갱신 하였습니다.");
 
-            response.setHeader(CLIENT_ID, clientId);
             response.setHeader(AUTHORIZATION_HEADER, JWT_HEADER_PREFIX + generateToken);
             response.setHeader(REFRESH_HEADER, JWT_HEADER_PREFIX + reissueRefreshToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);

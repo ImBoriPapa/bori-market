@@ -5,16 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
-public class TradeContentsResult {
+public class TradeListDto {
     private Long tradeId;
     private String title;
-    private String context;
-    private String category;
-    private List<String> imagePath;
+    private String townName;
+    private Integer price;
+    private String representativeImage;
+    private LocalDateTime createdAt;
 }

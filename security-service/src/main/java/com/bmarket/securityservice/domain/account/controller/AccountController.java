@@ -3,7 +3,7 @@ package com.bmarket.securityservice.domain.account.controller;
 import com.bmarket.securityservice.domain.account.entity.Authority;
 import com.bmarket.securityservice.domain.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.domain.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.domain.common.ResponseForm;
+import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.account.service.AccountCommandService;
 import com.bmarket.securityservice.domain.security.controller.LoginController;
 
@@ -21,12 +21,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,16 +55,13 @@ public class AccountController {
             @Validated
             @RequestBody RequestAccountForm.CreateForm form, BindingResult bindingResult,
             HttpServletRequest request
-
     ) {
-        log.info("[ACCOUNT CONTROLLER] createAccount");
-        String clientId = request.getHeader(CLIENT_ID);
+        log.info("[ACCOUNT CONTROLLER createAccount]");
 
         if (bindingResult.hasErrors()) {
-            log.info("Validation Error 발생 ClientId ={}", clientId);
+            log.error("Validation Error 발생");
             throw new FormValidationException(ResponseStatus.FAIL_VALIDATION, bindingResult);
         }
-
 
         accountDuplicateValidator.validate(form);
 
@@ -101,6 +96,7 @@ public class AccountController {
 
         EntityModel<FindOneAccountResult> entityModel = EntityModel.of(result)
                 .add(crudLink);
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -109,13 +105,11 @@ public class AccountController {
                 .headers(httpHeaders)
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
+
     // TODO: 2022/11/21 admin 기능으로 변경하기
 
     /**
      * 계정 다건 조회
-     *
-     * @param authority
-     * @return
      */
     @GetMapping
     public ResponseEntity<ResponseForm.Of> getAccountList(
@@ -188,7 +182,6 @@ public class AccountController {
         Link loginLink = linkProvider.createOneLink(LoginController.class, "login", "login");
         entityModel.add(loginLink);
 
-
-        return ResponseEntity.ok().headers(headers).body(new ResponseForm.Of(ResponseStatus.SUCCESS,entityModel));
+        return ResponseEntity.ok().headers(headers).body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
 }

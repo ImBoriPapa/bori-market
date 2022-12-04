@@ -15,6 +15,6 @@ import java.util.List;
 public class TradeListResult {
     private Integer size;
     private Boolean hasNext;
-    private List<TradeList> tradeLists;
+    private List<TradeListDto> tradeListResult;
 
 }

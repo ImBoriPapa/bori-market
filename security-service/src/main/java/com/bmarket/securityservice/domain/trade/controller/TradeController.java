@@ -1,17 +1,15 @@
 package com.bmarket.securityservice.domain.trade.controller;
 
 
-import com.bmarket.securityservice.domain.common.ResponseForm;
+import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestTradeForm;
-import com.bmarket.securityservice.domain.trade.controller.resultForm.TradeModifyResult;
 import com.bmarket.securityservice.domain.trade.service.TradeService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 
-import com.bmarket.securityservice.domain.trade.controller.resultForm.CreateTradeResult;
+import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTradeResult;
 import com.bmarket.securityservice.internal_api.trade.form.SearchCondition;
 
-import com.bmarket.securityservice.internal_api.trade.form.TradeContentsResult;
-import com.bmarket.securityservice.internal_api.trade.form.TradeDeleteResult;
+import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
 import com.bmarket.securityservice.internal_api.trade.form.TradeListResult;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -55,14 +53,14 @@ public class TradeController {
             throw new FormValidationException(ResponseStatus.FAIL_VALIDATION);
         }
 
-        CreateTradeResult createTradeResult = tradeService.create(accountId, form, images);
+        ResponseTradeResult responseTradeResult = tradeService.create(accountId, form, images);
 
-        EntityModel<CreateTradeResult> entityModel = EntityModel.of(createTradeResult);
+        EntityModel<ResponseTradeResult> entityModel = EntityModel.of(responseTradeResult);
         WebMvcLinkBuilder builder = WebMvcLinkBuilder.linkTo(TradeController.class);
-        entityModel.add(getLinkList(createTradeResult.getTradeId()));
+        entityModel.add(getLinkList(responseTradeResult.getTradeId()));
 
         WebMvcLinkBuilder.linkTo(TradeController.class);
-        URI Location = builder.slash("/trade").slash(createTradeResult.getTradeId()).toUri();
+        URI Location = builder.slash("/trade").slash(responseTradeResult.getTradeId()).toUri();
 
         return ResponseEntity
                 .created(Location)
@@ -100,7 +98,7 @@ public class TradeController {
     @GetMapping("/trade/{tradeId}")
     public ResponseEntity getTrade(@PathVariable Long tradeId) {
 
-        EntityModel<TradeContentsResult> entityModel = EntityModel
+        EntityModel<TradeDetailResult> entityModel = EntityModel
                 .of(tradeService.trade(tradeId));
 
         return ResponseEntity.ok().body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, entityModel));
@@ -119,7 +117,7 @@ public class TradeController {
             throw new IllegalArgumentException("Trade 수정에 문제가 발생");
         }
 
-        EntityModel<TradeModifyResult> entityModel = EntityModel.of(tradeService.tradeModify(tradeId, form, images));
+        EntityModel<ResponseTradeResult> entityModel = EntityModel.of(tradeService.tradeModify(tradeId, form, images));
 
         return ResponseEntity.ok().body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, entityModel));
     }
@@ -130,7 +128,7 @@ public class TradeController {
     @DeleteMapping("/trade/{tradeId}")
     public ResponseEntity deleteTrade(@PathVariable Long tradeId){
 
-        EntityModel<TradeDeleteResult> entityModel = EntityModel.of(tradeService.tradeDelete(tradeId));
+        EntityModel<ResponseTradeResult> entityModel = EntityModel.of(tradeService.tradeDelete(tradeId));
 
         return ResponseEntity.ok()
                 .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, entityModel));

@@ -3,8 +3,7 @@ package com.bmarket.securityservice.domain.trade.service;
 import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestTradeForm;
-import com.bmarket.securityservice.domain.trade.controller.resultForm.CreateTradeResult;
-import com.bmarket.securityservice.domain.trade.controller.resultForm.TradeModifyResult;
+import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTradeResult;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
 import com.bmarket.securityservice.internal_api.trade.RequestTradeApi;
 import com.bmarket.securityservice.internal_api.trade.form.*;
@@ -37,12 +36,12 @@ public class TradeService {
      * isOffer
      */
     @Transactional(readOnly = true)
-    public CreateTradeResult create(Long accountId, RequestTradeForm.CreateTradeForm form, List<MultipartFile> images) {
+    public ResponseTradeResult create(Long accountId, RequestTradeForm.CreateTradeForm form, List<MultipartFile> images) {
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT));
 
-        RequestTradeServiceForm requestTradeServiceForm = RequestTradeServiceForm.builder()
+        CreateTradeServiceForm createTradeServiceForm = CreateTradeServiceForm.builder()
                 .accountId(account.getId())
                 .address(account.getProfile().getAddress())
                 .title(form.getTitle())
@@ -52,7 +51,7 @@ public class TradeService {
                 .isShare(form.getIsShare())
                 .isOffer(form.getIsOffer()).build();
 
-        return requestTradeApi.requestCreateTrade(requestTradeServiceForm, images);
+        return requestTradeApi.requestCreateTrade(createTradeServiceForm, images);
     }
 
     @Transactional(readOnly = true)
@@ -66,18 +65,18 @@ public class TradeService {
         return requestTradeApi.requestGetTradeList(condition);
     }
 
-    public TradeContentsResult trade(Long tradeId) {
+    public TradeDetailResult trade(Long tradeId) {
 
         return requestTradeApi.requestGetTrade(tradeId);
     }
 
 
-    public TradeModifyResult tradeModify(Long tradeId, RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images){
+    public ResponseTradeResult tradeModify(Long tradeId, RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images){
 
-        return requestTradeApi.requestPatchTrade(tradeId, form, images);
+        return requestTradeApi.requestPutTrade(tradeId, form, images);
     }
 
-    public TradeDeleteResult tradeDelete(Long tradeId){
+    public ResponseTradeResult tradeDelete(Long tradeId){
         return requestTradeApi.requestDeleteTrade(tradeId);
     }
 }
