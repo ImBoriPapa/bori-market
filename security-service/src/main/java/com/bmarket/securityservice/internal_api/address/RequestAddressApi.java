@@ -28,7 +28,6 @@ public class RequestAddressApi {
         return WebClient.create(addressServiceUrl)
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/internal/address")
                         .queryParam("town", town)
                         .build()
                 )

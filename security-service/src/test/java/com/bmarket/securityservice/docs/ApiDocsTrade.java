@@ -8,8 +8,8 @@ import com.bmarket.securityservice.domain.trade.controller.resultForm.TradeModif
 import com.bmarket.securityservice.domain.trade.entity.Category;
 import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
 import com.bmarket.securityservice.internal_api.trade.form.TradeDeleteResult;
-import com.bmarket.securityservice.internal_api.trade.form.TradeListDto;
 import com.bmarket.securityservice.internal_api.trade.form.TradeListResult;
+import com.bmarket.securityservice.internal_api.trade.form.TradeListDto;
 import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -424,7 +424,7 @@ public class ApiDocsTrade {
     }
 
     private String mockListResponse() throws JsonProcessingException {
-        TradeListDto list1 = TradeListDto.builder()
+        TradeListResult list1 = TradeListResult.builder()
                 .tradeId(1L)
                 .title("아이폰 팔아요")
                 .townName("서울시 무슨구 무슨동")
@@ -432,7 +432,7 @@ public class ApiDocsTrade {
                 .representativeImage("http://localhost:8095/frm/image/23414fqafafgg21.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeListDto list2 = TradeListDto.builder()
+        TradeListResult list2 = TradeListResult.builder()
                 .tradeId(2L)
                 .title("겔럭시 팔아요")
                 .townName("서울시 무슨구 무슨동")
@@ -440,7 +440,7 @@ public class ApiDocsTrade {
                 .representativeImage("http://localhost:8095/frm/image/glsgs24951n21j4kf.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeListDto list3 = TradeListDto.builder()
+        TradeListResult list3 = TradeListResult.builder()
                 .tradeId(3L)
                 .title("붕어빵 팔아요")
                 .townName("서울시 무슨구 무슨동")
@@ -448,7 +448,7 @@ public class ApiDocsTrade {
                 .representativeImage("http://localhost:8095/frm/image/jhjtrjt2314hshdh.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeListDto list4 = TradeListDto.builder()
+        TradeListResult list4 = TradeListResult.builder()
                 .tradeId(4L)
                 .title("초콜릿 팔아요")
                 .townName("인천시 무슨구 무슨동")
@@ -456,7 +456,7 @@ public class ApiDocsTrade {
                 .representativeImage("http://localhost:8095/frm/image/fsafsaf2351251hdh.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeListDto list5 = TradeListDto.builder()
+        TradeListResult list5 = TradeListResult.builder()
                 .tradeId(5L)
                 .title("가죽자켓 팔아요")
                 .townName("인천시 무슨구 무슨동")
@@ -464,11 +464,11 @@ public class ApiDocsTrade {
                 .representativeImage("http://localhost:8095/frm/image/gdsdsggsd1231312.jpg")
                 .createdAt(LocalDateTime.now()).build();
 
-        TradeListResult result = TradeListResult
+        TradeListDto result = TradeListDto
                 .builder()
                 .size(5)
                 .hasNext(true)
-                .tradeListResult(List.of(list1, list2, list3, list4, list5))
+                .result(List.of(list1, list2, list3, list4, list5))
                 .build();
         return objectMapper.writeValueAsString(result);
     }

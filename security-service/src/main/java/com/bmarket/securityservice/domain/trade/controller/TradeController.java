@@ -10,7 +10,7 @@ import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTr
 import com.bmarket.securityservice.internal_api.trade.form.SearchCondition;
 
 import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
-import com.bmarket.securityservice.internal_api.trade.form.TradeListResult;
+import com.bmarket.securityservice.internal_api.trade.form.TradeListDto;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +60,7 @@ public class TradeController {
         entityModel.add(getLinkList(responseTradeResult.getTradeId()));
 
         WebMvcLinkBuilder.linkTo(TradeController.class);
+
         URI Location = builder.slash("/trade").slash(responseTradeResult.getTradeId()).toUri();
 
         return ResponseEntity
@@ -85,8 +86,10 @@ public class TradeController {
             @PathVariable Long accountId,
             SearchCondition condition) {
 
-        EntityModel<TradeListResult> entityModel = EntityModel
+        EntityModel<TradeListDto> entityModel = EntityModel
                 .of(tradeService.tradeList(accountId, condition));
+
+        WebMvcLinkBuilder builder = WebMvcLinkBuilder.linkTo(TradeController.class);
 
         return ResponseEntity.ok()
                 .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, entityModel));
@@ -107,12 +110,12 @@ public class TradeController {
     /**
      * 판매 글 수정
      */
-    @PatchMapping("/trade/{tradeId}")
-    public ResponseEntity patchTrade(@Validated
-                                     @PathVariable Long tradeId,
-                                     @RequestPart RequestTradeForm.ModifyTradeForm form,
-                                     @RequestPart List<MultipartFile> images,
-                                     BindingResult bindingResult) {
+    @PutMapping("/trade/{tradeId}")
+    public ResponseEntity putTrade(@Validated
+                                       @PathVariable Long tradeId,
+                                   @RequestPart RequestTradeForm.ModifyTradeForm form,
+                                   @RequestPart List<MultipartFile> images,
+                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException("Trade 수정에 문제가 발생");
         }
@@ -126,7 +129,7 @@ public class TradeController {
      * 판매 글 삭제
      */
     @DeleteMapping("/trade/{tradeId}")
-    public ResponseEntity deleteTrade(@PathVariable Long tradeId){
+    public ResponseEntity deleteTrade(@PathVariable Long tradeId) {
 
         EntityModel<ResponseTradeResult> entityModel = EntityModel.of(tradeService.tradeDelete(tradeId));
 

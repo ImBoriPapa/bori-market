@@ -15,7 +15,7 @@ import lombok.Setter;
 public class SearchCondition {
 
     private Integer size;
-    private Long lastIndex;
+    private Long index;
     private Category category;
     private Boolean isShare;
     private Boolean isOffer;

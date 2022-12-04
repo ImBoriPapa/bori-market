@@ -43,6 +43,9 @@ public enum ResponseStatus {
     FRM_SERVER_PROBLEM(5011,"frm-service 에 문제가 있습니다."),
     TRADE_WRONG_REQUEST(5020,"trade 서비스로의 요청이 잘못되었습니다."),
     TRADE_SERVER_PROBLEM(5021,"trade-service 에 문제가 있습니다."),
+
+    ADDRESS_WRONG_REQUEST(5020,"address 서비스로의 요청이 잘못되었습니다."),
+    ADDRESS_SERVER_PROBLEM(5021,"address-service 에 문제가 있습니다.")
     ;
     private int code;
     private String message;

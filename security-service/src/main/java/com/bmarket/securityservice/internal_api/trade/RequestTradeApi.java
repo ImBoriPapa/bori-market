@@ -52,9 +52,9 @@ public class RequestTradeApi {
                 .body(BodyInserters.fromMultipartData(map))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError,
-                        response -> Mono.error(() -> new InternalRequestFailException(TRADE_WRONG_REQUEST)))
+                        response -> Mono.error(() -> new InternalRequestFailException(ADDRESS_WRONG_REQUEST)))
                 .onStatus(HttpStatus::is5xxServerError,
-                        response -> Mono.error(() -> new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
+                        response -> Mono.error(() -> new InternalRequestFailException(ADDRESS_SERVER_PROBLEM)))
                 .bodyToMono(ResponseTradeResult.class)
                 .block();
     }
@@ -68,7 +68,7 @@ public class RequestTradeApi {
 
         return baseUrl()
                 .put()
-                .uri("/internal/trade/{tradeId}", tradeId)
+                .uri("/{tradeId}", tradeId)
                 .body(BodyInserters.fromMultipartData(map))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError,
@@ -85,7 +85,7 @@ public class RequestTradeApi {
     public ResponseTradeResult requestDeleteTrade(Long tradeId) {
         return baseUrl()
                 .delete()
-                .uri("/internal/trade/{tradeId}", tradeId)
+                .uri("/{tradeId}", tradeId)
                 .retrieve()
                 .bodyToMono(ResponseTradeResult.class)
                 .block();
@@ -95,12 +95,12 @@ public class RequestTradeApi {
     /**
      * 검색 조건에 따른 거래 목록 조회 api
      */
-    public TradeListResult requestGetTradeList(SearchCondition condition) {
+    public TradeListDto requestGetTradeList(SearchCondition condition) {
         return baseUrl()
                 .get()
-                .uri(UriBuilder -> UriBuilder.path("/internal/trade")
+                .uri(UriBuilder -> UriBuilder
                         .queryParam("size", condition.getSize())
-                        .queryParam("l-idx", condition.getLastIndex())
+                        .queryParam("l-idx", condition.getIndex())
                         .queryParam("category", condition.getCategory())
                         .queryParam("share", condition.getIsShare())
                         .queryParam("offer", condition.getIsOffer())
@@ -110,7 +110,7 @@ public class RequestTradeApi {
                         .build()
                 )
                 .retrieve()
-                .bodyToMono(TradeListResult.class)
+                .bodyToMono(TradeListDto.class)
                 .block();
     }
 
@@ -126,7 +126,7 @@ public class RequestTradeApi {
     public TradeDetailResult requestGetTrade(Long tradeId) {
         return baseUrl()
                 .get()
-                .uri("/internal/trade/{tradeId}", tradeId)
+                .uri("/{tradeId}", tradeId)
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, r -> Mono.just(new InternalRequestFailException(TRADE_WRONG_REQUEST)))
                 .onStatus(HttpStatus::is5xxServerError, r -> Mono.just(new InternalRequestFailException(TRADE_SERVER_PROBLEM)))

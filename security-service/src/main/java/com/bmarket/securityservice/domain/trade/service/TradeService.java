@@ -55,7 +55,7 @@ public class TradeService {
     }
 
     @Transactional(readOnly = true)
-    public TradeListResult tradeList(Long accountId, SearchCondition condition) {
+    public TradeListDto tradeList(Long accountId, SearchCondition condition) {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT));
 
@@ -72,7 +72,6 @@ public class TradeService {
 
 
     public ResponseTradeResult tradeModify(Long tradeId, RequestTradeForm.ModifyTradeForm form, List<MultipartFile> images){
-
         return requestTradeApi.requestPutTrade(tradeId, form, images);
     }
 
