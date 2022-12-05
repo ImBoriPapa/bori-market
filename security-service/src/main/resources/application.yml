@@ -103,7 +103,7 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/bori-market-account
+    url: jdbc:mariadb://13.209.89.97:3307/account
     username: root
     password: 0209
 
