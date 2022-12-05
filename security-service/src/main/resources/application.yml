@@ -103,7 +103,7 @@ spring:
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://13.209.89.97:3306/account?characterEncoding=UTF-8
+    url: jdbc:mariadb://is-secret/account?characterEncoding=UTF-8
     username: root
     password: 0209
 
@@ -123,6 +123,6 @@ spring:
 
 
 internal:
-  trade: http://13.209.89.97:8081/internal/trade
-  address: http://13.209.89.97:8085/internal/address
-  frm-profile:  http://13.209.89.97:8095/internal/frm/profile
+  trade: http://is-secret/internal/trade
+  address: http://is-secret/internal/address
+  frm-profile:  http://is-secret/internal/frm/profile
