@@ -5,9 +5,7 @@
 build
 /build/
 
-gradle/wrapper
-gradlew
-gradlew.bat
+
 /gradle/
 /.gradle/
 /.gradle
