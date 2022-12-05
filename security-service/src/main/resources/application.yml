@@ -46,8 +46,8 @@ server:
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
-  token-validation-life: 1800
-  refresh-token-validation-life: 604800
+  token-validation-life: 600
+  refresh-token-validation-life: 1800
 
 spring:
   servlet:
@@ -89,8 +89,8 @@ server:
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
-  token-validation-life: 1800
-  refresh-token-validation-life: 604800
+  token-validation-life: 600
+  refresh-token-validation-life: 1800
 
 spring:
   servlet:
@@ -99,11 +99,11 @@ spring:
       max-request-size: 10MB
   config:
     activate:
-      on-profile: production
+      on-profile: prod
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://13.209.89.97:3307/account
+    url: jdbc:mariadb://13.209.89.97:3306/account?characterEncoding=UTF-8
     username: root
     password: 0209
 
@@ -123,6 +123,6 @@ spring:
 
 
 internal:
-  trade: http://localhost:8081/internal/trade
-  address: http://localhost:8085/internal/address
-  frm-profile:   http://localhost:8095/internal/frm/profile
+  trade: http://13.209.89.97:8081/internal/trade
+  address: http://13.209.89.97:8085/internal/address
+  frm-profile:  http://13.209.89.97:8095/internal/frm/profile

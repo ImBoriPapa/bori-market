@@ -14,7 +14,6 @@ public enum AuthenticationFilterStatus {
     REFRESH_TOKEN_IS_EMPTY("/empty-token","/exception/empty-token?token=refresh"),
     REFRESH_TOKEN_IS_EXPIRED("/expired-token","/exception/expired-token"),
     REFRESH_TOKEN_IS_DENIED("/denied-token","/exception/denied-token?token=refresh"),
-
     EMPTY_BOTH("/empty-both","/exception/empty-both");
 
     public final String ex;

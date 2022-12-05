@@ -47,7 +47,7 @@ public class BasicException extends RuntimeException {
         this.errorType = this.getClass().getName();
         this.errorCode = status.getCode();
         this.errorMessage = List.of(status.getMessage());
-        log.info("Custom Exception 발생={}", this);
+        log.info("Custom Exception 발생={}", this.getErrorMessage().stream().findFirst());
     }
 
     public BasicException(ResponseStatus status, BindingResult bindingResult) {

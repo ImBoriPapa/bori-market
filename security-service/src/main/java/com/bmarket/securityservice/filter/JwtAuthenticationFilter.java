@@ -1,6 +1,7 @@
 package com.bmarket.securityservice.filter;
 
 import com.bmarket.securityservice.domain.security.service.UserDetailServiceImpl;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.utils.jwt.JwtCode;
 
 import com.bmarket.securityservice.domain.security.service.JwtService;
@@ -58,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private void accessTokenExist(HttpServletRequest request, HttpServletResponse response, String token) {
         if (StringUtils.hasLength(token)) {
-            log.info("[AccessToken= {}]",token);
+            log.info("[AccessToken= {}]", token);
             JwtCode jwtCode = jwtUtils.validateToken(token);
 
             isAccessSuccessToken(token, jwtCode);
@@ -113,7 +114,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private void refreshTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) {
         JwtCode jwtCode = jwtUtils.validateToken(token);
-        refreshIsAccess(response, token, jwtCode);
+        refreshIsAccess(response, request, token, jwtCode);
 
         refreshIsExpired(request, jwtCode);
 
@@ -142,22 +143,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     /**
      * RefreshToken 이 정상인 경우
-     * Access 토큰,Refresh 토큰,clientId 재발급
+     * Access 토큰,Refresh 토큰
      */
-    private void refreshIsAccess(HttpServletResponse response, String token, JwtCode jwtCode) {
+    private void refreshIsAccess(HttpServletResponse response, HttpServletRequest request, String token, JwtCode jwtCode) {
         if (jwtCode == JwtCode.ACCESS) {
+            log.info("리프레쉬 토큰 인증상태는 ACCESS 입니다.");
             Long accountId = jwtUtils.getUserId(token);
-            log.info("리프레쉬 토큰 인증이 성공하였습니다.");
-            Authentication authentication = userDetailService.generateAuthentication(accountId);
+
             String generateToken = jwtUtils.generateAccessToken(accountId);
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
+
+            if (refreshTokenIsMatchedWithStored(response, request, token, accountId, generateToken)) {
+                setAuthentication(generateToken);
+            } else {
+                request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
+            }
+        }
+    }
+
+    /**
+     * refresh token 을 데이터베이스에 저장값과 확인후 일치하지 않으면 InvalidTokenException
+     */
+    private boolean refreshTokenIsMatchedWithStored(HttpServletResponse response, HttpServletRequest request, String token, Long accountId, String generateToken) {
+        try {
             String reissueRefreshToken = jwtService.reissueRefreshToken(token, accountId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
-
             response.setHeader(AUTHORIZATION_HEADER, JWT_HEADER_PREFIX + generateToken);
             response.setHeader(REFRESH_HEADER, JWT_HEADER_PREFIX + reissueRefreshToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return true;
+        } catch (InvalidTokenException e) {
+            log.info("잘못된 리프레시인증 토큰입니다.");
+            return false;
         }
+
     }
 
     /**

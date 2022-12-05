@@ -60,7 +60,7 @@ class ApiDocsAccount {
         mockWebServer.start(8095);
         MockResponse mockResponse = new MockResponse();
         mockResponse.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-        mockResponse.setBody(objectMapper.writeValueAsString("http://localhost:8095//frm/profile/default.img"));
+        mockResponse.setBody(objectMapper.writeValueAsString("http://localhost:8095/frm/profile/default.img"));
         mockWebServer.enqueue(mockResponse);
         testDataProvider.initAccount();
     }

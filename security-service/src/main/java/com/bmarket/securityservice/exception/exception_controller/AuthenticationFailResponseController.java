@@ -39,11 +39,7 @@ public class AuthenticationFailResponseController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
-    @GetMapping("/wrong-clientId")
-    public ResponseEntity wrongClientId() {
-        ResponseForm.Error errorResponse = new ResponseForm.Error(new CustomAccessDeniedException(CLIENT_ID_IS_INVALID));
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-    }
+
 
     @GetMapping("/empty-token")
     public ResponseEntity emptyTokenException(@RequestParam(defaultValue = "token") String token) {
@@ -65,7 +61,7 @@ public class AuthenticationFailResponseController {
         HttpHeaders httpHeaders = new HttpHeaders();
 
         httpHeaders.setLocation(URI.create("/login"));
-        return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT).headers(httpHeaders).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(httpHeaders).body(errorResponse);
     }
 
     @GetMapping("/denied-token")

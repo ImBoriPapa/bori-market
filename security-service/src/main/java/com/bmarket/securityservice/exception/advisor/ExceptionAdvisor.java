@@ -1,5 +1,6 @@
 package com.bmarket.securityservice.exception.advisor;
 
+import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailAuthenticationException;
@@ -37,4 +38,5 @@ public class ExceptionAdvisor {
         ResponseForm.Error errorResponse = new ResponseForm.Error(e);
         return ResponseEntity.badRequest().body(errorResponse);
     }
+
 }

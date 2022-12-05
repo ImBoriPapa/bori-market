@@ -54,15 +54,14 @@ class JwtAuthenticationFilterTest {
 
     @BeforeEach
     void beforeEach(){
-//        testData.initTestAccount();
+        testDataProvider.initTestAccount();
     }
     @AfterEach
     void afterEach(){
-//        testData.clearAccount();
+        testDataProvider.clearAccount();
     }
 
     // TODO: 2022/11/14 테스트 보강
-    @Disabled
     @Test
     @DisplayName("인증없이 접근 가능한 경로 POST:/login")
     void freeAccess() throws Exception {
@@ -77,31 +76,15 @@ class JwtAuthenticationFilterTest {
 
         //then
     }
-    @Disabled
-    @Test
-    @DisplayName("인증 필요한 접근에 토큰 및 클라이언트 아이디 둘다 없는 경우")
-    void emptyTokenAndIdTest() throws Exception {
-        //given
-        LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
 
-        mockMvc.perform(get("/account/" + result.getAccountId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(EMPTY_BOTH.getUrl())).andDo(print());
-        //when
 
-        //then
-
-    }
-
-    @Disabled
     @Test
     @DisplayName("인증 토큰이 없는 경우 GET:/account/{clientId}")
     void emptyAccessToken() throws Exception {
         //given
         LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId() + 121314);
+
 
         mockMvc.perform(get("/account/" + result.getAccountId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -113,33 +96,13 @@ class JwtAuthenticationFilterTest {
         //then
 
     }
-    @Disabled
-    @Test
-    @DisplayName("clientId가 잘못된 경우 경우 GET:/account/{clientId}")
-    void wrongAccessToken() throws Exception {
-        //given
-        LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId() + 121314);
-        headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
-        headers.add(REFRESH_HEADER, result.getRefreshToken());
-        //when
-        mockMvc.perform(get("/account/" + result.getAccountId())
-                        .headers(headers)
-                        .contentType(MediaType.APPLICATION_JSON)
-                ).andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(CLIENT_ID_IS_INVALID.getUrl())).andDo(print());
-        //then
 
-    }
-    @Disabled
     @Test
-    @DisplayName("인증이 성공한 경우 GET:/account/{clientId}")
+    @DisplayName("인증이 성공한 경우 GET:/account/{id}")
     void successAccessToken() throws Exception {
         //given
         LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId());
         headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
         headers.add(REFRESH_HEADER, result.getRefreshToken());
         //when
@@ -150,14 +113,13 @@ class JwtAuthenticationFilterTest {
 
         //then
     }
-    @Disabled
     @Test
-    @DisplayName("access token 인증이 실패한 경우 GET:/account/{clientId}")
+    @DisplayName("access token 인증이 실패한 경우 GET:/account/{id}")
     void failAccessToken() throws Exception {
         //given
         LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId());
+
         headers.add(AUTHORIZATION_HEADER, result.getAccessToken() + 3131);
         headers.add(REFRESH_HEADER, result.getRefreshToken());
         //when
@@ -168,14 +130,14 @@ class JwtAuthenticationFilterTest {
 
         //then
     }
-    @Disabled
+
     /**
      * 토큰 유효 시간 5초
      * 6초 대기후 요청
      * REFRESH_HEADER 없음
      */
     @Test
-    @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 없을 경우 GET:/account/{clientId}")
+    @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 없을 경우 GET:/account/{id}")
     void expiredAccessToken() throws Exception {
         //given
         LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
@@ -185,7 +147,7 @@ class JwtAuthenticationFilterTest {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId());
+
         headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
 
         mockMvc.perform(get("/account/" + result.getAccountId())
@@ -196,9 +158,9 @@ class JwtAuthenticationFilterTest {
 
         //then
     }
-    @Disabled
+
     @Test
-    @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 정상인 경우 GET:/account/{clientId}")
+    @DisplayName("access 토큰이 만료 되었고 리프레쉬 헤더가 정상인 경우 GET:/account/{id}")
     void successRefreshToken() throws Exception {
         //given
         LoginResult result = jwtService.loginProcessing("tester", TEST_ADMIN_PASSWORD);
@@ -207,7 +169,7 @@ class JwtAuthenticationFilterTest {
             Thread.sleep(1000);
         }
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId());
+
         headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
         headers.add(REFRESH_HEADER, result.getRefreshToken());
 
@@ -215,14 +177,13 @@ class JwtAuthenticationFilterTest {
                         .headers(headers)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
-                .andExpect(header().exists(CLIENT_ID))
                 .andExpect(header().exists(AUTHORIZATION_HEADER))
                 .andExpect(header().exists(REFRESH_HEADER)).andDo(print());
         //when
 
         //then
     }
-    @Disabled
+
     @Test
     @DisplayName("access 토큰이 만료 되었고 리프레쉬 토큰이 EXPIRED 경우 GET:/account/{clientId}")
     void expiredRefreshToken() throws Exception {
@@ -234,7 +195,7 @@ class JwtAuthenticationFilterTest {
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, result.getClientId());
+
         headers.add(AUTHORIZATION_HEADER, result.getAccessToken());
         headers.add(REFRESH_HEADER, result.getRefreshToken());
 
