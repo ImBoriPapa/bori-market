@@ -13,7 +13,7 @@ spring:
       max-request-size: 10MB
   config:
     activate:
-      on-profile: test
+      on-profile: local
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -56,7 +56,7 @@ spring:
       max-request-size: 10MB
   config:
     activate:
-      on-profile: local
+      on-profile: test
 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

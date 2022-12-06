@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @SpringBootTest
 @Slf4j
 class UserDetailServiceImplTest {

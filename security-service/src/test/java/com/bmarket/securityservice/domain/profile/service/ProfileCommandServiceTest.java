@@ -33,7 +33,7 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.*;
 
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @SpringBootTest
 @Transactional
 @Slf4j

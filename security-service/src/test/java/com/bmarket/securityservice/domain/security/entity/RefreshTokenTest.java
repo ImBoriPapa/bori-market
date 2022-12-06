@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @SpringBootTest
 @Slf4j
 @Transactional

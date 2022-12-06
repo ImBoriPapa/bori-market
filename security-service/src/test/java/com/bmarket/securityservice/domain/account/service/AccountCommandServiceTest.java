@@ -30,7 +30,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.*;
 
 // TODO: 2022/11/19 테스트 코드 보강
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @SpringBootTest
 @Slf4j
 @Transactional

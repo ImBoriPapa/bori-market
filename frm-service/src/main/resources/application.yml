@@ -18,7 +18,7 @@ spring:
       version: 4.0.21
   config:
     activate:
-      on-profile: "local"
+      on-profile: local
 
 logging:
   level:
@@ -47,7 +47,7 @@ spring:
       database: file-resource-management-test
   config:
     activate:
-      on-profile: "test"
+      on-profile: test
 logging:
   level:
     sql: debug
@@ -74,7 +74,7 @@ spring:
       database: file-resource-management
   config:
     activate:
-      on-profile: "production"
+      on-profile: prod
 logging:
   level:
     sql: error

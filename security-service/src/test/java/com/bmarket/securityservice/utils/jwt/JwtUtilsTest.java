@@ -15,7 +15,7 @@ import java.util.Base64;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @SpringBootTest
 @Slf4j
 class JwtUtilsTest {

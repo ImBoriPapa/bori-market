@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Slf4j
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 class AccountControllerSearchTest {
 
     @Autowired

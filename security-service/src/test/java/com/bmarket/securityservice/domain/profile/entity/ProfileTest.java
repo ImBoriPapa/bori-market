@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.*;
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 @SpringBootTest
 @Slf4j
 @Transactional

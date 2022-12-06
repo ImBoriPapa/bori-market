@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @SpringBootTest
 @Slf4j
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@ActiveProfiles("local")
 class TradeControllerTest {
 
     @Autowired

@@ -9,7 +9,7 @@ spring:
       database: address
   config:
     activate:
-      on-profile: local
+      on-profile: test
 ---
 server:
   port: 8085
@@ -22,4 +22,4 @@ spring:
       database: address
   config:
     activate:
-      on-profile: production
+      on-profile: prod
