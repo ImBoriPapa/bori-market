@@ -33,8 +33,8 @@ public class RequestFrmApi {
                 .post()
                 .contentType(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new IllegalArgumentException("요청에러")))
-                .onStatus(HttpStatus::is5xxServerError, response -> Mono.error(new IllegalArgumentException("frm-service 에러")))
+                .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new InternalRequestFailException(FRM_WRONG_REQUEST)))
+                .onStatus(HttpStatus::is5xxServerError, response -> Mono.error(new InternalRequestFailException(FRM_SERVER_PROBLEM)))
                 .bodyToMono(ResponseImageForm.class)
                 .block();
     }
@@ -50,8 +50,8 @@ public class RequestFrmApi {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromMultipartData("image", resource))
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, e -> Mono.error(new InternalRequestFailException(FRM_WRONG_REQUEST)))
-                .onStatus(HttpStatus::is5xxServerError, e -> Mono.error(new InternalRequestFailException(FRM_SERVER_PROBLEM)))
+                .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new InternalRequestFailException(FRM_WRONG_REQUEST)))
+                .onStatus(HttpStatus::is5xxServerError, response -> Mono.error(new InternalRequestFailException(FRM_SERVER_PROBLEM)))
                 .bodyToMono(ResponseImageForm.class)
                 .block();
     }
@@ -64,8 +64,8 @@ public class RequestFrmApi {
                 .delete()
                 .uri("/{imageId}",imageId)
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, e -> Mono.error(new InternalRequestFailException(FRM_WRONG_REQUEST)))
-                .onStatus(HttpStatus::is5xxServerError, e -> Mono.error(new InternalRequestFailException(FRM_SERVER_PROBLEM)))
+                .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new InternalRequestFailException(FRM_WRONG_REQUEST)))
+                .onStatus(HttpStatus::is5xxServerError, response -> Mono.error(new InternalRequestFailException(FRM_SERVER_PROBLEM)))
                 .bodyToMono(ResponseImageForm.class)
                 .block();
     }

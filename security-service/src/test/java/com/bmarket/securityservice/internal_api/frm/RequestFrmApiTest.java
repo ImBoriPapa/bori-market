@@ -72,7 +72,6 @@ class RequestFrmApiTest {
         };
         mockWebServer.setDispatcher(dispatcher);
     }
-
     @AfterEach
     void afterEach() throws IOException {
         dispatcher.shutdown();
