@@ -52,9 +52,9 @@ public class RequestTradeApi {
                 .body(BodyInserters.fromMultipartData(map))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError,
-                        response -> Mono.error(() -> new InternalRequestFailException(ADDRESS_WRONG_REQUEST)))
+                        response -> Mono.error(() -> new InternalRequestFailException(TRADE_WRONG_REQUEST)))
                 .onStatus(HttpStatus::is5xxServerError,
-                        response -> Mono.error(() -> new InternalRequestFailException(ADDRESS_SERVER_PROBLEM)))
+                        response -> Mono.error(() -> new InternalRequestFailException(TRADE_SERVER_PROBLEM)))
                 .bodyToMono(ResponseTradeResult.class)
                 .block();
     }

@@ -122,6 +122,4 @@ public class ProfileImageServiceImpl {
             log.info("삭제할 파일이 존재 하지 않습니다. ={}", e.getMessage());
         }
     }
-
-
 }
