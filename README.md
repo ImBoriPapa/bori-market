@@ -1,7 +1,7 @@
 # bori-market
 
-### M to M 거래기능 API 서버 구현
-- Member to Member 회원간 거래를 할 수 있는 기능을 구현하고 있습니다.
+### API 서버 구현
+
 - 중고거래 어플 당근 마켓에서 모티브를 얻어 거래 기능 API를 제공하는 서버를 구현하고 있습니다.
 
 ## 특징
@@ -31,9 +31,5 @@ bori-mairket
 |address-service|주소 검색 기능 구현|
 
 ## API 문서
-[API 문서 링크로 보기](http://localhost:8080:/docs/index.html)
+[API 문서 링크로 보기](https://imboripapa.github.io/api-docs/)
 
-
-
-## 깃허브
-[https://github.com/ImBoriPapa/bori-market](https://github.com/ImBoriPapa/bori-market)
