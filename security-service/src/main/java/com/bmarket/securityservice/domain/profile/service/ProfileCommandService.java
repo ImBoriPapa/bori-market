@@ -28,22 +28,24 @@ public class ProfileCommandService {
     private final AccountRepository accountRepository;
     private final RequestFrmApi requestFrmApi;
 
-    private final RequestTradeApi requestTradeApi;
-
     /**
      * createProfile() 은 Account 를 저장시 같이 저장하기 때문에 저장로직이 없음
      * form 의 정보로 Address 와 Profile 객체를 생성해 전달
      * 프로필 이미지는: getDefaultProfileImage() 최초 가입시 기본 이미지 저장
      */
     public Profile createProfile(RequestAccountForm.CreateForm form) {
-
+        log.info("[createProfile 동작]");
         Address address = Address.createAddress()
                 .addressCode(form.getAddressCode())
                 .city(form.getCity())
                 .district(form.getDistrict())
                 .town(form.getTown()).build();
 
-        ResponseImageForm profileImage = requestFrmApi.getProfileImage();
+        ResponseImageForm profileImage = requestFrmApi.postProfileImage();
+        log.info("[requestFrmApi 호출]");
+        log.info("[requestFrmApi 응답 결과 success= {}]",profileImage.getSuccess());
+        log.info("[requestFrmApi 응답 결과 imageId= {}]",profileImage.getImageId());
+        log.info("[requestFrmApi 응답 결과 imagePath= {}]",profileImage.getImagePath());
 
         return Profile.createProfile()
                 .nickname(form.getNickname())

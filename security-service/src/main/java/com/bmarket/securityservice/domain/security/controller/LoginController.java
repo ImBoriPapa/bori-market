@@ -1,5 +1,7 @@
 package com.bmarket.securityservice.domain.security.controller;
 
+import com.bmarket.securityservice.domain.account.controller.AccountController;
+import com.bmarket.securityservice.domain.profile.controller.ProfileController;
 import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.security.controller.requestForm.RequestLoginForm;
 import com.bmarket.securityservice.domain.security.controller.requestResultForm.LoginResultForm;
@@ -26,9 +28,9 @@ import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
 public class LoginController {
     private final JwtService jwtService;
 
-    // TODO: 2022/11/21  로그아웃 기능 구현 링크 추가
+
     @PostMapping("/login")
-    public ResponseEntity login(@Validated @RequestBody RequestLoginForm form, BindingResult bindingResult) {
+    public ResponseEntity<ResponseForm.Of> login(@Validated @RequestBody RequestLoginForm form, BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()){
             throw new FormValidationException(ResponseStatus.FAIL_LOGIN);
@@ -37,17 +39,20 @@ public class LoginController {
         LoginResult result = jwtService.loginProcessing(form.getLoginId(), form.getPassword());
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CLIENT_ID,result.getClientId());
         httpHeaders.set(AUTHORIZATION_HEADER, result.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, result.getRefreshToken());
 
-        EntityModel<LoginResultForm> of = EntityModel.of(new LoginResultForm(result.getAccountId(), result.getLoginAt()));
+        EntityModel<LoginResultForm> resultOf = EntityModel.of(new LoginResultForm(result.getAccountId(), result.getLoginAt()));
 
-        of.add(WebMvcLinkBuilder.linkTo(LoginController.class).withSelfRel());
+        resultOf.add(WebMvcLinkBuilder.linkTo(AccountController.class).slash(result.getAccountId()).withRel("GET : 계정 정보 조회"));
+        resultOf.add(WebMvcLinkBuilder.linkTo(ProfileController.class).slash(result.getAccountId()+"/profile").withRel("GET : 프로필 정보 조회"));
 
         return ResponseEntity
                 .ok()
                 .headers(httpHeaders)
-                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, of));
+                .body(new ResponseForm.Of(ResponseStatus.SUCCESS, resultOf));
     }
+
+    // TODO: 2022/11/21  로그아웃 기능 구현 링크 추가
+
 }

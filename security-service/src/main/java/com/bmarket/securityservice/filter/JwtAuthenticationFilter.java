@@ -45,6 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     /**
      * access 토큰 처리
+     * access 토큰이 있다면 accessToken()
+     * access 토큰이 없다면 isEmptyAccessToken()
      */
     private void accessTokenHandle(HttpServletRequest request, HttpServletResponse response) {
         jwtUtils.resolveToken(request, AUTHORIZATION_HEADER)
@@ -105,7 +107,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * AccessToken 이 없을 경우
      */
     private void isEmptyAccessToken(HttpServletRequest request) {
-        log.info("[ACCESS TOKEN 이 없습니다. 요청 URI= {}]", request.getRequestURI());
+        log.info("[ACCESS TOKEN이 없습니다.]");
         request.setAttribute(FILTER_STATUS.name(), TOKEN_IS_EMPTY);
     }
 
@@ -127,6 +129,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void refreshIsDenied(HttpServletRequest request, JwtCode jwtCode) {
         if (jwtCode == JwtCode.DENIED) {
             log.info("리프레쉬 토큰이 잘못되었습니다.");
+            SecurityContextHolder.clearContext();
             request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
         }
     }
@@ -137,6 +140,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void refreshIsExpired(HttpServletRequest request, JwtCode jwtCode) {
         if (jwtCode == JwtCode.EXPIRED) {
             log.info("리프레쉬 토큰이 만료되었습니다.");
+
             request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_EXPIRED);
         }
     }
@@ -153,7 +157,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String generateToken = jwtUtils.generateAccessToken(accountId);
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
 
-            if (refreshTokenIsMatchedWithStored(response, request, token, accountId, generateToken)) {
+            if (refreshTokenIsMatchedWithStored(response, token, accountId, generateToken)) {
                 setAuthentication(generateToken);
             } else {
                 request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
@@ -164,7 +168,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * refresh token 을 데이터베이스에 저장값과 확인후 일치하지 않으면 InvalidTokenException
      */
-    private boolean refreshTokenIsMatchedWithStored(HttpServletResponse response, HttpServletRequest request, String token, Long accountId, String generateToken) {
+    private boolean refreshTokenIsMatchedWithStored(HttpServletResponse response, String token, Long accountId, String generateToken) {
         try {
             String reissueRefreshToken = jwtService.reissueRefreshToken(token, accountId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
@@ -173,6 +177,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return true;
         } catch (InvalidTokenException e) {
             log.info("잘못된 리프레시인증 토큰입니다.");
+            // TODO: 2022/12/08 SecurityContextHolder.clearContext() 를 해줘야 할지 공부해보자.
+            SecurityContextHolder.clearContext();
             return false;
         }
 
@@ -182,9 +188,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * 인증 객체 저장
      */
     private void setAuthentication(String jwt) {
-        log.info("[인증정보 저장]");
         Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getUserId(jwt));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        log.info("[인증정보 저장]");
+        log.info("SecurityContextHolder.getContext().getAuthentication()= {}", SecurityContextHolder.getContext().getAuthentication());
     }
 
 

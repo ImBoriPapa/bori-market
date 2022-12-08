@@ -87,7 +87,7 @@ class RequestFrmApiTest {
         //given
         
         //when
-        ResponseImageForm profileImage = requestFrmApi.getProfileImage();
+        ResponseImageForm profileImage = requestFrmApi.postProfileImage();
         //then
         Assertions.assertThat(profileImage.getSuccess()).isTrue();
         Assertions.assertThat(profileImage.getImageId()).isNotEmpty();

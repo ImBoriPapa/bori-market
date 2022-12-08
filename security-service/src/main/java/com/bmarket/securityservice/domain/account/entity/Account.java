@@ -103,6 +103,9 @@ public class Account {
 
     }
 
+    /**
+     * 시간순 정렬 UUID
+     */
     private String generateSequentialUUID() {
         String proto = Generators.timeBasedGenerator().generate().toString();
         String[] array = proto.split("-");

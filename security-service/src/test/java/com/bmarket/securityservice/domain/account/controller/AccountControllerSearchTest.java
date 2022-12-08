@@ -60,7 +60,6 @@ class AccountControllerSearchTest {
         //given
         LoginResult loginResult = jwtService.loginProcessing("tester1", "!@tester1234");
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when
@@ -98,7 +97,6 @@ class AccountControllerSearchTest {
         //given
         LoginResult loginResult = jwtService.loginProcessing("tester1", "!@tester1234");
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when
@@ -137,7 +135,6 @@ class AccountControllerSearchTest {
 
         LoginResult loginResult = jwtService.loginProcessing("tester1", "!@tester1234");
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when
@@ -178,7 +175,6 @@ class AccountControllerSearchTest {
 
         LoginResult loginResult = jwtService.loginProcessing("tester1", "!@tester1234");
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when

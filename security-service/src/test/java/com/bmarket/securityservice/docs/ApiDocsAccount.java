@@ -4,6 +4,7 @@ package com.bmarket.securityservice.docs;
 import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
+import com.bmarket.securityservice.internal_api.frm.ResponseImageForm;
 import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mockwebserver3.MockResponse;
@@ -41,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // TODO: 2022/11/21 변경 전파
 class ApiDocsAccount {
 
-
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
@@ -60,7 +60,8 @@ class ApiDocsAccount {
         mockWebServer.start(8095);
         MockResponse mockResponse = new MockResponse();
         mockResponse.setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-        mockResponse.setBody(objectMapper.writeValueAsString("http://localhost:8095/frm/profile/default.img"));
+        ResponseImageForm responseImageForm = new ResponseImageForm(true,"dsadsafsafsa213141","http://localhost:8095/frm/profile/default.img");
+        mockResponse.setBody(objectMapper.writeValueAsString(responseImageForm));
         mockWebServer.enqueue(mockResponse);
         testDataProvider.initAccount();
     }
@@ -136,7 +137,6 @@ class ApiDocsAccount {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
 
@@ -177,7 +177,6 @@ class ApiDocsAccount {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
 
@@ -222,7 +221,6 @@ class ApiDocsAccount {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
 

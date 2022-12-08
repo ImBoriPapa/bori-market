@@ -6,7 +6,6 @@ import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.entity.RefreshToken;
 import com.bmarket.securityservice.domain.security.repository.RefreshTokenRepository;
 
-import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;
@@ -57,7 +56,6 @@ class JwtServiceTest {
 
         //then
         assertThat(loginResult.getAccountId()).isEqualTo(savedAccount.getId());
-        assertThat(loginResult.getClientId()).isEqualTo(savedAccount.getClientId());
         assertThat(loginResult.getRefreshToken()).isEqualTo("Bearer-" + savedAccount.getRefreshToken().getToken());
         assertThat(account.isLogin()).isTrue();
     }
@@ -103,7 +101,7 @@ class JwtServiceTest {
         //then
         assertThat(findAccount.isLogin()).isFalse();
         assertThat(findAccount.getRefreshToken().getToken()).isNull();
-        assertThat(findAccount.getClientId()).isNotEqualTo(loginResult.getClientId());
+
     }
 
     @Test
@@ -119,7 +117,7 @@ class JwtServiceTest {
         Account savedAccount = accountRepository.save(account);
 
         //when
-        String issuedRefreshToken = jwtService.issuedRefreshToken(savedAccount.getId());
+        String issuedRefreshToken = jwtService.issuedRefreshToken(savedAccount);
         Account findAccount = accountRepository.findByClientId(savedAccount.getClientId())
                 .orElseThrow(() -> new IllegalArgumentException("계정을 찾을수 없습니다."));
         RefreshToken findToken = tokenRepository.findById(findAccount.getRefreshToken().getId())
@@ -150,7 +148,7 @@ class JwtServiceTest {
         String before = accountRepository.findByClientId(savedAccount.getClientId())
                 .orElseThrow().getRefreshToken().getToken();
 
-        String after = jwtService.issuedRefreshToken(savedAccount.getId());
+        String after = jwtService.issuedRefreshToken(savedAccount);
 
         //then
         assertThat(after).isNotEqualTo(before);

@@ -102,7 +102,6 @@ public class ApiDocsProfile {
         LoginResult tester = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CLIENT_ID, tester.getClientId());
         httpHeaders.set(AUTHORIZATION_HEADER, tester.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, tester.getRefreshToken());
 
@@ -139,7 +138,6 @@ public class ApiDocsProfile {
         LoginResult tester = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CLIENT_ID, tester.getClientId());
         httpHeaders.set(AUTHORIZATION_HEADER, tester.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, tester.getRefreshToken());
 
@@ -174,7 +172,6 @@ public class ApiDocsProfile {
         LoginResult tester = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CLIENT_ID, tester.getClientId());
         httpHeaders.set(AUTHORIZATION_HEADER, tester.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, tester.getRefreshToken());
 
@@ -214,7 +211,6 @@ public class ApiDocsProfile {
         LoginResult tester = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CLIENT_ID, tester.getClientId());
         httpHeaders.set(AUTHORIZATION_HEADER, tester.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, tester.getRefreshToken());
 
@@ -251,7 +247,6 @@ public class ApiDocsProfile {
         LoginResult tester = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(CLIENT_ID, tester.getClientId());
         httpHeaders.set(AUTHORIZATION_HEADER, tester.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, tester.getRefreshToken());
 

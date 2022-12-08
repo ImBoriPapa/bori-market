@@ -137,7 +137,6 @@ public class ApiDocsTrade {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when
@@ -202,7 +201,6 @@ public class ApiDocsTrade {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
 
@@ -263,7 +261,6 @@ public class ApiDocsTrade {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when
@@ -301,7 +298,7 @@ public class ApiDocsTrade {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
+
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when
@@ -379,7 +376,6 @@ public class ApiDocsTrade {
         LoginResult loginResult = jwtService.loginProcessing("tester", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //when

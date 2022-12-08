@@ -1,6 +1,7 @@
 package com.bmarket.securityservice.internal_api.frm;
 
 import com.bmarket.securityservice.exception.custom_exception.internal_api_ex.InternalRequestFailException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
 
 @Component
+@Slf4j
 public class RequestFrmApi {
     @Value("${internal.frm-profile}")
     private String baseUrl;
@@ -22,13 +24,13 @@ public class RequestFrmApi {
         return WebClient.builder()
                 .baseUrl(baseUrl)
                 .build();
-
     }
 
     /**
      * 회원 가입시 frm-service 에 프로필 이미지 객체를 생성 후 기본 이미지 경로를 반환 받습니다.
      */
-    public ResponseImageForm getProfileImage() {
+    public ResponseImageForm postProfileImage() {
+        log.info("[postProfileImage 동작]");
         return createBaseUrl()
                 .post()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -47,7 +49,7 @@ public class RequestFrmApi {
         return createBaseUrl()
                 .put()
                 .uri("/{imageId}",imageId)
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(BodyInserters.fromMultipartData("image", resource))
                 .retrieve()
                 .onStatus(HttpStatus::is4xxClientError, response -> Mono.error(new InternalRequestFailException(FRM_WRONG_REQUEST)))

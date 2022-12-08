@@ -4,7 +4,6 @@ import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.entity.RefreshToken;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
-import com.bmarket.securityservice.domain.security.enums.JwtValue;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
+import static com.bmarket.securityservice.domain.security.enums.JwtValue.*;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
 
 @Service
@@ -32,8 +32,6 @@ public class JwtService {
 
     /**
      * 클라이언트는 로그인 실패시 로그인 아이디 혹은 비밀번호중 무었이 잘못됬는지 감추기 위해 FailLoginException(ResponseStatus.FAIL_LOGIN)
-     *
-     * @return
      */
     public LoginResult loginProcessing(String loginId, String password) {
         log.info("[LoginProcessing 실행]");
@@ -44,13 +42,15 @@ public class JwtService {
 
         account.loginIn();
 
-        String token = jwtUtils.generateAccessToken(account.getId());
-        Date accessTokenExpired = jwtUtils.getExpired(token);
+        String accessToken = jwtUtils.generateAccessToken(account.getId());
+        String refreshToken = issuedRefreshToken(account);
 
-        String bearerToken = JwtValue.BEARER + token;
-        String bearerRefreshToken = JwtValue.BEARER + issuedRefreshToken(account.getId());
+        String bearerToken = BEARER + accessToken;
+        String bearerRefreshToken = BEARER + refreshToken;
 
-        return new LoginResult(account.getId(), account.getClientId(), bearerToken, accessTokenExpired, bearerRefreshToken, account.getLastLoginTime());
+        Date accessTokenExpired = jwtUtils.getExpired(accessToken);
+
+        return new LoginResult(account.getId(), bearerToken, accessTokenExpired, bearerRefreshToken, account.getLastLoginTime());
     }
 
     /**
@@ -72,25 +72,15 @@ public class JwtService {
                 .orElseThrow(() -> new IllegalArgumentException("d")).isLogin();
     }
 
-    public String reGenerateClientId(Long accountId) {
-        return accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("d")).
-                updateClientId();
-    }
-
     /**
      * 리프레시 토큰 생성
-     * 1. accountId 로 계정 확인
      * 2. 계정에 저장된 리프레시 토큰이 없을시 생성 및 저장 후 토큰 반환
      * 3. 계정에 저장된 리프레시 토큰이 있을시 새 토큰으로 업데이트
      */
-    public String issuedRefreshToken(Long accountId) {
-        log.info("[리프레쉬 토큰 발급]");
-        Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> new NotFoundAccountException(NOT_FOUND_ACCOUNT));
-
+    public String issuedRefreshToken(Account account) {
+        log.info("[issuedRefreshToken]");
         String newRefreshToken = jwtUtils.generateRefreshToken(account.getId());
-        return getRefreshExistOrNull(account, newRefreshToken);
+        return updateRefreshIfExistOrSave(account, newRefreshToken);
     }
 
     /**
@@ -100,7 +90,7 @@ public class JwtService {
      * 정상 토큰이 검증 되면 새로운 리프레시 토큰 반환
      */
     public String reissueRefreshToken(String token, Long accountId) {
-        log.info("[리프레쉬 토큰 재발급]");
+        log.info("[reissueRefreshToken]");
 
         Account account = getAccountByIdInToken(accountId);
 
@@ -120,23 +110,21 @@ public class JwtService {
             throw new FailLoginException(FAIL_LOGIN);
         }
     }
-    @Transactional(readOnly = true)
-    public boolean clientIdCheck(String clientId) {
-        return accountRepository.existsByClientId(clientId);
-    }
 
     /**
      * 계정에 리프레시 토큰이 저장되어있을시 토큰 업데이트 ,없다면 저장
      */
-    private String getRefreshExistOrNull(Account account, String newRefreshToken) {
-        return account.getRefreshToken() == null ? createAndGetRefresh(account, newRefreshToken)
+    private String updateRefreshIfExistOrSave(Account account, String newRefreshToken) {
+        log.info("[updateRefreshIfExistOrSave]");
+        return account.getRefreshToken() == null ? createRefreshEntity(account, newRefreshToken)
                 : account.getRefreshToken().changeRefreshToken(newRefreshToken);
     }
 
     /**
      * 리프레시 토큰 객체 생성후 Account 에 저장 후 저장된 토큰 반환
      */
-    private String createAndGetRefresh(Account account, String newRefreshToken) {
+    private String createRefreshEntity(Account account, String newRefreshToken) {
+        log.info("[createRefreshEntity]");
         RefreshToken refreshToken = RefreshToken.createRefreshToken(newRefreshToken);
         account.addRefresh(refreshToken);
         return refreshToken.getToken();

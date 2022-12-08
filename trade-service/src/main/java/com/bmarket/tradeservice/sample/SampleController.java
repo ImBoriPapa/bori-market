@@ -24,7 +24,7 @@ public class SampleController {
         log.info("[sample API 동작]");
         log.info("응답 code= {}", code);
         log.info("응답 message= {}", message);
-        log.info("응답 results={}", results);정
+        log.info("응답 results={}", results);
 
         return SampleResponseDto.builder()
                 .code(200)

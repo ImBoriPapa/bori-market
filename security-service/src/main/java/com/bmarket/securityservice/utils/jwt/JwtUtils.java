@@ -35,21 +35,27 @@ public class JwtUtils implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        log.info("[JwtUtils.afterPropertiesSet()]");
+        log.info("[JwtUtils.afterPropertiesSet]");
         String encodedKey = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
         key = Keys.hmacShaKeyFor(encodedKey.getBytes());
     }
 
-    //토큰 생성
+    /**
+     * 토큰 생성
+     * @param accountId
+     * setSubject : 정보 저장
+     * setIssuedAt() : 토큰 발행 시간 정보
+     * signWith() : 암호화
+     */
     public String generateAccessToken(Long accountId) {
         log.info("[엑세스 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALIDATION_MS);
         return Jwts.builder()
-                .setSubject(String.valueOf(accountId))    //정보 저장
-                .setIssuedAt(now)        // 토큰 발행 시간 정보
-                .setExpiration(validity) //만료시간 설정
-                .signWith(key, SignatureAlgorithm.HS512)//암호화
+                .setSubject(String.valueOf(accountId))
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
 
@@ -75,7 +81,7 @@ public class JwtUtils implements InitializingBean {
 
     // 토큰의 유효성 + 만료일자 확인
     public JwtCode validateToken(String token) {
-        log.info("==============[JWT_SERVICE] 토큰 검증  =============");
+        log.info("==============[JWT_UTILS] 토큰 검증  =============");
         try {
             getClaimsJws(token);
             return JwtCode.ACCESS;

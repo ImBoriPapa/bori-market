@@ -144,7 +144,7 @@ class AccountControllerTest {
         LoginResult loginResult = jwtService.loginProcessing("tester1", "!@tester1234");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
+
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
 
@@ -188,7 +188,7 @@ class AccountControllerTest {
         RequestAccountForm.DeleteForm deleteForm = new RequestAccountForm.DeleteForm("!@tester1234");
         String value = objectMapper.writeValueAsString(deleteForm);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
+
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
 
@@ -224,7 +224,7 @@ class AccountControllerTest {
         RequestAccountForm.UpdateEmailForm emailForm = new RequestAccountForm.UpdateEmailForm("new@new.com");
         String value = objectMapper.writeValueAsString(emailForm);
         HttpHeaders headers = new HttpHeaders();
-        headers.set(CLIENT_ID, loginResult.getClientId());
+
         headers.set(AUTHORIZATION_HEADER, loginResult.getAccessToken());
         headers.set(REFRESH_HEADER, loginResult.getRefreshToken());
         //then
