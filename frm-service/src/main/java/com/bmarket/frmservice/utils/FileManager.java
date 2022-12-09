@@ -15,11 +15,9 @@ import java.util.*;
 @Component
 @Slf4j
 public class FileManager {
-
     private String extension;
     private String storedName;
     private String fullPath;
-
     /**
      * 확장자 추출
      */
@@ -27,21 +25,18 @@ public class FileManager {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
-
     /**
      * uuid + 확장자로 유니크한 저장용 파일명 생성
      */
     private String generateStoredName(String ext) {
         return UUID.randomUUID() + "." + ext;
     }
-
     /**
      * 파일 저장 경로 + 저장 파일 이름 으로 전체 경로 생성
      */
     public String generatedFullPath(String path, String storedName) {
         return path + storedName;
     }
-
     /**
      * MultipartFile 이 한개 인 경우 때 저장 로직
      */
@@ -51,11 +46,7 @@ public class FileManager {
         storedName = generateStoredName(extension);
         fullPath = generatedFullPath(path, storedName);
 
-        try {
-            file.transferTo(new File(fullPath));
-        } catch (IOException e) {
-            throw new IllegalArgumentException("파일 저장에 실패 했습니다.");
-        }
+        transferToPath(file,fullPath);
 
         return new UploadFile(file.getOriginalFilename(), storedName);
     }
@@ -72,14 +63,21 @@ public class FileManager {
             storedName = generateStoredName(extension);
             fullPath = generatedFullPath(path, storedName);
 
-            try {
-                file.transferTo(new File(fullPath));
-            } catch (IOException e) {
-                throw new IllegalArgumentException("파일 저장에 실패 했습니다.");
-            }
+            transferToPath(file,fullPath);
             list.add(new UploadFile(file.getOriginalFilename(), storedName));
         }
         return list;
+    }
+
+    /**
+     * 경로에 파일저장
+     */
+    private void transferToPath(MultipartFile file,String fullPath) {
+        try {
+            file.transferTo(new File(fullPath));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("파일 저장에 실패 했습니다.");
+        }
     }
 
     /**
