@@ -19,14 +19,8 @@ public class LinkProvider {
     private WebMvcLinkBuilder getController(Class<?> className) {
         return WebMvcLinkBuilder.linkTo(className);
     }
-
     /**
      * 기본 C,R,U,D 링크 생성
-     *
-     * @param className
-     * @param ids
-     * @param resourcesName
-     * @return
      */
     public List<Link> createCrudLink(Class<?> className, Object ids, String resourcesName) {
         WebMvcLinkBuilder builder = getController(className);
@@ -39,10 +33,8 @@ public class LinkProvider {
     }
 
     public Link createOneLink(Class<?> className, Object resourceName, String rel) {
-        WebMvcLinkBuilder builder = getController(className);
-        return builder.slash(resourceName).withRel(rel);
+        return getController(className).slash(resourceName).withRel(rel);
     }
-
 
     public List<Link> createPageLink(Class<?> className, Integer pageNumber, Integer size, Long totalCount) {
         WebMvcLinkBuilder builder = getController(className);
@@ -62,6 +54,4 @@ public class LinkProvider {
 
         return List.of(previousLink);
     }
-
-
 }
