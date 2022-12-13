@@ -1,4 +1,4 @@
-package com.bmarket.frmservice.domain.trade.controller;
+package com.bmarket.frmservice.controller;
 
 import com.bmarket.frmservice.domain.trade.dto.ResponseTradeImage;
 import com.bmarket.frmservice.domain.trade.service.TradeImageService;

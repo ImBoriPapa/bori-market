@@ -1,14 +1,11 @@
 package com.bmarket.frmservice.controller;
 
-import com.bmarket.frmservice.domain.profile.controller.ProfileImageController;
+import com.bmarket.frmservice.controller.profile.ProfileImageController;
 import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
 import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
 import com.bmarket.frmservice.utils.FileManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mockwebserver3.MockWebServer;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +16,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
-
-import java.io.IOException;
-import java.util.Optional;
 
 import static com.bmarket.frmservice.utils.Patterns.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
