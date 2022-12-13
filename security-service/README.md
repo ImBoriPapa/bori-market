@@ -1,5 +1,5 @@
 # Security-Service
-## security-service는 클라이언트 요청의 인증 및 API GateWa역할을 하는 서버입니다.
+## security-service는 클라이언트 요청의 인증 및 API GateWay 역할을 하는 서버입니다.
 
 
 ### [API 문서 보기](https://imboripapa.github.io/api-docs/)
