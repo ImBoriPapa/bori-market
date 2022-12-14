@@ -1,7 +1,6 @@
 package com.bmarket.securityservice.utils.testdata;
 
 import com.bmarket.securityservice.domain.account.entity.Account;
-
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.address.Address;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
@@ -15,7 +14,8 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.bmarket.securityservice.domain.account.entity.Authority.*;
+import static com.bmarket.securityservice.domain.account.entity.Authority.ADMIN;
+import static com.bmarket.securityservice.domain.account.entity.Authority.SUPER_ADMIN;
 
 @Component
 @RequiredArgsConstructor

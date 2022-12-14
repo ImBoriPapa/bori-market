@@ -5,8 +5,8 @@ import com.bmarket.securityservice.domain.account.service.AccountCommandService;
 import com.bmarket.securityservice.domain.security.controller.LoginController;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.service.JwtService;
-import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.bmarket.securityservice.utils.LinkProvider;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import mockwebserver3.MockResponse;
@@ -26,10 +26,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.SUCCESS;
-
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

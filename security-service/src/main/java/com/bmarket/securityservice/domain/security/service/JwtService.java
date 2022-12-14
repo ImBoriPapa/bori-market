@@ -1,9 +1,9 @@
 package com.bmarket.securityservice.domain.security.service;
 
 import com.bmarket.securityservice.domain.account.entity.Account;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.entity.RefreshToken;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static com.bmarket.securityservice.domain.security.enums.JwtValue.*;
+import static com.bmarket.securityservice.domain.security.enums.JwtValue.BEARER;
 import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
 
 @Service

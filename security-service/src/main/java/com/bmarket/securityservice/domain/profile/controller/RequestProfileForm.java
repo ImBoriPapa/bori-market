@@ -1,14 +1,16 @@
 package com.bmarket.securityservice.domain.profile.controller;
 
 
-
 import com.bmarket.securityservice.domain.address.AddressRange;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 
 @NoArgsConstructor

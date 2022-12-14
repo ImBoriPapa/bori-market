@@ -2,9 +2,7 @@ package com.bmarket.tradeservice.domain.repository.query.dto;
 
 import com.bmarket.tradeservice.domain.entity.Address;
 import com.bmarket.tradeservice.domain.entity.Category;
-
 import com.querydsl.core.annotations.QueryProjection;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

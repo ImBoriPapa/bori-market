@@ -3,9 +3,9 @@ package com.bmarket.securityservice.domain.account.controller;
 
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.account.service.AccountCommandService;
-import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import mockwebserver3.MockResponse;
@@ -24,13 +24,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

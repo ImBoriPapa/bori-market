@@ -1,6 +1,5 @@
 package com.bmarket.securityservice.domain.security.entity;
 
-import com.bmarket.securityservice.domain.security.entity.RefreshToken;
 import com.bmarket.securityservice.domain.security.repository.RefreshTokenRepository;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("local")
 @SpringBootTest
 @Slf4j

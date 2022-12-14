@@ -6,10 +6,10 @@ import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestTr
 import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTradeResult;
 import com.bmarket.securityservice.domain.trade.controller.resultForm.TradeModifyResult;
 import com.bmarket.securityservice.domain.trade.entity.Category;
-import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
 import com.bmarket.securityservice.internal_api.trade.form.TradeDeleteResult;
-import com.bmarket.securityservice.internal_api.trade.form.TradeListResult;
+import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
 import com.bmarket.securityservice.internal_api.trade.form.TradeListDto;
+import com.bmarket.securityservice.internal_api.trade.form.TradeListResult;
 import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,19 +36,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
-
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest

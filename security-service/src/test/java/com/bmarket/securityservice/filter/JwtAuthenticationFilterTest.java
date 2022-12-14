@@ -1,13 +1,16 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.controller.requestForm.RequestLoginForm;
 import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,18 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-
-
-
-
-
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
+import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.REFRESH_TOKEN_IS_EXPIRED;
+import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.TOKEN_IS_EMPTY;
 import static com.bmarket.securityservice.utils.testdata.TestAccountInfo.TEST_ADMIN_PASSWORD;
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
-
-
-import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

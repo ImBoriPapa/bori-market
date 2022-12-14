@@ -1,6 +1,5 @@
 package com.bmarket.securityservice.utils.jwt;
 
-import com.fasterxml.uuid.Generators;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,8 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ActiveProfiles("local")
 @SpringBootTest
 @Slf4j

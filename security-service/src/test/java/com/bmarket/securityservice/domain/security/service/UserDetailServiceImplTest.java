@@ -3,8 +3,6 @@ package com.bmarket.securityservice.domain.security.service;
 import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.entity.Authority;
 import com.bmarket.securityservice.domain.account.repository.AccountRepository;
-
-import com.bmarket.securityservice.domain.security.service.UserDetailServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.stream.Collectors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("local")
 @SpringBootTest
 @Slf4j

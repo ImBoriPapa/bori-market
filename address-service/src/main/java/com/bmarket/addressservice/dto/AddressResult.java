@@ -1,6 +1,5 @@
 package com.bmarket.addressservice.dto;
 
-import com.bmarket.addressservice.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

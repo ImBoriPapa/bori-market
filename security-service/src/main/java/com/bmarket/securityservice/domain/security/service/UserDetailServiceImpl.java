@@ -3,21 +3,17 @@ package com.bmarket.securityservice.domain.security.service;
 import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.entity.Authority;
 import com.bmarket.securityservice.domain.account.repository.AccountQueryRepository;
-
-
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * AccountQueryRepository 의 findAccountForLoadUser() 로 UserDetailData 를 받아 UserDetails 생성

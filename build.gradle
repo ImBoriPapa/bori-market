@@ -89,3 +89,12 @@ project(':discovery-service') {
     dependencies {
     }
 }
+
+project(':apigateway-service') {
+    // 공통 코드
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+    }
+}

@@ -2,26 +2,23 @@ package com.bmarket.tradeservice.domain.controller;
 
 import com.bmarket.tradeservice.domain.dto.RequestForm;
 import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
+import com.bmarket.tradeservice.domain.entity.Category;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.exception.ExceptionMessage;
 import com.bmarket.tradeservice.domain.repository.query.AddressRange;
-
 import com.bmarket.tradeservice.domain.repository.query.SearchCondition;
 import com.bmarket.tradeservice.domain.repository.query.TradeListDto;
 import com.bmarket.tradeservice.domain.repository.query.TradeQueryRepositoryImpl;
 import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
 import com.bmarket.tradeservice.domain.service.TradeCommandService;
-import com.bmarket.tradeservice.domain.entity.Category;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 

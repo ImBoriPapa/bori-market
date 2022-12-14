@@ -6,7 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import static com.bmarket.securityservice.domain.address.AddressRange.*;
+import static com.bmarket.securityservice.domain.address.AddressRange.ONLY;
 
 /**
  * 프로필 엔티티

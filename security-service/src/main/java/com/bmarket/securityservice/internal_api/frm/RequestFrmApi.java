@@ -12,7 +12,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
+import static com.bmarket.securityservice.utils.status.ResponseStatus.FRM_SERVER_PROBLEM;
+import static com.bmarket.securityservice.utils.status.ResponseStatus.FRM_WRONG_REQUEST;
 
 @Component
 @Slf4j

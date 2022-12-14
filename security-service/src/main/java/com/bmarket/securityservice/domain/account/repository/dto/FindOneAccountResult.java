@@ -3,7 +3,6 @@ package com.bmarket.securityservice.domain.account.repository.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.hateoas.EntityModel;
 
 import java.time.LocalDateTime;
 

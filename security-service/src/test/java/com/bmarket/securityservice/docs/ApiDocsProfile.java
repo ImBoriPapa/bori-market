@@ -30,11 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.partWithName;

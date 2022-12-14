@@ -6,16 +6,13 @@ import com.bmarket.tradeservice.domain.dto.ResponseImageDto;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeImage;
 import com.bmarket.tradeservice.domain.internal.RequestImageApi;
-import com.bmarket.tradeservice.domain.repository.TradeRepository;
 import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
-
+import com.bmarket.tradeservice.domain.repository.TradeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,4 +5,5 @@ include 'frm-service'
 include 'trade-service'
 include 'security-service'
 include 'discovery-service'
+include 'apigateway-service'
 

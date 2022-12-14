@@ -8,10 +8,8 @@ import com.bmarket.securityservice.domain.address.AddressRange;
 import com.bmarket.securityservice.domain.profile.controller.RequestProfileForm;
 import com.bmarket.securityservice.domain.profile.entity.Profile;
 import com.bmarket.securityservice.domain.profile.repository.ProfileRepository;
-
 import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import lombok.extern.slf4j.Slf4j;
-
 import mockwebserver3.Dispatcher;
 import mockwebserver3.MockResponse;
 import mockwebserver3.MockWebServer;
@@ -28,10 +26,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("local")
 @SpringBootTest

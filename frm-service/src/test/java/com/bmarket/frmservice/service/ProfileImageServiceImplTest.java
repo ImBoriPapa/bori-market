@@ -2,8 +2,8 @@ package com.bmarket.frmservice.service;
 
 import com.bmarket.frmservice.domain.profile.dto.ResponseProfile;
 import com.bmarket.frmservice.domain.profile.entity.ProfileImage;
-import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceImpl;
 import com.bmarket.frmservice.domain.profile.repository.ProfileImageRepository;
+import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceImpl;
 import com.bmarket.frmservice.domain.trade.entity.UploadFile;
 import com.bmarket.frmservice.utils.FileManager;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -20,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.nio.charset.StandardCharsets;
 
 import static com.bmarket.frmservice.utils.AccessUrl.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("local")

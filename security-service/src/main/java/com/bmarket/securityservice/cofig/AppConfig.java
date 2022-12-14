@@ -3,7 +3,6 @@ package com.bmarket.securityservice.cofig;
 import com.bmarket.securityservice.filter.LogInterceptor;
 import com.bmarket.securityservice.utils.converter.AddressSearchRequestConverter;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

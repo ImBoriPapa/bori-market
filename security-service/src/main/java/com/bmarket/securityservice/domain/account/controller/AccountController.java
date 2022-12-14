@@ -3,18 +3,16 @@ package com.bmarket.securityservice.domain.account.controller;
 import com.bmarket.securityservice.domain.account.entity.Authority;
 import com.bmarket.securityservice.domain.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.domain.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.account.service.AccountCommandService;
-import com.bmarket.securityservice.domain.security.controller.LoginController;
-
 import com.bmarket.securityservice.domain.account.service.AccountQueryService;
+import com.bmarket.securityservice.domain.security.controller.LoginController;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
+import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.exception.validator.AccountDuplicateValidator;
 import com.bmarket.securityservice.utils.LinkProvider;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.EntityModel;
@@ -31,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.CLIENT_ID;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 

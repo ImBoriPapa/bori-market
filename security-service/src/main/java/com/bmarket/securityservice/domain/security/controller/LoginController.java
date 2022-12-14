@@ -2,11 +2,11 @@ package com.bmarket.securityservice.domain.security.controller;
 
 import com.bmarket.securityservice.domain.account.controller.AccountController;
 import com.bmarket.securityservice.domain.profile.controller.ProfileController;
-import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.domain.security.controller.requestForm.RequestLoginForm;
 import com.bmarket.securityservice.domain.security.controller.requestResultForm.LoginResultForm;
 import com.bmarket.securityservice.domain.security.service.JwtService;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
+import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
 
 @RestController
 @Slf4j

@@ -2,8 +2,11 @@ package com.bmarket.securityservice.internal_api.trade;
 
 import com.bmarket.securityservice.domain.trade.controller.RequestForm.RequestTradeForm;
 import com.bmarket.securityservice.domain.trade.controller.resultForm.ResponseTradeResult;
-import com.bmarket.securityservice.internal_api.trade.form.*;
 import com.bmarket.securityservice.exception.custom_exception.internal_api_ex.InternalRequestFailException;
+import com.bmarket.securityservice.internal_api.trade.form.CreateTradeServiceForm;
+import com.bmarket.securityservice.internal_api.trade.form.SearchCondition;
+import com.bmarket.securityservice.internal_api.trade.form.TradeDetailResult;
+import com.bmarket.securityservice.internal_api.trade.form.TradeListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +22,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
+import static com.bmarket.securityservice.utils.status.ResponseStatus.TRADE_SERVER_PROBLEM;
+import static com.bmarket.securityservice.utils.status.ResponseStatus.TRADE_WRONG_REQUEST;
 
 
 @Component

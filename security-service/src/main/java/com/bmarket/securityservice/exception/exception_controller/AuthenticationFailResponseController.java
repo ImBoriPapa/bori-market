@@ -7,7 +7,6 @@ import com.bmarket.securityservice.exception.custom_exception.security_ex.EmptyT
 import com.bmarket.securityservice.exception.custom_exception.security_ex.ExpiredTokenException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import java.net.URI;
 

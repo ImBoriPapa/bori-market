@@ -2,10 +2,8 @@ package com.bmarket.securityservice.filter;
 
 
 import com.bmarket.securityservice.utils.status.AuthenticationFilterStatus;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

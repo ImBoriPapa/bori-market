@@ -5,13 +5,11 @@ import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.security.controller.LoginResult;
 import com.bmarket.securityservice.domain.security.entity.RefreshToken;
 import com.bmarket.securityservice.domain.security.repository.RefreshTokenRepository;
-
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @ActiveProfiles("local")
 @SpringBootTest
 @Slf4j

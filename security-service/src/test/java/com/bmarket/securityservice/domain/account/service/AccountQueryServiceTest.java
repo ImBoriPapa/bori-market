@@ -1,14 +1,13 @@
 package com.bmarket.securityservice.domain.account.service;
 
 
-
 import com.bmarket.securityservice.domain.account.entity.Account;
 import com.bmarket.securityservice.domain.account.entity.Authority;
+import com.bmarket.securityservice.domain.account.repository.AccountRepository;
 import com.bmarket.securityservice.domain.account.repository.dto.AccountListResult;
 import com.bmarket.securityservice.domain.account.repository.dto.FindOneAccountResult;
-import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.utils.testdata.TestDataProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,11 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
-
 import java.io.IOException;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("local")
 @SpringBootTest

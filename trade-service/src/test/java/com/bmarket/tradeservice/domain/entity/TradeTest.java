@@ -1,9 +1,7 @@
 package com.bmarket.tradeservice.domain.entity;
 
 import com.bmarket.tradeservice.domain.repository.TradeRepository;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.bmarket.tradeservice.domain.entity.Category.*;
-import static com.bmarket.tradeservice.domain.entity.TradeStatus.SOLD_OUT;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.bmarket.tradeservice.domain.entity.Category.BOOK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("local")

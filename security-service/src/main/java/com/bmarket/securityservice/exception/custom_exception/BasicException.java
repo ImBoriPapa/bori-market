@@ -4,7 +4,6 @@ package com.bmarket.securityservice.exception.custom_exception;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
-
 import org.springframework.validation.BindingResult;
 
 import java.util.List;

@@ -1,16 +1,12 @@
 package com.bmarket.securityservice.filter;
 
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.CLIENT_ID;
 
 
 @Slf4j
