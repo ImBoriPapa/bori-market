@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.bmarket.frmservice.utils.Patterns.SEARCH_TRADE_PATTERN;
+import static com.bmarket.frmservice.utils.AccessUrl.TRADE_URL;
 
 @Service
 @Transactional
@@ -60,7 +60,7 @@ public class TradeImageService {
         List<String> list = save.getImages()
                 .stream()
                 .map(UploadFile::getStoredImageName)
-                .map(m -> SEARCH_TRADE_PATTERN + m)
+                .map(m -> TRADE_URL + m)
                 .collect(Collectors.toList());
         return list;
     }

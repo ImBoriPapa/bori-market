@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import static com.bmarket.frmservice.utils.Patterns.*;
+import static com.bmarket.frmservice.utils.AccessUrl.*;
 
 @Service
 @Slf4j
@@ -39,7 +39,7 @@ public class ProfileImageServiceImpl {
         return ResponseProfile.builder()
                 .success(true)
                 .imageId(save.getId())
-                .imagePath(SEARCH_DEFAULT_PATTERN+DEFAULT_IMAGE_NAME)
+                .imagePath(DEFAULT_PROFILE_URL +DEFAULT_IMAGE_NAME)
                 .build();
     }
 
@@ -67,7 +67,7 @@ public class ProfileImageServiceImpl {
         return ResponseProfile.builder()
                 .success(true)
                 .imageId(updatedProfileImage.getId())
-                .imagePath(SEARCH_PROFILE_PATTERN + updatedProfileImage.getStoredImageName())
+                .imagePath(PROFILE_URL + updatedProfileImage.getStoredImageName())
                 .build();
     }
 
@@ -108,7 +108,7 @@ public class ProfileImageServiceImpl {
         return ResponseProfile.builder()
                 .success(true)
                 .imageId(profileImage.getId())
-                .imagePath(SEARCH_DEFAULT_PATTERN + DEFAULT_IMAGE_NAME)
+                .imagePath(DEFAULT_PROFILE_URL + DEFAULT_IMAGE_NAME)
                 .build();
     }
 

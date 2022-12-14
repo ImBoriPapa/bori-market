@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import static com.bmarket.frmservice.utils.Patterns.*;
+import static com.bmarket.frmservice.utils.AccessUrl.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -118,7 +118,7 @@ class ProfileImageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("success").value("true"))
                 .andExpect(jsonPath("imageId").value(save.getId()))
-                .andExpect(jsonPath("imagePath").value(SEARCH_DEFAULT_PATTERN+DEFAULT_IMAGE_NAME))
+                .andExpect(jsonPath("imagePath").value(DEFAULT_PROFILE_URL +DEFAULT_IMAGE_NAME))
                 .andDo(print());
 
     }

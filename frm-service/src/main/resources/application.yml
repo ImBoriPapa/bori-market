@@ -7,6 +7,11 @@ resource-path:
   location-path: file:///Users/leechoongsub/desktop/msa-project/frm/
   profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/
   trade-image-path: /Users/leechoongsub/desktop/msa-project/frm/trade-images/
+resource-access:
+  profile: http://localhost:8095/file/profile-images/
+  trade: http://localhost:8095/file/trade-images/
+  default-profile: http://localhost:8095/file/default/
+
 
 spring:
   servlet:
@@ -34,6 +39,10 @@ resource-path:
   location-path: file:///Users/leechoongsub/desktop/msa-project/frm/
   profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/
   trade-image-path: /Users/leechoongsub/desktop/msa-project/frm/trade-images/
+resource-access:
+  profile: http://localhost:8095/file/profile-images/
+  trade: http://localhost:8095/file/trade-images/
+  default-profile: http://localhost:8095/file/default/
 
 spring:
   servlet:
@@ -61,6 +70,10 @@ resource-path:
   location-path: file:///Users/leechoongsub/desktop/msa-project/frm/
   profile-image-path: /Users/leechoongsub/desktop/msa-project/frm/profile-images/
   trade-image-path: /Users/leechoongsub/desktop/msa-project/frm/trade-images/
+resource-access:
+  profile: http://localhost:8095/file/profile-images/
+  trade: http://localhost:8095/file/trade-images/
+  default-profile: http://localhost:8095/file/default/
 
 spring:
   servlet:
