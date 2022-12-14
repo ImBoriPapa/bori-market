@@ -18,9 +18,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
-import static com.bmarket.frmservice.utils.Patterns.*;
+import static com.bmarket.frmservice.utils.AccessUrl.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -74,7 +73,7 @@ class ProfileImageServiceImplTest {
         ResponseProfile responseProfile = profileImageServiceImpl.updateProfileImage(save.getId(), image);
         //then
         assertThat(responseProfile.isSuccess()).isTrue();
-        assertThat(responseProfile.getImagePath()).isNotEqualTo(SEARCH_PROFILE_PATTERN + DEFAULT_IMAGE_NAME);
+        assertThat(responseProfile.getImagePath()).isNotEqualTo(PROFILE_URL + DEFAULT_IMAGE_NAME);
     }
 
     @Test
@@ -92,7 +91,7 @@ class ProfileImageServiceImplTest {
         //then
         assertThat(responseProfile.isSuccess()).isTrue();
         assertThat(responseProfile.getImageId()).isEqualTo(save.getId());
-        assertThat(responseProfile.getImagePath()).isEqualTo(SEARCH_DEFAULT_PATTERN + DEFAULT_IMAGE_NAME);
+        assertThat(responseProfile.getImagePath()).isEqualTo(DEFAULT_PROFILE_URL + DEFAULT_IMAGE_NAME);
     }
 
     @Test

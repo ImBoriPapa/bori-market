@@ -1,4 +1,4 @@
-package com.bmarket.frmservice.domain.profile.controller;
+package com.bmarket.frmservice.controller.profile;
 
 import com.bmarket.frmservice.domain.profile.dto.ResponseProfile;
 import com.bmarket.frmservice.domain.profile.service.ProfileImageServiceImpl;
