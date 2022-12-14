@@ -89,11 +89,3 @@ project(':discovery-service') {
     dependencies {
     }
 }
-project(':account-service') {
-    // 공통 코드
-    bootJar { enabled = true }
-    jar { enabled = false }
-
-    dependencies {
-    }
-}
