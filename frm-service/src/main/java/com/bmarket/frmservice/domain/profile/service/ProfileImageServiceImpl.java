@@ -39,7 +39,7 @@ public class ProfileImageServiceImpl {
         return ResponseProfile.builder()
                 .success(true)
                 .imageId(save.getId())
-                .imagePath(DEFAULT_PROFILE_URL +DEFAULT_IMAGE_NAME)
+                .imagePath(DEFAULT_PROFILE_URL+DEFAULT_IMAGE_NAME)
                 .build();
     }
 
