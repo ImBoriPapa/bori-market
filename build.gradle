@@ -80,3 +80,12 @@ project(':trade-service') {
     dependencies {
     }
 }
+
+project(':discovery-service') {
+    // 공통 코드
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+    }
+}
