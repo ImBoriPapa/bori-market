@@ -42,17 +42,17 @@ public class JwtUtils implements InitializingBean {
 
     /**
      * 토큰 생성
-     * @param accountId
+     * @param memberId
      * setSubject : 정보 저장
      * setIssuedAt() : 토큰 발행 시간 정보
      * signWith() : 암호화
      */
-    public String generateAccessToken(Long accountId) {
+    public String generateAccessToken(String memberId) {
         log.info("[엑세스 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALIDATION_MS);
         return Jwts.builder()
-                .setSubject(String.valueOf(accountId))
+                .setSubject(String.valueOf(memberId))
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key, SignatureAlgorithm.HS512)
@@ -60,12 +60,12 @@ public class JwtUtils implements InitializingBean {
     }
 
     //리프레시 토큰 생성
-    public String generateRefreshToken(Long accountId) {
+    public String generateRefreshToken(String memberId) {
         log.info("[리프레쉬 토큰생성]");
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_VALIDATION_MS);
         return Jwts.builder()
-                .setSubject(String.valueOf(accountId))
+                .setSubject(String.valueOf(memberId))
                 .setIssuedAt(now)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
@@ -73,9 +73,9 @@ public class JwtUtils implements InitializingBean {
     }
 
     // 토큰에서 회원 정보 추출
-    public Long getUserId(String token) {
-        String subject = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
-        return Long.valueOf(subject);
+    public String getMemberId(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+
     }
 
 

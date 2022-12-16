@@ -1,0 +1,15 @@
+POST http://localhost:8000/security-service/login
+Content-Type: application/json
+
+{
+  "email":"email@email.com",
+  "password":"!@test1234"
+}
+
+###
+GET http://localhost:8000/security-service/hello
+Authorization: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2QxZi1kNDBmLTNkYTMtYWFkOC1kOTNkOTdkMzllOTYiLCJpYXQiOjE2NzExODExNTEsImV4cCI6MTY3MTE4MTc1MX0.12GlYOoYwzU8RQ-BlAjhpVcda5jymufqeHRLcXL0Fyw-y9dArkZ04YQR47fmkOU3UqQygySrQQk7amWazqy4Gw
+Refresh: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2QxZi1kNDBmLTNkYTMtYWFkOC1kOTNkOTdkMzllOTYiLCJpYXQiOjE2NzExODExNTEsImV4cCI6MTY3MTE4Mjk1MX0.Hks3JjOlTLVkJwrszCUsd9RLweCCxmiHweGczcSCnJp3TjXAdsQ6EG1g3D0nMlMgh4D3Gt2pncHqi5AV_iDLvQ
+
+
+Content-Type: application/json

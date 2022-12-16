@@ -1,9 +1,12 @@
 server:
   port: 8000
+
 eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
 
@@ -20,8 +23,41 @@ spring:
             postLogger: true
       routes:
         - id: security-service
-          uri: http://localhost:8080/
+          uri: lb://SECURITY-SERVICE
           predicates:
-            - Path=/security-service/**
+            - Path=/security-service/login
+            - Method=POST
           filters:
             - CustomFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/security-service/(?<segment>.*),/$\{segment}
+        - id: security-service
+          uri: lb://SECURITY-SERVICE
+          predicates:
+            - Path=/security-service/account
+            - Method=POST
+          filters:
+            - CustomFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/security-service/(?<segment>.*),/$\{segment}
+        - id: security-service
+          uri: lb://SECURITY-SERVICE
+          predicates:
+            - Path=/security-service/refresh/*
+            - Method=GET
+          filters:
+            - CustomFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/security-service/(?<segment>.*),/$\{segment}
+        - id: security-service
+          uri: lb://SECURITY-SERVICE
+          predicates:
+            - Path=/security-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/security-service/(?<segment>.*),/$\{segment}
+            - GateWayAuthorizationFilter
+
+custom-key:
+  secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits

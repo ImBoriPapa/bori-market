@@ -2,6 +2,9 @@ buildscript {
     ext {
         queryDslVersion = "5.0.0"
     }
+    ext {
+        set('springCloudVersion', "2021.0.5")
+    }
 }
 
 plugins {
@@ -19,7 +22,14 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
