@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.exception.validator;
 
-import com.bmarket.securityservice.domain.account.controller.RequestAccountForm;
-import com.bmarket.securityservice.domain.account.repository.AccountRepository;
+import com.bmarket.securityservice.account.api.RequestAccountForm;
+import com.bmarket.securityservice.account.domain.repository.AccountRepository;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
 import com.bmarket.securityservice.utils.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +18,7 @@ public class AccountDuplicateValidator {
     @Transactional(readOnly = true)
     public void validate(RequestAccountForm.CreateForm form) {
         log.info("[ACCOUNT FORM VALIDATOR 동작]");
-        if (accountRepository.existsByLoginId(form.getLoginId())) {
-            throw new FormValidationException(ResponseStatus.DUPLICATE_LOGIN_ID);
-        }
+
 
         if (accountRepository.existsByEmail(form.getEmail())) {
             throw new FormValidationException(ResponseStatus.DUPLICATE_EMAIL);

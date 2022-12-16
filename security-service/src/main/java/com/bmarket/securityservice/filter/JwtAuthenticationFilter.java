@@ -1,8 +1,8 @@
 package com.bmarket.securityservice.filter;
 
-import com.bmarket.securityservice.domain.security.service.JwtService;
-import com.bmarket.securityservice.domain.security.service.UserDetailServiceImpl;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
+import com.bmarket.securityservice.security.service.JwtService;
+import com.bmarket.securityservice.security.service.UserDetailServiceImpl;
 import com.bmarket.securityservice.utils.jwt.JwtCode;
 import com.bmarket.securityservice.utils.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -96,7 +96,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void isAccessSuccessToken(String token, JwtCode jwtCode) {
         if (jwtCode == JwtCode.ACCESS) {
             log.info("[ACCESS TOKEN 인증이 성공했습니다.]");
-            setAuthentication(token);
+        setAuthentication(token);
         }
     }
 
@@ -149,13 +149,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private void refreshIsAccess(HttpServletResponse response, HttpServletRequest request, String token, JwtCode jwtCode) {
         if (jwtCode == JwtCode.ACCESS) {
             log.info("리프레쉬 토큰 인증상태는 ACCESS 입니다.");
-            Long accountId = jwtUtils.getUserId(token);
+            String memberId = jwtUtils.getMemberId(token);
 
-            String generateToken = jwtUtils.generateAccessToken(accountId);
+            String generateToken = jwtUtils.generateAccessToken(memberId);
             log.info("ACCESS 토큰 재발급이 성공하였습니다.");
 
-            if (refreshTokenIsMatchedWithStored(response, token, accountId, generateToken)) {
-                setAuthentication(generateToken);
+            if (refreshTokenIsMatchedWithStored(response, token, memberId, generateToken)) {
+
             } else {
                 request.setAttribute(FILTER_STATUS.name(), REFRESH_TOKEN_IS_DENIED);
             }
@@ -165,9 +165,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * refresh token 을 데이터베이스에 저장값과 확인후 일치하지 않으면 InvalidTokenException
      */
-    private boolean refreshTokenIsMatchedWithStored(HttpServletResponse response, String token, Long accountId, String generateToken) {
+    private boolean refreshTokenIsMatchedWithStored(HttpServletResponse response, String token, String memberId, String generateToken) {
         try {
-            String reissueRefreshToken = jwtService.reissueRefreshToken(token, accountId);
+            String reissueRefreshToken = jwtService.reissueRefreshToken(token, memberId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
             response.setHeader(AUTHORIZATION_HEADER, JWT_HEADER_PREFIX + generateToken);
             response.setHeader(REFRESH_HEADER, JWT_HEADER_PREFIX + reissueRefreshToken);
@@ -185,11 +185,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * 인증 객체 저장
      */
     private void setAuthentication(String jwt) {
-        Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getUserId(jwt));
+        Authentication authentication = userDetailService.generateAuthentication(jwtUtils.getMemberId(jwt));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         log.info("[인증정보 저장]");
         log.info("SecurityContextHolder.getContext().getAuthentication()= {}", SecurityContextHolder.getContext().getAuthentication());
     }
+
+
 
 
 }

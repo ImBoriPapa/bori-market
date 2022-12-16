@@ -1,0 +1,64 @@
+### 계정 생성 (회원가입)
+POST http://localhost:8080/account
+Content-Type: application/json
+
+{
+  "name" : "홍길동",
+  "nickname" : "미스터홍",
+  "password" : "visitor1234!@",
+  "email" : "visitor@visitor.com",
+  "contact" : "01099990000",
+  "addressCode" : 1001,
+  "city" : "서울",
+  "district" : "서울구",
+  "town" : "서울동"
+}
+
+
+
+### 로그인
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "email" : "visitor@visitor.com",
+  "password": "visitor1234!@"
+}
+
+> {%
+client.global.set("access-token", response.headers.valueOf("Authorization"));
+client.global.set("refresh-token", response.headers.valueOf("Refresh"));
+
+ %}
+
+### 계정 정보 단건 조회
+GET http://localhost:8080/account/1
+Content-Type: application/json
+Authorization: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2NjZi1lZjAyLWRkMzMtYTcxMC0wMzIwNjdmYmUwZTQiLCJpYXQiOjE2NzExNDY4MDgsImV4cCI6MTY3MTE0NzQwOH0.ErL0tggQ3UczQKSBALMwyGpUvewkQu8rhqEAP4b8g5omDEXCXBld3Z-1IxpA97Qc49Gdz2UBMO6LXzWDXWk2mQ
+Refresh: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2NjZi1lZjAyLWRkMzMtYTcxMC0wMzIwNjdmYmUwZTQiLCJpYXQiOjE2NzExNDY4MDgsImV4cCI6MTY3MTE0ODYwOH0.HQA-tvRplNS2e9xcaJObTQ11OT8eOTZaFjD7QD5rzc73kho9QeUDisvL3pUXvD4YGBTxrNXi7n6-3JPgMKBhXQ
+
+### 계정 정보 리스트 조회
+GET http://localhost:8080/account
+Authorization: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2NjZi1lZjAyLWRkMzMtYTcxMC0wMzIwNjdmYmUwZTQiLCJpYXQiOjE2NzExNDY4MDgsImV4cCI6MTY3MTE0NzQwOH0.ErL0tggQ3UczQKSBALMwyGpUvewkQu8rhqEAP4b8g5omDEXCXBld3Z-1IxpA97Qc49Gdz2UBMO6LXzWDXWk2mQ
+Refresh: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2NjZi1lZjAyLWRkMzMtYTcxMC0wMzIwNjdmYmUwZTQiLCJpYXQiOjE2NzExNDY4MDgsImV4cCI6MTY3MTE0ODYwOH0.HQA-tvRplNS2e9xcaJObTQ11OT8eOTZaFjD7QD5rzc73kho9QeUDisvL3pUXvD4YGBTxrNXi7n6-3JPgMKBhXQ
+
+### 계정 비밀번호 변경
+PUT http://localhost:8080/account/1/password
+Content-Type: application/json
+Authorization:Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcwOTQ1MjIxLCJleHAiOjE2NzA5NDU4MjF9.CxxKKf8p6QwZ3oOw93pztuLOIjJi0L1IP000MHA_I2iqHhchfia2RWAxb2P8UQn7LJkcnoKhHdJT9CPp-UGDBw
+Refresh:Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcwOTQ1MjIxLCJleHAiOjE2NzA5NDcwMjF9.NoQK8whhCxgLKOjAf-492ccvnFyB0MnL3md07-4Dzr_EoV9nh-siw8SpuL1l2iHyfN-IE0A0GBieobFXz1DOCA
+
+{
+  "password" : "visitor1234!@",
+  "newPassword" : "!@newPassword1234"
+}
+
+### 계정 이메일 변경
+PUT http://localhost:8080/account/1/email
+Content-Type: application/json
+Authorization:Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcwMTM5OTQzLCJleHAiOjE2NzAxNDE3NDN9.LiHcJi6ImVMWSk-uhvDtm-nnYmc56ne672dDHICBbyJYhU5TRO6Rz4yjpdvCNKrnaLFZdhza76n53vsoyU_bwQ
+Refresh:Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjcwMTM5OTQzLCJleHAiOjE2NzA3NDQ3NDN9.P2muAhNzZ_26YuB87SDBsSKZ_D34Msj8mxDOsqsE_ua7d6DoN0XYf5dsScnqd3Eda2xWfIyZW9b1G04uhhddfA
+
+{
+  "email" : "newEmail@email.com"
+}

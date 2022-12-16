@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 0
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
@@ -7,6 +7,8 @@ custom-key:
   refresh-token-validation-life: 15
 
 spring:
+  application:
+    name: security-service
   servlet:
     multipart:
       max-file-size: 10MB
@@ -35,6 +37,14 @@ spring:
         type.descriptor.sql: trace
         SQL: DEBUG
 
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 
 internal:
   trade: http://localhost:8081/internal/trade
@@ -42,7 +52,7 @@ internal:
   frm-profile: http://localhost:8095/internal/frm/profile
 ---
 server:
-  port: 8080
+  port: 0
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
@@ -50,6 +60,8 @@ custom-key:
   refresh-token-validation-life: 1800
 
 spring:
+  application:
+    name: security-service
   servlet:
     multipart:
       max-file-size: 10MB
@@ -78,6 +90,14 @@ spring:
         type.descriptor.sql: trace
         SQL: DEBUG
 
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 
 internal:
   trade: http://localhost:8081/internal/trade
