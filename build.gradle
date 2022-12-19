@@ -98,3 +98,12 @@ project(':apigateway-service') {
     dependencies {
     }
 }
+
+project(':config-service') {
+    // 공통 코드
+    bootJar { enabled = true }
+    jar { enabled = false }
+
+    dependencies {
+    }
+}

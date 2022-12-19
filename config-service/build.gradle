@@ -1,8 +1,4 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.6'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-}
+
 
 group = 'com.bmarket'
 version = '0.0.1-SNAPSHOT'
@@ -21,6 +17,7 @@ repositories {
 ext {
 	set('springCloudVersion', "2021.0.5")
 }
+
 
 dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-config-server'
