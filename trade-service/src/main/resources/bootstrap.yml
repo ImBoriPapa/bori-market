@@ -1,0 +1,28 @@
+
+spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: bori-market-trade
+  profiles:
+    active: test
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,busrefresh
+---
+spring:
+  cloud:
+    config:
+      uri: http://127.0.0.1:8888
+      name: bori-market-trade
+  profiles:
+    active: prod
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,busrefresh
