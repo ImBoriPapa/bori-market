@@ -18,8 +18,10 @@ ext {
 }
 
 dependencies {
+	//rabbitMq
+	implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp'
 	//actuator
-	implementation('org.springframework.boot:spring-boot-actuator:2.7.4')
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	//Config Client
 	implementation("org.springframework.cloud:spring-cloud-starter-config")
 	implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")

@@ -1,0 +1,48 @@
+custom-key:
+  secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
+  token-validation-life: 10
+  refresh-token-validation-life: 15
+
+internal:
+  trade: http://is-secret/internal/trade
+  address: http://is-secret/internal/address
+  frm-profile: http://is-secret/internal/frm/profile
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: security-service
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: sa
+    password: 1234
+  h2:
+    console:
+      enabled: true
+      path: /h2/console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true # log
+        show_sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+  logging:
+    level:
+      org.hibernate.SQL:
+        type.descriptor.sql: trace
+        SQL: DEBUG
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

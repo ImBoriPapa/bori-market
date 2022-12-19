@@ -1,21 +1,28 @@
+
 spring:
   cloud:
     config:
       uri: http://127.0.0.1:8888
-      name: bori-market
+      name: bori-market-security
   profiles:
     active: test
-#  config:
-#    activate:
-#      on-profile: "test"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,busrefresh
 ---
 spring:
   cloud:
     config:
       uri: http://127.0.0.1:8888
-      name: bori-market
+      name: bori-market-security
   profiles:
     active: prod
-#  config:
-#    activate:
-#      on-profile: "prod"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,refresh,busrefresh
