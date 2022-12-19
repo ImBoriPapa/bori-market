@@ -29,6 +29,11 @@ dependencyManagement {
 }
 
 dependencies {
+    //actuator
+    implementation('org.springframework.boot:spring-boot-actuator:2.7.4')
+    //Config Client
+    implementation("org.springframework.cloud:spring-cloud-starter-config")
+    implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
     //h2
     implementation 'com.h2database:h2'
     //Eureka client

@@ -58,10 +58,6 @@ internal:
 server:
   port: 0
 
-custom-key:
-  secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
-  token-validation-life: 600
-  refresh-token-validation-life: 1800
 
 spring:
   application:
@@ -103,6 +99,12 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+
 internal:
   trade: http://localhost:8081/internal/trade
   address: http://localhost:8085/internal/address
@@ -110,11 +112,6 @@ internal:
 ---
 server:
   port: 8080
-
-custom-key:
-  secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
-  token-validation-life: 600
-  refresh-token-validation-life: 1800
 
 spring:
   servlet:
@@ -145,6 +142,11 @@ spring:
         type.descriptor.sql: trace
         SQL: DEBUG
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
 
 internal:
   trade: http://is-secret/internal/trade

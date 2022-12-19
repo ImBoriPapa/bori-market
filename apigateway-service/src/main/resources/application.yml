@@ -58,6 +58,20 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/security/(?<segment>.*),/$\{segment}
             - GateWayAuthorizationFilter
+        - id: security-service
+          uri: lb://SECURITY-SERVICE
+          predicates:
+            - Path=/security/actuator/**
+            - Method=GET,POST
+          filters:
+            - CustomFilter
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/security/(?<segment>.*),/$\{segment}
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health,beans,httptrace

@@ -32,6 +32,7 @@ public class SecurityConfig {
                 .and()
                 .userDetailsService(userDetailService)
                 .authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/account", "/login").permitAll()
                 .antMatchers("/refresh", "/refresh/**").permitAll()
                 .antMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico").permitAll()
