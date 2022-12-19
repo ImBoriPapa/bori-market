@@ -5,7 +5,7 @@ import com.bmarket.securityservice.exception.custom_exception.security_ex.Custom
 import com.bmarket.securityservice.exception.custom_exception.security_ex.DeniedTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.EmptyTokenException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.ExpiredTokenException;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,27 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
-import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
+import static com.bmarket.securityservice.security.constant.ResponseStatus.*;
 
 
 @RestController
 @Slf4j
 @RequestMapping("/exception")
 public class AuthenticationFailResponseController {
-    @GetMapping("/empty-both")
-    public ResponseEntity emptyAnyThing() {
-        ResponseForm.Error errorResponse = new ResponseForm.Error(new CustomAccessDeniedException(MUST_NEED_TOKEN_AND_ID));
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-    }
-
-    @GetMapping("/empty-clientId")
-    public ResponseEntity emptyClientId() {
-
-        ResponseForm.Error errorResponse = new ResponseForm.Error(new CustomAccessDeniedException(CLIENT_ID_IS_EMPTY));
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
-    }
-
-
 
     @GetMapping("/empty-token")
     public ResponseEntity emptyTokenException(@RequestParam(defaultValue = "token") String token) {

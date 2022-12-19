@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.utils.status;
+package com.bmarket.securityservice.security.constant;
 
 import lombok.Getter;
 

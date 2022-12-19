@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.admin;
 
 
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

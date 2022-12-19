@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import static com.bmarket.securityservice.utils.regex.Regex.PASSWORD;
+import static com.bmarket.securityservice.security.constant.Regex.PASSWORD;
 
 
 @Getter

@@ -3,8 +3,8 @@ package com.bmarket.securityservice.filter;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
 import com.bmarket.securityservice.security.service.JwtService;
 import com.bmarket.securityservice.security.service.UserDetailServiceImpl;
-import com.bmarket.securityservice.utils.jwt.JwtCode;
-import com.bmarket.securityservice.utils.jwt.JwtUtils;
+import com.bmarket.securityservice.security.constant.JwtCode;
+import com.bmarket.securityservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.*;
-import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.*;
+import static com.bmarket.securityservice.security.constant.SecurityHeader.*;
+import static com.bmarket.securityservice.security.constant.AuthenticationFilterStatus.*;
 
 
 @Component
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("[JwtAuthenticationFilter]");
-
+        log.info("[RequestURI= {}]",request.getRequestURI());
         accessTokenHandle(request, response);
 
         filterChain.doFilter(request, response);
@@ -167,7 +167,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private boolean refreshTokenIsMatchedWithStored(HttpServletResponse response, String token, String memberId, String generateToken) {
         try {
-            String reissueRefreshToken = jwtService.reissueRefreshToken(token, memberId);
+            String reissueRefreshToken = jwtService.reissueToken(token, memberId);
             log.info("REFRESH 토큰 재발급이 성공하였습니다.");
             response.setHeader(AUTHORIZATION_HEADER, JWT_HEADER_PREFIX + generateToken);
             response.setHeader(REFRESH_HEADER, JWT_HEADER_PREFIX + reissueRefreshToken);

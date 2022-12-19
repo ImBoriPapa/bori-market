@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -33,17 +32,10 @@ public class SecurityConfig {
                 .and()
                 .userDetailsService(userDetailService)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/account").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/refresh/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/account", "/login").permitAll()
+                .antMatchers("/refresh", "/refresh/**").permitAll()
+                .antMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico").permitAll()
                 .anyRequest().authenticated();
         return security.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.debug(false)
-                .ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico");
     }
 }

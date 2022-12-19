@@ -2,7 +2,7 @@ package com.bmarket.securityservice.exception.exception_controller;
 
 
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

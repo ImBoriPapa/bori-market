@@ -1,10 +1,9 @@
 package com.bmarket.apigatewayservice.exception;
 
+import com.bmarket.apigatewayservice.exception.cutom_exception.ResponseStatus;
+import com.bmarket.apigatewayservice.exception.cutom_exception.TokenException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
@@ -27,12 +26,14 @@ public class AuthorizationExceptionHandler implements ErrorWebExceptionHandler {
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
 
-        if (ex instanceof Exception) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+        if (ex instanceof TokenException) {
+            return write(exchange.getResponse(), new ErrorResponse(((TokenException) ex).getStatus()));
         }
 
-        return write(exchange.getResponse(), new ErrorResponse(ex.getMessage()));
+        return write(exchange.getResponse(), new ErrorResponse(ResponseStatus.NOT_FOUND_REASON));
     }
 
     public <T> Mono<Void> write(ServerHttpResponse httpResponse, T object) {
@@ -51,7 +52,18 @@ public class AuthorizationExceptionHandler implements ErrorWebExceptionHandler {
     @NoArgsConstructor
     @AllArgsConstructor
     @Getter
+    @Builder
     public static class ErrorResponse {
+        private String status;
+        private String type;
+        private int code;
         private String message;
+
+        public ErrorResponse(ResponseStatus status) {
+            this.status = status.name();
+            this.type = status.getClass().getName();
+            this.code = status.getCode();
+            this.message = status.getMessage();
+        }
     }
 }

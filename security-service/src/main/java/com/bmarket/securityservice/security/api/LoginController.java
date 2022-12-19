@@ -2,12 +2,15 @@ package com.bmarket.securityservice.security.api;
 
 import com.bmarket.securityservice.account.api.AccountController;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.FormValidationException;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.TokenException;
 import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
+import com.bmarket.securityservice.security.api.reponseForm.ReIssueResultForm;
 import com.bmarket.securityservice.security.api.requestForm.RequestLoginForm;
-import com.bmarket.securityservice.security.api.requestResultForm.ResponseRefresh;
-import com.bmarket.securityservice.security.api.requestResultForm.LoginResultForm;
+import com.bmarket.securityservice.security.api.dto.ReIssueResult;
+import com.bmarket.securityservice.security.api.reponseForm.LoginResultForm;
 import com.bmarket.securityservice.security.service.JwtService;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.utils.JwtUtils;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
@@ -18,15 +21,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.AUTHORIZATION_HEADER;
-import static com.bmarket.securityservice.utils.jwt.SecurityHeader.REFRESH_HEADER;
+import javax.servlet.http.HttpServletRequest;
+
+import static com.bmarket.securityservice.security.constant.SecurityHeader.AUTHORIZATION_HEADER;
+import static com.bmarket.securityservice.security.constant.SecurityHeader.REFRESH_HEADER;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
 public class LoginController {
     private final JwtService jwtService;
-
+    private final JwtUtils jwtUtils;
 
     @PostMapping("/login")
     public ResponseEntity<ResponseForm.Of> login(@Validated @RequestBody RequestLoginForm form, BindingResult bindingResult) {
@@ -42,10 +47,9 @@ public class LoginController {
         httpHeaders.set(AUTHORIZATION_HEADER, result.getAccessToken());
         httpHeaders.set(REFRESH_HEADER, result.getRefreshToken());
 
-        EntityModel<LoginResultForm> resultOf = EntityModel.of(new LoginResultForm(result.getAccountId(), result.getLoginAt()));
+        EntityModel<LoginResultForm> resultOf = EntityModel.of(new LoginResultForm(result.getMemberId(), result.getLoginAt()));
 
-        resultOf.add(WebMvcLinkBuilder.linkTo(AccountController.class).slash(result.getAccountId()).withRel("GET : 계정 정보 조회"));
-
+        resultOf.add(WebMvcLinkBuilder.linkTo(AccountController.class).slash(result.getMemberId()).withRel("GET : 계정 정보 조회"));
 
         return ResponseEntity
                 .ok()
@@ -53,13 +57,22 @@ public class LoginController {
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, resultOf));
     }
 
-    @GetMapping("/refresh/{token}")
-    public ResponseEntity refreshCheck(@PathVariable String token) {
+    @GetMapping("/refresh/{memberId}")
+    public ResponseEntity reIssueTokenRequest(@PathVariable String memberId, HttpServletRequest request) {
+        log.info("[REISSUE TOKEN REQUEST]");
 
-        log.info("token={}", token);
-//        CheckRefreshResult checkRefreshResult = jwtService.reissueRefreshToken(token);
-        ResponseRefresh responseRefresh1 = new ResponseRefresh("dadsdsa","dsadsdas");
-        return ResponseEntity.ok().body(responseRefresh1);
+        String refreshToken = jwtUtils.resolveToken(request, REFRESH_HEADER)
+                .orElseThrow(() -> new TokenException(ResponseStatus.REFRESH_TOKEN_IS_EMPTY));
+
+        log.info("[MEMBER ID= {}]", memberId);
+        log.info("[REFRESH TOKEN = {}]", refreshToken);
+
+        ReIssueResult result = jwtService.reissueTokenProcessing(memberId, refreshToken);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(AUTHORIZATION_HEADER, result.getAccessToken());
+        headers.set(REFRESH_HEADER, result.getRefreshToken());
+
+        return ResponseEntity.ok().headers(headers).body(new ReIssueResultForm(result.getMemberId(), result.getAccessTokenExpiredAt()));
     }
-
 }

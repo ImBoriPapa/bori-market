@@ -29,6 +29,9 @@ dependencyManagement {
 }
 
 dependencies {
+    //h2
+    implementation 'com.h2database:h2'
+    //Eureka client
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"

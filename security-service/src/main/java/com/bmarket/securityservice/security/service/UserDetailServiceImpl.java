@@ -3,7 +3,7 @@ package com.bmarket.securityservice.security.service;
 import com.bmarket.securityservice.account.domain.entity.Authority;
 import com.bmarket.securityservice.account.domain.repository.AccountQueryRepository;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.security.api.requestResultForm;
+package com.bmarket.securityservice.security.api.reponseForm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class LoginResultForm {
-    private Long accountId;
+    private String memberId;
     private LocalDateTime loginAt;
 }

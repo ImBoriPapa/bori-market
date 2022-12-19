@@ -2,14 +2,12 @@ package com.bmarket.securityservice.security.service;
 
 import com.bmarket.securityservice.account.domain.entity.Account;
 import com.bmarket.securityservice.account.domain.repository.AccountRepository;
+import com.bmarket.securityservice.exception.custom_exception.security_ex.*;
 import com.bmarket.securityservice.security.api.LoginResult;
-import com.bmarket.securityservice.security.api.requestResultForm.ResponseRefresh;
+import com.bmarket.securityservice.security.api.dto.ReIssueResult;
 import com.bmarket.securityservice.security.entity.RefreshToken;
-import com.bmarket.securityservice.exception.custom_exception.security_ex.FailLoginException;
-import com.bmarket.securityservice.exception.custom_exception.security_ex.InvalidTokenException;
-import com.bmarket.securityservice.exception.custom_exception.security_ex.IsLogoutAccountException;
-import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
-import com.bmarket.securityservice.utils.jwt.JwtUtils;
+import com.bmarket.securityservice.security.constant.JwtCode;
+import com.bmarket.securityservice.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static com.bmarket.securityservice.security.enums.JwtValue.BEARER;
-import static com.bmarket.securityservice.utils.status.ResponseStatus.*;
+import static com.bmarket.securityservice.security.constant.JwtValue.BEARER;
+import static com.bmarket.securityservice.security.constant.ResponseStatus.*;
 
 @Service
 @Transactional
@@ -46,12 +44,18 @@ public class JwtService {
         String accessToken = jwtUtils.generateAccessToken(account.getMemberId());
         String refreshToken = issuedRefreshToken(account);
 
-        String bearerToken = BEARER + accessToken;
+        String bearerAccessToken = BEARER + accessToken;
         String bearerRefreshToken = BEARER + refreshToken;
 
         Date accessTokenExpired = jwtUtils.getExpired(accessToken);
 
-        return new LoginResult(account.getId(), bearerToken, accessTokenExpired, bearerRefreshToken, account.getLastLoginTime());
+        return LoginResult.builder()
+                .memberId(account.getMemberId())
+                .accessToken(bearerAccessToken)
+                .refreshToken(bearerRefreshToken)
+                .accessTokenExpiredAt(accessTokenExpired)
+                .loginAt(account.getLastLoginTime())
+                .build();
     }
 
     /**
@@ -64,15 +68,6 @@ public class JwtService {
                 .logout();
     }
 
-    /**
-     * 로그인 확인
-     */
-    @Transactional(readOnly = true)
-    public boolean loginCheck(Long accountId) {
-        return accountRepository.findById(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("d"))
-                .isLogin();
-    }
 
     /**
      * 리프레시 토큰 생성
@@ -91,7 +86,7 @@ public class JwtService {
      * 3.getIfRefreshEqStored(): 저장된 리프레시 토큰과 비교해서 토큰이 일치한다면 새로운 토큰 발급 일치하지 않는다면 InvalidTokenException
      * 정상 토큰이 검증 되면 새로운 리프레시 토큰 반환
      */
-    public String reissueRefreshToken(String token, String memberId) {
+    public String reissueToken(String token, String memberId) {
         log.info("[reissueRefreshToken]");
 
         Account account = getAccountByIdInToken(memberId);
@@ -101,20 +96,67 @@ public class JwtService {
         return getIfRefreshEqStored(token, account);
     }
 
-    public ResponseRefresh reissueRefreshToken(String token) {
-        log.info("[reissueRefreshToken]");
-        String memberId = jwtUtils.getMemberId(token);
+    /**
+     * API Gate Way 에서 RefreshToken 검증 요청시
+     */
+    public ReIssueResult reissueTokenProcessing(String memberId, String refreshToken) {
+        log.info("[reissueTokenProcessing]");
 
-        Account account = getAccountByIdInToken(memberId);
-        if(!account.getRefreshToken().getToken().equals(token)){
-            throw new IllegalArgumentException("잘못된 토큰입니다.");
-        }
+        Account account = accountRepository
+                .findByMemberId(memberId)
+                .orElseThrow(() -> new NotFoundAccountException(NOT_FOUND_ACCOUNT));
 
-        String accessToken = jwtUtils.generateAccessToken(memberId);
-        String refreshToken = jwtUtils.generateRefreshToken(memberId);
+        isMatchWithStoredToken(memberId, refreshToken, account.getRefreshToken().getToken());
+
+        JwtCode jwtCode = jwtUtils.validateToken(refreshToken);
+
+        validateRefreshToken(memberId, refreshToken, jwtCode);
+
+        String generatedAccessToken = jwtUtils.generateAccessToken(memberId);
+
+        String generatedRefreshToken = jwtUtils.generateRefreshToken(memberId);
+
         account.getRefreshToken().changeRefreshToken(refreshToken);
 
-        return new ResponseRefresh(accessToken, refreshToken);
+        String bearerAccessToken = BEARER + generatedAccessToken;
+        String bearerRefreshToken = BEARER + generatedRefreshToken;
+
+        Date accessTokenExpired = jwtUtils.getExpired(generatedAccessToken);
+
+        return new ReIssueResult(account.getMemberId(), bearerAccessToken, bearerRefreshToken, accessTokenExpired);
+    }
+
+    /**
+     * Refresh 토큰 검증
+     */
+    private void validateRefreshToken(String memberId, String refreshToken, JwtCode jwtCode) {
+
+        if (jwtCode == JwtCode.DENIED) {
+            log.info("[REFRESH TOKEN VALIDATION IS DENIED: MemberID={}.REFRESH TOKEN={}]", memberId, refreshToken);
+            throw new TokenException(REFRESH_TOKEN_IS_DENIED);
+        } else if (jwtCode == JwtCode.EXPIRED) {
+            log.info("[REFRESH TOKEN VALIDATION IS EXPIRED: MemberID={}.REFRESH TOKEN={}]", memberId, refreshToken);
+            throw new TokenException(REFRESH_TOKEN_IS_EXPIRED);
+        } else if (jwtCode == JwtCode.ACCESS) {
+            log.info("[REFRESH TOKEN VALIDATION IS ACCESS: MemberID={}.REFRESH TOKEN={}]", memberId, refreshToken);
+        }
+    }
+
+    /**
+     * 데이터베이스에 저장된 토큰과 비교
+     */
+    private void isMatchWithStoredToken(String memberId, String refreshToken, String storedToken) {
+        if (storedToken == null) {
+            log.info("[THIS ACCOUNT IS LOGOUT: MemberID={}.REFRESH TOKEN={}]", memberId, refreshToken);
+            throw new FailLoginException(THIS_ACCOUNT_IS_LOGOUT);
+        }
+
+        if (!refreshToken.equals(storedToken)) {
+            log.info("[THIS REFRESH TOKEN IS NOT MATCH STORED: MemberID={}.REFRESH TOKEN={}]", memberId, refreshToken);
+            log.info("[refresh Token= {}]", refreshToken);
+            log.info("[storedToken TOKEN={}]", storedToken);
+            throw new FailLoginException(REFRESH_TOKEN_NOT_MATCH_STORED);
+        }
     }
 
 

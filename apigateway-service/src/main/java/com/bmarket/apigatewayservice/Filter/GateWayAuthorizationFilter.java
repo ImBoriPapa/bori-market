@@ -1,7 +1,8 @@
 package com.bmarket.apigatewayservice.Filter;
 
 
-import com.bmarket.apigatewayservice.ResponseRefresh;
+import com.bmarket.apigatewayservice.exception.cutom_exception.ResponseStatus;
+import com.bmarket.apigatewayservice.exception.cutom_exception.TokenException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -11,19 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 
 @Component
 @Slf4j
 public class GateWayAuthorizationFilter extends AbstractGatewayFilterFactory<GateWayAuthorizationFilter.Config> {
-
-
     public String secret;
 
     public GateWayAuthorizationFilter(@Value("${custom-key.secret-key}") String secret) {
@@ -35,24 +31,11 @@ public class GateWayAuthorizationFilter extends AbstractGatewayFilterFactory<Gat
     public GatewayFilter apply(Config config) {
         return (((exchange, chain) -> {
 
-            ServerHttpRequest request = exchange.getRequest();
-
-            if (!request.getHeaders().containsKey(Headers.AUTHORIZATION_HEADER)) {
-                log.info("[CAN NOT FOUND ACCESS TOKEN]");
-                throw new IllegalArgumentException("AccessToken 을 확인할 수 없습니다.");
-            }
-
-            String accessToken = resolveToken(request, HttpHeaders.AUTHORIZATION);
-
-            reIssueRefresh(accessToken)
-                    .subscribe(data -> log.info("Access token ={}, Refresh Token= {}", data.getAccessToken(), data.getRefreshToken()));
-
-            reIssueRefresh(accessToken)
-                    .subscribe(data->Mono.error(new IllegalArgumentException(data.getAccessToken())));
+            String accessToken = resolveToken(exchange.getRequest(), HttpHeaders.AUTHORIZATION);
 
             if (!StringUtils.hasLength(accessToken)) {
-                log.info("[EMPTY ACCESS TOKEN]");
-                throw new IllegalArgumentException("AccessToken 이 필요한 접근입니다.");
+                log.info("[CAN NOT FOUND ACCESS TOKEN]");
+                throw new TokenException(ResponseStatus.EMPTY_ACCESS_TOKEN);
             }
 
             if (validateToken(accessToken) == JwtCode.ACCESS) {
@@ -61,53 +44,25 @@ public class GateWayAuthorizationFilter extends AbstractGatewayFilterFactory<Gat
 
             if (validateToken(accessToken) == JwtCode.DENIED) {
                 log.info("[ACCESS TOKEN IS DENIED]");
-                throw new IllegalArgumentException("잘못된 토큰입니다.");
+                throw new TokenException(ResponseStatus.DENIED_ACCESS_TOKEN);
             }
 
             if (validateToken(accessToken) == JwtCode.EXPIRED) {
                 log.info("[ACCESS TOKEN IS EXPIRED]");
-
-                if (!request.getHeaders().containsKey(Headers.REFRESH_HEADER)) {
-                    log.info("[REFRESH TOKEN IS EXPIRED]");
-                    throw new IllegalArgumentException("[REFRESH TOKEN IS EMPTY]");
-                }
-
-                String refreshToken = resolveToken(request, Headers.REFRESH_HEADER);
-
-                if (validateToken(refreshToken) == JwtCode.ACCESS) {
-                    log.info("REFRESH TOKEN IS OK");
-                }
-
-                if (validateToken(refreshToken) == JwtCode.DENIED) {
-                    log.info("REFRESH TOKEN IS DENIED");
-                    throw new IllegalArgumentException("[REFRESH TOKEN IS DENIED]");
-                }
-
-                if (validateToken(refreshToken) == JwtCode.EXPIRED) {
-                    log.info("REFRESH TOKEN IS EXPIRED");
-
-                }
-
-
+                throw new TokenException(ResponseStatus.EXPIRED_ACCESS_TOKEN);
             }
 
             return chain.filter(exchange);
         }));
     }
 
-    public Mono<ResponseRefresh> reIssueRefresh(String token) {
-        String uri = "http://localhost:8000/security-service/refresh";
-        log.info("[IS CALL?]");
-        return WebClient.builder().baseUrl(uri)
-                .build()
-                .get()
-                .uri("/{token}", token)
-                .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, status -> Mono.error(new IllegalArgumentException("리프레시 토큰에 문제가 있습니다.")))
-                .bodyToMono(ResponseRefresh.class);
-    }
 
     private static String resolveToken(ServerHttpRequest request, String header) {
+
+        if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+            throw new TokenException(ResponseStatus.NOT_FOUND_ACCESS_TOKEN);
+        }
+
         String authorization = request.getHeaders().get(header).get(0);
         return authorization.replace("Bearer-", "");
     }
@@ -128,12 +83,6 @@ public class GateWayAuthorizationFilter extends AbstractGatewayFilterFactory<Gat
     public enum JwtCode {
         ACCESS, EXPIRED, DENIED;
     }
-
-    public static class Headers {
-        public static final String AUTHORIZATION_HEADER = "Authorization";
-        public static final String REFRESH_HEADER = "Refresh";
-    }
-
 
     public static class Config {
 

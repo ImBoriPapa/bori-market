@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.utils.status;
+package com.bmarket.securityservice.security.constant;
 
 import lombok.Getter;
 
@@ -31,13 +31,12 @@ public enum ResponseStatus {
 
     ACCESS_TOKEN_IS_EMPTY(4017, "인증토큰을 확인할 수 없습니다.."),
     ACCESS_TOKEN_IS_DENIED(4018, "잘못된 인증토큰입니다."),
-    REFRESH_TOKEN_IS_EMPTY(4019, "리프레쉬 인증토큰을 확인할 수 업습니다."),
+    REFRESH_TOKEN_IS_EMPTY(4019, "리프레쉬 인증토큰을 확인할 수 없습니다."),
     REFRESH_TOKEN_IS_EXPIRED(4020, "리프레쉬 인증토큰이 만료되었습니다."),
-    REFRESH_TOKEN_IS_DENIED(4021, "잘못된 리프레쉬 인증토큰 입니다."),
+    REFRESH_TOKEN_IS_DENIED(4021, "잘못된 리프레시 인증토큰 입니다."),
 
-    CLIENT_ID_IS_EMPTY(4022,"클라이언 아이디를 확인할 수 없습니다."),
-    CLIENT_ID_IS_INVALID(4023,"잘못된 클라이언트 아이디입니다."),
-    MUST_NEED_TOKEN_AND_ID(4024,"요청에 토큰과 클라이언트 아이디를 찾을수 없습니다."),
+    REFRESH_TOKEN_NOT_MATCH_STORED(4022, "저장된 리프레시 토큰과 일치하지 않는 토큰입니다."),
+
     //내부 api
     FRM_WRONG_REQUEST(5010,"FRM 서비스로의 요청이 잘못되었습니다."),
     FRM_SERVER_PROBLEM(5011,"frm-service 에 문제가 있습니다."),

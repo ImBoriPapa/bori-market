@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 
-import static com.bmarket.securityservice.utils.regex.Regex.*;
+import static com.bmarket.securityservice.security.constant.Regex.*;
 
 
 @Getter

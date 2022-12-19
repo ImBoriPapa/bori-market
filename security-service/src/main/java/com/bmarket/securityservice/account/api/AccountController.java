@@ -12,7 +12,7 @@ import com.bmarket.securityservice.exception.exception_controller.ResponseForm;
 import com.bmarket.securityservice.exception.validator.AccountDuplicateValidator;
 import com.bmarket.securityservice.security.api.LoginController;
 import com.bmarket.securityservice.utils.LinkProvider;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

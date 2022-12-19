@@ -1,4 +1,4 @@
-POST http://localhost:8000/security-service/login
+POST http://localhost:8000/security/login
 Content-Type: application/json
 
 {
@@ -7,9 +7,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/security-service/hello
-Authorization: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2QxZi1kNDBmLTNkYTMtYWFkOC1kOTNkOTdkMzllOTYiLCJpYXQiOjE2NzExODExNTEsImV4cCI6MTY3MTE4MTc1MX0.12GlYOoYwzU8RQ-BlAjhpVcda5jymufqeHRLcXL0Fyw-y9dArkZ04YQR47fmkOU3UqQygySrQQk7amWazqy4Gw
-Refresh: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2QxZi1kNDBmLTNkYTMtYWFkOC1kOTNkOTdkMzllOTYiLCJpYXQiOjE2NzExODExNTEsImV4cCI6MTY3MTE4Mjk1MX0.Hks3JjOlTLVkJwrszCUsd9RLweCCxmiHweGczcSCnJp3TjXAdsQ6EG1g3D0nMlMgh4D3Gt2pncHqi5AV_iDLvQ
-
+GET http://localhost:8000/security/refresh/11
+Refresh: Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMWVkN2VlOS04YjJlLTRiNmUtODEzNS02ZDJiN2Q5NjJhOTUiLCJpYXQiOjE2NzEzNzc3NTcsImV4cCI6MTY3MTM3OTU1N30.eXM8JXnspDI1aSDnU77-7eDoJQnk3meoARvuQo_yYCVkSAsjexOA-GsaqSHPx3Oqx6SuPLCSniSfVhgsWIzW0w
 
 Content-Type: application/json

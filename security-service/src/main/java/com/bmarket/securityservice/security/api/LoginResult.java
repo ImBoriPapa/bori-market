@@ -11,17 +11,18 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class LoginResult {
-    private Long accountId;
+    private String memberId;
     private String accessToken;
-    private Date accessTokenExpiredAt;
     private String refreshToken;
+    private Date accessTokenExpiredAt;
     private LocalDateTime loginAt;
 
-    public LoginResult(Long accountId, String accessToken, Date accessTokenExpiredAt, String refreshToken, LocalDateTime loginAt) {
-        this.accountId = accountId;
+    public LoginResult(String memberId, String accessToken, String refreshToken, Date accessTokenExpiredAt, LocalDateTime loginAt) {
+        this.memberId = memberId;
         this.accessToken = accessToken;
-        this.accessTokenExpiredAt = accessTokenExpiredAt;
         this.refreshToken = refreshToken;
+        this.accessTokenExpiredAt = accessTokenExpiredAt;
         this.loginAt = loginAt;
     }
+
 }

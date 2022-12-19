@@ -8,7 +8,7 @@ import com.bmarket.securityservice.account.domain.repository.AccountRepository;
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.NotFoundAccountException;
 import com.bmarket.securityservice.exception.custom_exception.security_ex.PasswordNotCorrectException;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +33,7 @@ public class AccountCommandService {
     private final PasswordEncoder passwordEncoder;
 
     public Account signUpProcessing(RequestAccountForm.CreateForm form) {
-
+        log.info("[signUpProcessing]");
         Address address = Address.createAddress()
                 .addressCode(form.getAddressCode())
                 .city(form.getCity())
@@ -123,9 +123,8 @@ public class AccountCommandService {
      * @return
      */
     protected Account findAccount(Long accountId) {
-        Account account = accountRepository.findById(accountId)
+        return accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundAccountException(ResponseStatus.NOT_FOUND_ACCOUNT));
-        return account;
     }
 
     /**

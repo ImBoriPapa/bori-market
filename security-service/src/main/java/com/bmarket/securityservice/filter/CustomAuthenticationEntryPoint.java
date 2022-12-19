@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.filter;
 
 
-import com.bmarket.securityservice.utils.status.AuthenticationFilterStatus;
+import com.bmarket.securityservice.security.constant.AuthenticationFilterStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.bmarket.securityservice.utils.status.AuthenticationFilterStatus.*;
+import static com.bmarket.securityservice.security.constant.AuthenticationFilterStatus.*;
 
 
 /**

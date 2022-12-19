@@ -1,7 +1,7 @@
 package com.bmarket.securityservice.exception.custom_exception.security_ex;
 
 import com.bmarket.securityservice.exception.custom_exception.BasicException;
-import com.bmarket.securityservice.utils.status.ResponseStatus;
+import com.bmarket.securityservice.security.constant.ResponseStatus;
 import org.springframework.validation.BindingResult;
 
 public class DeniedTokenException extends BasicException {

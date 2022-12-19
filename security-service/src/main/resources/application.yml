@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 8080
 
 custom-key:
   secret-key: MySecreteKeyIsMySecreteKeyItIsMustBeGreaterThen512bits
@@ -15,27 +15,31 @@ spring:
       max-request-size: 10MB
   config:
     activate:
-      on-profile: local
+      on-profile: dev
 
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/bori-market-account-test
-    username: root
-    password: 0209
-
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test
+    username: sa
+    password: 1234
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true # log
         show_sql: true
     open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
   logging:
     level:
       org.hibernate.SQL:
         type.descriptor.sql: trace
         SQL: DEBUG
+  h2:
+    console:
+      enabled: true
+      path: /h2/console
 
 eureka:
   instance:

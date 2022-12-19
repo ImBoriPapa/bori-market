@@ -1,4 +1,4 @@
-package com.bmarket.securityservice.security.enums;
+package com.bmarket.securityservice.security.constant;
 
 
 
