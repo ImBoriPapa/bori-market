@@ -47,5 +47,14 @@ eureka:
 internal:
   frm: "http://localhost:8095/internal/frm/trade-image"
 
-
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
 

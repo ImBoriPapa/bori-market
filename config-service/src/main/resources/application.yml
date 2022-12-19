@@ -9,6 +9,7 @@ spring:
     port: 15672
     username: guest
     password: guest
+
   cloud:
     config:
       server:
@@ -16,6 +17,9 @@ spring:
           uri: https://github.com/ImBoriPapa/bori-market-colud-cofig.git
 #          username:
 #          password:
+      config:
+        server:
+          local
 management:
   endpoints:
     web:

@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.controller;
+package com.bmarket.tradeservice.domain.api;
 
 import com.bmarket.tradeservice.domain.dto.RequestForm;
 import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
