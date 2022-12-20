@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.bmarket.tradeservice.domain.exception.ExceptionMessage.ERROR_4XX_TO_FRM;
-import static com.bmarket.tradeservice.domain.exception.ExceptionMessage.ERROR_5XX_TO_FRM;
+import static com.bmarket.tradeservice.exception.ExceptionMessage.ERROR_4XX_TO_FRM;
+import static com.bmarket.tradeservice.exception.ExceptionMessage.ERROR_5XX_TO_FRM;
 
 @Component
 @Slf4j

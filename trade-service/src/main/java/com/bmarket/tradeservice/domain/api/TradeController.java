@@ -5,7 +5,7 @@ import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
 import com.bmarket.tradeservice.domain.entity.Category;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
-import com.bmarket.tradeservice.domain.exception.ExceptionMessage;
+import com.bmarket.tradeservice.exception.ExceptionMessage;
 import com.bmarket.tradeservice.domain.repository.query.AddressRange;
 import com.bmarket.tradeservice.domain.repository.query.SearchCondition;
 import com.bmarket.tradeservice.domain.repository.query.TradeListDto;

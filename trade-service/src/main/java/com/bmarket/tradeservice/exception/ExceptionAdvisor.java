@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.exception;
+package com.bmarket.tradeservice.exception;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
