@@ -5,9 +5,10 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.bmarket.tradeservice.domain.dto.UploadImageDetail;
+import com.bmarket.tradeservice.dto.ImageDetailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@Profile("!dev")
 public class S3ImageUploader implements ImageUploader {
 
     private  String bucket = "bori-market-bucket";
@@ -28,9 +30,9 @@ public class S3ImageUploader implements ImageUploader {
     private final AmazonS3Client amazonS3Client;
 
     @Override
-    public List<UploadImageDetail> uploadFile(List<MultipartFile> images, String folderName) {
+    public List<ImageDetailDto> uploadFile(List<MultipartFile> images, String folderName) {
 
-        ArrayList<UploadImageDetail> details = new ArrayList<>();
+        ArrayList<ImageDetailDto> details = new ArrayList<>();
         images.forEach(file -> {
             String storedName = folderName + File.separator + createFileName(file.getOriginalFilename());
             ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -45,7 +47,7 @@ public class S3ImageUploader implements ImageUploader {
                 throw new IllegalArgumentException("업로드 실패");
             }
 
-            details.add(UploadImageDetail
+            details.add(ImageDetailDto
                     .builder()
                     .originalFileName(file.getOriginalFilename())
                     .storedFileName(storedName)

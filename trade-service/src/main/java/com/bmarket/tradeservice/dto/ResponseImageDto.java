@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.dto;
+package com.bmarket.tradeservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

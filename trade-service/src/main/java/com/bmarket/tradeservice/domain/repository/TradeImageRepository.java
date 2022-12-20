@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TradeImageRepository extends JpaRepository<TradeImage,Long> {
-    List<TradeImage> findByTrade(Trade trade);
+    List<TradeImage> findAllByTrade(Trade trade);
 }

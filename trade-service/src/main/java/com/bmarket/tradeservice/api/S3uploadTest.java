@@ -1,6 +1,6 @@
-package com.bmarket.tradeservice.domain.api;
+package com.bmarket.tradeservice.api;
 
-import com.bmarket.tradeservice.domain.dto.UploadImageDetail;
+import com.bmarket.tradeservice.dto.ImageDetailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class S3uploadTest {
     @PostMapping("/upload")
     public ResponseEntity post(@RequestPart("images") List<MultipartFile> multipartFiles) throws IOException {
 
-        List<UploadImageDetail> detailList = uploadService.uploadFile(multipartFiles);
+        List<ImageDetailDto> detailList = uploadService.uploadFile(multipartFiles);
         return ResponseEntity.ok().body(detailList);
     }
 

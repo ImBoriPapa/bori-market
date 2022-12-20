@@ -1,7 +1,7 @@
-package com.bmarket.tradeservice.domain.api;
+package com.bmarket.tradeservice.api;
 
-import com.bmarket.tradeservice.domain.dto.RequestForm;
-import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
+import com.bmarket.tradeservice.dto.RequestForm;
+import com.bmarket.tradeservice.dto.RequestUpdateForm;
 import com.bmarket.tradeservice.domain.entity.Category;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;

@@ -47,11 +47,12 @@ eureka:
 internal:
   frm: "http://localhost:8095/internal/frm/trade-image"
 
----
-spring:
-  config:
-    activate:
-      on-profile: test
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 
 
-
+file.dir: /Users/leechoongsub/desktop/msa-project/local-storage/

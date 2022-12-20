@@ -1,13 +1,13 @@
 package com.bmarket.tradeservice.domain.service;
 
-import com.bmarket.tradeservice.domain.dto.RequestForm;
-import com.bmarket.tradeservice.domain.dto.RequestUpdateForm;
-import com.bmarket.tradeservice.domain.dto.ResponseImageDto;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeImage;
-import com.bmarket.tradeservice.domain.internal.RequestImageApi;
 import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
 import com.bmarket.tradeservice.domain.repository.TradeRepository;
+import com.bmarket.tradeservice.dto.RequestForm;
+import com.bmarket.tradeservice.dto.RequestUpdateForm;
+import com.bmarket.tradeservice.dto.ResponseImageDto;
+import com.bmarket.tradeservice.utils.ImageUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,31 +27,44 @@ import static com.bmarket.tradeservice.exception.ExceptionMessage.NOTFOUND_TRADE
 public class TradeCommandService {
     private final TradeRepository tradeRepository;
     private final TradeImageRepository tradeImageRepository;
-    private final RequestImageApi requestImageApi;
+    private final ImageUploader imageUploader;
 
     /**
      * 판매글 생성
      */
-    public Trade createTrade(RequestForm form, List<MultipartFile> files) {
-
-        ResponseImageDto responseImageDto = requestImageApi.postTradeImages(files);
+    public Trade createTrade(RequestForm form, List<MultipartFile> images) {
 
         Trade trade = Trade.createTrade()
-                .accountId(form.getAccountId())
+                .memberId(form.getMemberId())
                 .title(form.getTitle())
                 .context(form.getContext())
                 .price(form.getPrice())
-                .category(form.getCategory())
                 .address(form.getAddress())
-                .representativeImage(responseImageDto.getImagePath().get(0))
-                .isShare(form.getIsShare())
+                .category(form.getCategory())
                 .isOffer(form.getIsOffer())
+                .tradeType(form.getTradeType())
+                .representativeImage(null)
                 .build();
-        Trade newTrade = tradeRepository.save(trade);
+        Trade save = tradeRepository.save(trade);
 
-        saveImageList(responseImageDto, trade);
+        ArrayList<TradeImage> imageList = new ArrayList<>();
 
-        return newTrade;
+        imageUploader.uploadFile(images, "trade").stream()
+                .map(data ->
+                        TradeImage.createImage()
+                                .originalFileName(data.getOriginalFileName())
+                                .storedFileName(data.getStoredFileName())
+                                .fullPath(data.getFullPath())
+                                .size(data.getSize())
+                                .fileType(data.getFileType())
+                                .trade(trade).build())
+                .forEach(result -> imageList.add(result));
+
+        List<TradeImage> tradeImages = tradeImageRepository.saveAll(imageList);
+
+        save.updateRepresentativeImage(tradeImages.get(0).getFullPath());
+
+        return save;
     }
 
     /**
@@ -62,16 +75,6 @@ public class TradeCommandService {
 
         log.info("responseImageDto.getTradeImageId() ={}", responseImageDto.getImageId());
 
-        responseImageDto
-                .getImagePath()
-                .forEach(m -> {
-                    TradeImage tradeImage = TradeImage.createImage()
-                            .imageId(responseImageDto.getImageId())
-                            .trade(trade)
-                            .imagePath(m)
-                            .build();
-                    images.add(tradeImage);
-                });
 
         tradeImageRepository.saveAll(images);
     }
@@ -84,7 +87,6 @@ public class TradeCommandService {
 
         List<TradeImage> byTrade = findImages(trade);
 
-        requestImageApi.deleteTradeImages(byTrade.get(0).getImageId());
 
         tradeImageRepository.deleteAll(byTrade);
 
@@ -102,17 +104,16 @@ public class TradeCommandService {
         /**
          * 업데이트 필드를 빌더패턴으로 구현
          */
-        Trade.UpdateBuilder updateBuilder = Trade.UpdateBuilder.builder()
+        Trade.UpdateForm updateForm = Trade.UpdateForm.builder()
                 .title(form.getTitle())
                 .context(form.getContext())
                 .price(form.getPrice())
                 .context(form.getContext())
                 .address(form.getAddress())
                 .category(form.getCategory())
-                .isShare(form.getIsShare())
                 .isOffer(form.getIsOffer()).build();
 
-        trade.updateTrade(updateBuilder);
+        trade.updateTrade(updateForm);
 
         return trade;
     }
@@ -123,17 +124,16 @@ public class TradeCommandService {
     private void updateImages(List<MultipartFile> files, Trade trade) {
         if (files.size() != 0) {
             List<TradeImage> findImages = findImages(trade);
-            ResponseImageDto responseImageDto = requestImageApi.updateTradeImages(findImages.get(0).getImageId(), files);
+
 
             tradeImageRepository.deleteAllById(findImages.stream().map(TradeImage::getId).collect(Collectors.toList()));
 
-            saveImageList(responseImageDto, trade);
-            trade.updateRepresentativeImage(responseImageDto.getImagePath().get(0));
+
         }
     }
 
     private List<TradeImage> findImages(Trade trade) {
-        return tradeImageRepository.findByTrade(trade);
+        return tradeImageRepository.findAllByTrade(trade);
     }
 
     private Trade findTrade(Long tradeId) {
