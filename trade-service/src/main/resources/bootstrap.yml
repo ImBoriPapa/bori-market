@@ -7,11 +7,13 @@ spring:
   profiles:
     active: test
 
+
 management:
   endpoints:
     web:
       exposure:
         include: health,refresh,busrefresh
+
 ---
 spring:
   cloud:
@@ -20,6 +22,7 @@ spring:
       name: bori-market-trade
   profiles:
     active: prod
+
 
 management:
   endpoints:
