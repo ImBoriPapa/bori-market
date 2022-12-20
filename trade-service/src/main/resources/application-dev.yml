@@ -52,9 +52,6 @@ spring:
   config:
     activate:
       on-profile: test
-cloud:
-  aws:
-    credentials:
-      access-key:
-      secret-key:
+
+
 
