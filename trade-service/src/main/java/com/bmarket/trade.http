@@ -1,0 +1,27 @@
+POST http://localhost:8081/trade
+Content-Type:multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition:  form-data; name="form"
+Content-Type: application/json
+
+{
+    "memberId":"memberId1",
+    "title":"제목1",
+    "context":"내용1",
+    "price":10000,
+    "address":{
+        "addressCode":1001,
+        "city":"서울",
+        "district":"서울구",
+        "town":"서울동"
+    },
+    "category":"ETC",
+    "isOffer": false,
+    "tradeType":"USED_GOODS"
+}
+
+--boundary
+Content-Disposition: form-data; name="images"; filename="IMG_6416.jpg"
+
+< IMG_6416.jpg

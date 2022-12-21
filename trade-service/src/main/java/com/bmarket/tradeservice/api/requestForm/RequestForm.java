@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.dto;
+package com.bmarket.tradeservice.api.requestForm;
 
 import com.bmarket.tradeservice.domain.entity.Address;
 import com.bmarket.tradeservice.domain.entity.Category;
@@ -22,4 +22,5 @@ public class RequestForm {
     private Category category;
     private Boolean isOffer;
     private TradeType tradeType;
+
 }

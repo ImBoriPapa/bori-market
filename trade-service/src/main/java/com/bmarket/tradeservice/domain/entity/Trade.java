@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,6 +16,7 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TRADE_ID")
     private Long id;
+    @NotNull
     @Column(name = "MEMBER_ID")
     private String memberId;
     @Column(name = "TITLE")
@@ -77,7 +79,6 @@ public class Trade {
         updateType(builder.getTradeType());
         this.updatedAt = LocalDateTime.now();
     }
-
 
     private void updateTitle(String title) {
         if (StringUtils.hasLength(title)) {

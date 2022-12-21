@@ -1,7 +1,9 @@
-package com.bmarket.tradeservice.dto;
+package com.bmarket.tradeservice.api.requestForm;
 
 import com.bmarket.tradeservice.domain.entity.Address;
 import com.bmarket.tradeservice.domain.entity.Category;
+import com.bmarket.tradeservice.domain.entity.TradeStatus;
+import com.bmarket.tradeservice.domain.entity.TradeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +18,9 @@ public class RequestUpdateForm {
     private String title;
     private String context;
     private Integer price;
-    private Address address;
     private Category category;
-    private Boolean isShare;
+    private Address address;
+    private TradeType tradeType;
+    private TradeStatus tradeStatus;
     private Boolean isOffer;
 }
