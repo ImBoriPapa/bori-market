@@ -1,13 +1,13 @@
 package com.bmarket.tradeservice.domain.service;
 
+import com.bmarket.tradeservice.api.requestForm.RequestForm;
+import com.bmarket.tradeservice.api.requestForm.RequestUpdateForm;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeImage;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
 import com.bmarket.tradeservice.domain.repository.TradeRepository;
 import com.bmarket.tradeservice.dto.ImageDetailDto;
-import com.bmarket.tradeservice.api.requestForm.RequestForm;
-import com.bmarket.tradeservice.api.requestForm.RequestUpdateForm;
 import com.bmarket.tradeservice.utils.imageSupport.ImageUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,14 +44,15 @@ public class TradeCommandService {
                 .tradeType(form.getTradeType())
                 .representativeImage(null)
                 .build();
+        log.info("[createTrade ->tradeRepository.save ]");
         Trade save = tradeRepository.save(trade);
-
+        log.info("[createTrade ->imageUploader.uploadFile ]");
         List<ImageDetailDto> imageDetailDtoList = imageUploader.uploadFile(images, "trade");
-
+        log.info("[createTrade ->dtoListToTradeImageList.imageList ]");
         List<TradeImage> imageList = dtoListToTradeImageList(trade, imageDetailDtoList);
-
+        log.info("[createTrade ->tradeImageRepository.saveAll ]");
         List<TradeImage> tradeImages = tradeImageRepository.saveAll(imageList);
-
+        log.info("[createTrade ->updateRepresentativeImage ]");
         save.updateRepresentativeImage(tradeImages.get(0).getFullPath());
 
         return save;

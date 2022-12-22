@@ -1,10 +1,10 @@
 package com.bmarket.tradeservice.domain.service;
 
+import com.bmarket.tradeservice.api.requestForm.RequestForm;
+import com.bmarket.tradeservice.api.requestForm.RequestUpdateForm;
 import com.bmarket.tradeservice.domain.entity.*;
 import com.bmarket.tradeservice.domain.repository.TradeImageRepository;
 import com.bmarket.tradeservice.domain.repository.TradeRepository;
-import com.bmarket.tradeservice.api.requestForm.RequestForm;
-import com.bmarket.tradeservice.api.requestForm.RequestUpdateForm;
 import com.bmarket.tradeservice.exception.custom_exception.FileUploadException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -40,11 +40,10 @@ class TradeCommandServiceTest {
     TradeImageRepository tradeImageRepository;
     @Autowired
     EntityManager em;
-
-    private String member = java.util.UUID.randomUUID().toString();
-
+    private String member =UUID.randomUUID().toString();
     @BeforeEach
     void before() {
+        log.info("[TEST DATA INIT]");
         Address address = Address.builder()
                 .addressCode(1001)
                 .city("서울")
@@ -67,10 +66,12 @@ class TradeCommandServiceTest {
 
         List<MultipartFile> images = List.of(image1, image2, image3);
         tradeCommandService.createTrade(form, images);
+        log.info("[TEST DATA INIT FINISH]");
     }
 
     @AfterEach
     void after() {
+        log.info("[TEST DATA DELETE]");
         tradeRepository.deleteAll();
         tradeImageRepository.deleteAll();
     }
@@ -142,16 +143,17 @@ class TradeCommandServiceTest {
                 .tradeType(TradeType.USED_GOODS).build();
 
         MockMultipartFile image1 = new MockMultipartFile("images", "image1.png", "image/png", "imageContent".getBytes());
-        MockMultipartFile image2 = new MockMultipartFile("images", "image2.png", "image/png", "imageContent".getBytes());
-        MockMultipartFile image3 = new MockMultipartFile("images", "image3.wrongEx", "image/png", "imageContent".getBytes());
+        MockMultipartFile image2 = new MockMultipartFile("images", "image2.jpeg", "image/png", "imageContent".getBytes());
+        MockMultipartFile image3 = new MockMultipartFile("images", "image3.wrongExt", "image/png", "imageContent".getBytes());
 
         List<MultipartFile> images = List.of(image1, image2, image3);
         //when
+
         assertThatThrownBy(() -> tradeCommandService.createTrade(form, images))
                 .isInstanceOf(FileUploadException.class);
 
         //then
-        assertThat(tradeRepository.findByMemberId(memberId).isEmpty()).isTrue();
+
     }
 
     @Test
@@ -183,9 +185,8 @@ class TradeCommandServiceTest {
         //when
         assertThatThrownBy(() -> tradeCommandService.createTrade(form, images))
                 .isInstanceOf(FileUploadException.class);
-
         //then
-        assertThat(tradeRepository.findByMemberId(memberId).isEmpty()).isTrue();
+
     }
 
     @Test
@@ -217,6 +218,7 @@ class TradeCommandServiceTest {
         assertThatThrownBy(() -> tradeCommandService.createTrade(form, images))
                 .isInstanceOf(RuntimeException.class);
         //then
+        em.clear();
 
     }
 
@@ -224,7 +226,7 @@ class TradeCommandServiceTest {
     @DisplayName("deleteTrade 테스트")
     void deleteTradeTest1() throws Exception {
         //given
-        String memberId = member;
+        String memberId = this.member;
         Trade trade = tradeRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("trade를 찾을 수 없습니다."));
         //when

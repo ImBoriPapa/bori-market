@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,9 +51,10 @@ public class TradeCommandController {
                 linkTo(methodOn(TradeCommandController.class).deleteTrade(trade.getId())).withRel("DELETE : 판매 글 삭제")
         );
 
+        URI location = linkTo(methodOn(TradeQueryController.class).getTrade(trade.getId())).toUri();
 
         return ResponseEntity
-                .ok()
+                .created(location)
                 .headers(headers)
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, entityModel));
     }
