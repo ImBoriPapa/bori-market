@@ -25,7 +25,7 @@ import java.util.UUID;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-@Profile("!dev")
+@Profile("prod")
 public class S3ImageUploader implements ImageUploader {
 
     private String bucket = "bori-market-bucket";

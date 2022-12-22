@@ -240,7 +240,7 @@ class TradeCommandServiceTest {
 
     @Test
     @DisplayName("updateTrade 테스트")
-    void updateTradeTest() throws Exception{
+    void updateTradeTest1() throws Exception{
         //given
         Trade trade = tradeRepository.findByMemberId(member)
                 .orElseThrow(()-> new IllegalArgumentException("trade를 찾을 수 없습니다."));
@@ -274,4 +274,38 @@ class TradeCommandServiceTest {
         assertThat(updated.getIsOffer()).isTrue();
         assertThat(imageList.get(0).getOriginalFileName()).isEqualTo(image1.getOriginalFilename());
     }
+
+    @Test
+    @DisplayName("updateTrade 테스트 : 이미지 파일없을 경우")
+    void updateTradeTest2() throws Exception{
+        //given
+        Trade trade = tradeRepository.findByMemberId(member)
+                .orElseThrow(()-> new IllegalArgumentException("trade를 찾을 수 없습니다."));
+
+        RequestUpdateForm updateForm = RequestUpdateForm.builder()
+                .title("새로운")
+                .context("내용")
+                .price(30000)
+                .category(Category.BEAUTY)
+                .tradeType(TradeType.ADVERTISEMENT)
+                .tradeStatus(TradeStatus.TRADING)
+                .isOffer(true)
+                .build();
+
+        //when
+        Trade updated = tradeCommandService.updateTrade(trade.getId(), updateForm, null);
+        List<TradeImage> imageList = tradeImageRepository.findAllByTrade(updated);
+
+        //then
+        assertThat(updated.getId()).isEqualTo(trade.getId());
+        assertThat(updated.getTitle()).isEqualTo("새로운");
+        assertThat(updated.getContext()).isEqualTo("내용");
+        assertThat(updated.getPrice()).isEqualTo(30000);
+        assertThat(updated.getCategory()).isEqualTo(Category.BEAUTY);
+        assertThat(updated.getTradeType()).isEqualTo(TradeType.ADVERTISEMENT);
+        assertThat(updated.getTradeStatus()).isEqualTo(TradeStatus.TRADING);
+        assertThat(updated.getIsOffer()).isTrue();
+        assertThat(imageList.get(0).getOriginalFileName()).isEqualTo("image1.png");
+    }
+
 }

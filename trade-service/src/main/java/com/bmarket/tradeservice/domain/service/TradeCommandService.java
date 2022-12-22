@@ -98,7 +98,6 @@ public class TradeCommandService {
         Trade trade = tradeRepository.findById(tradeId)
                 .orElseThrow(() -> new IllegalArgumentException("trade를 찾을 수 없습니다."));
 
-        updateImages(files, trade);
         /**
          * 업데이트 필드를 빌더패턴으로 구현
          */
@@ -114,22 +113,24 @@ public class TradeCommandService {
                 .tradeType(form.getTradeType())
                 .build();
         trade.updateTrade(updateForm);
-
-        String representativeImage = updateImages(files, trade);
-        log.info("[updateTrade -> updateRepresentativeImage]");
-        trade.updateRepresentativeImage(representativeImage);
+        if (files != null) {
+            String representativeImage = updateImages(files, trade);
+            log.info("[updateTrade -> updateRepresentativeImage]");
+            trade.updateRepresentativeImage(representativeImage);
+        }
         return trade;
     }
 
     /**
      * 판매글 상태 변경s
      */
-    public void updateStatus(Long tradeId, TradeStatus status) {
-        tradeRepository.findById(tradeId)
-                .orElseThrow(() -> new IllegalArgumentException("trade를 찾을 수 없습니다."))
-                .updateStatus(status);
+    public Trade updateStatus(Long tradeId, TradeStatus status) {
+        log.info("[updateStatus]");
+        Trade trade = tradeRepository.findById(tradeId)
+                .orElseThrow(() -> new IllegalArgumentException("trade를 찾을 수 없습니다."));
+        trade.updateStatus(status);
+        return trade;
     }
-
 
 
     /**

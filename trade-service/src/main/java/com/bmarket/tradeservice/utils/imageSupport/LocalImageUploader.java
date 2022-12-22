@@ -15,7 +15,7 @@ import java.util.*;
 
 @Component
 @Slf4j
-@Profile("dev")
+@Profile({"dev","test"})
 public class LocalImageUploader implements ImageUploader {
     @Value("${file.dir}")
     private String dir;

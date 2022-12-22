@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/trade")
 @RequiredArgsConstructor
 @Slf4j
 public class TradeQueryController {
@@ -58,7 +57,6 @@ public class TradeQueryController {
                 .status(status)
                 .addressCode(addressCode)
                 .range(range).build();
-
 
         TradeListDto result = tradeQueryRepository.findTradeListWithCondition(size, lastIndex, searchCondition);
 
