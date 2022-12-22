@@ -3,12 +3,11 @@ package com.bmarket.tradeservice.api;
 import com.bmarket.tradeservice.api.requestForm.RequestForm;
 import com.bmarket.tradeservice.api.requestForm.RequestUpdateForm;
 import com.bmarket.tradeservice.api.responseForm.ResponseForm;
+import com.bmarket.tradeservice.api.responseForm.ResponseResult;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.service.TradeCommandService;
 import com.bmarket.tradeservice.status.ResponseStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -52,28 +50,14 @@ public class TradeCommandController {
                 .body(new ResponseForm.Of(ResponseStatus.SUCCESS, getLinks(trade)));
     }
 
-    private EntityModel<ResponseCreateTrade> getLinks(Trade trade) {
-        return EntityModel.of(new ResponseCreateTrade(trade),
+    private EntityModel<ResponseResult> getLinks(Trade trade) {
+        return EntityModel.of(new ResponseResult(trade),
                 linkTo(TradeCommandController.class).slash(trade.getId()).withSelfRel(),
                 linkTo(TradeCommandController.class).slash(trade.getId()).withRel("PATCH : 판매 글 수정"),
-                linkTo(methodOn(TradeCommandController.class).patchStatus(trade.getId(),TradeStatus.SOLD_OUT)).withRel("PATCH : 판매 글 상태 변경"),
+                linkTo(methodOn(TradeCommandController.class).patchStatus(trade.getId(), TradeStatus.SOLD_OUT)).withRel("PATCH : 판매 글 상태 변경"),
                 linkTo(TradeCommandController.class).slash(trade.getId()).withRel("DELETE : 판매 글 삭제"),
                 linkTo(TradeQueryController.class).slash(trade.getId()).withRel("GET : 판매 글 상세"),
                 linkTo(TradeQueryController.class).slash(trade.getId()).withRel("GET : 판매 글 리스트"));
-    }
-
-    @Getter
-    @NoArgsConstructor
-    public static class ResponseCreateTrade {
-        private Long tradeId;
-        private String memberId;
-        private LocalDateTime createdAt;
-
-        public ResponseCreateTrade(Trade trade) {
-            this.tradeId = trade.getId();
-            this.memberId = trade.getMemberId();
-            this.createdAt = trade.getCreatedAt();
-        }
     }
 
 
@@ -111,12 +95,12 @@ public class TradeCommandController {
     @PatchMapping("/{tradeId}/status")
     public ResponseEntity patchStatus(@PathVariable Long tradeId,
                                       @RequestParam(name = "set") TradeStatus set) {
-        log.info("[patchStatus tradeId= {}, status= {}]",tradeId,set);
+        log.info("[patchStatus tradeId= {}, status= {}]", tradeId, set);
 
         Trade trade = tradeCommandService.updateStatus(tradeId, set);
 
         return ResponseEntity.ok()
-                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS,getLinks(trade)));
+                .body(new ResponseForm.Of<>(ResponseStatus.SUCCESS, getLinks(trade)));
     }
 
 
