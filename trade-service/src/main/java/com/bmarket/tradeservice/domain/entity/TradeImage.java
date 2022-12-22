@@ -1,7 +1,6 @@
 package com.bmarket.tradeservice.domain.entity;
 
 
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,21 +14,38 @@ import javax.persistence.*;
 public class TradeImage {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String imageId;
+
+    @Column(name = "ORIGINAL_NAME")
+    private String originalFileName;
+
+    @Column(name = "STORED_NAME")
+    private String storedFileName;
+
+    @Column(name = "FULL_PATH")
+    private String fullPath;
+
+    @Column(name = "SIZE")
+    private Long size;
+
+    @Column(name = "TYPE")
+    private String fileType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TRADE_ID")
     private Trade trade;
-    private String imagePath;
 
     /**
-     * imageId : frm service 에 저장된 이미지 아이디
+     * 판매글 이미지 정보 생성 메서드
      */
     @Builder(builderMethodName = "createImage")
-    public TradeImage(String imageId,Trade trade,String imagePath) {
-        this.imageId = imageId;
+    public TradeImage(String originalFileName, String storedFileName, String fullPath, Long size, String fileType, Trade trade) {
+        this.originalFileName = originalFileName;
+        this.storedFileName = storedFileName;
+        this.fullPath = fullPath;
+        this.size = size;
+        this.fileType = fileType;
         this.trade = trade;
-        this.imagePath = imagePath;
     }
 }

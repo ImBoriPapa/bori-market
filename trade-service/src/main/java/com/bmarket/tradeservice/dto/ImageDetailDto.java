@@ -1,4 +1,4 @@
-package com.bmarket.tradeservice.domain.dto;
+package com.bmarket.tradeservice.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UploadImageDetail {
+public class ImageDetailDto {
     private String originalFileName;
     private String storedFileName;
     private String fullPath;
@@ -14,7 +14,7 @@ public class UploadImageDetail {
     private String fileType;
 
     @Builder
-    public UploadImageDetail(String originalFileName, String storedFileName, String fullPath, Long size, String fileType) {
+    public ImageDetailDto(String originalFileName, String storedFileName, String fullPath, Long size, String fileType) {
         this.originalFileName = originalFileName;
         this.storedFileName = storedFileName;
         this.fullPath = fullPath;
