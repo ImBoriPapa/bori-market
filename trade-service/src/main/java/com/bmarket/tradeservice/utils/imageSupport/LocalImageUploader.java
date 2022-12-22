@@ -63,15 +63,17 @@ public class LocalImageUploader implements ImageUploader {
 
     @Override
     public String getFileExtension(String originalFileName) {
+        log.info("[originalFileName= {}]",originalFileName);
 
         if (originalFileName.lastIndexOf(".") < 0) {
-            log.info("[확장자가 없는 파일명={}]", originalFileName);
+            log.info("[확장자가 없는 파일명= {}]", originalFileName);
             throw new FileUploadException(ResponseStatus.WRONG_FILE_ERROR);
         }
-        String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
 
+        String ext = originalFileName.substring(originalFileName.lastIndexOf("."));
+        log.info("[ext]={}",ext);
         return Arrays.stream(SupportImageExtension.values())
-                .filter(d -> d.getExtension().equals(ext))
+                .filter(d -> d.getExtension().equals(ext.toLowerCase()))
                 .findFirst()
                 .orElseThrow(() -> new FileUploadException(ResponseStatus.NOT_SUPPORT_ERROR)).getExtension();
     }
