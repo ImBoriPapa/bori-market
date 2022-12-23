@@ -12,19 +12,15 @@ public class BasicException extends RuntimeException {
     public BasicException(String message) {
         super(message);
     }
+
     private ResponseStatus status;
-    private String errorType;
+
     private int errorCode;
     private List<String> errorMessage;
 
     public ResponseStatus getStatus() {
         return status;
     }
-
-    public String getErrorType() {
-        return errorType;
-    }
-
     public int getErrorCode() {
         return errorCode;
     }
@@ -36,11 +32,9 @@ public class BasicException extends RuntimeException {
     public BasicException() {
     }
 
-
     public BasicException(ResponseStatus status) {
         super(status.getMessage());
         this.status = status;
-        this.errorType = this.getClass().getName();
         this.errorCode = status.getCode();
         this.errorMessage = List.of(status.getMessage());
     }
@@ -48,7 +42,6 @@ public class BasicException extends RuntimeException {
     public BasicException(ResponseStatus status, BindingResult bindingResult) {
         super(status.getMessage());
         this.status = status;
-        this.errorType = this.getClass().getName();
         this.errorCode = status.getCode();
         this.errorMessage = getErrorList(bindingResult);
     }

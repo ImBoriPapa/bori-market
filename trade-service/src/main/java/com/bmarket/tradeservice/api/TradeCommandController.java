@@ -7,6 +7,7 @@ import com.bmarket.tradeservice.api.responseForm.ResponseResult;
 import com.bmarket.tradeservice.domain.entity.Trade;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
 import com.bmarket.tradeservice.domain.service.TradeCommandService;
+import com.bmarket.tradeservice.exception.custom_exception.BasicException;
 import com.bmarket.tradeservice.status.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,10 +36,15 @@ public class TradeCommandController {
     /**
      * 판매글 생성
      */
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity postTrade(@RequestPart RequestForm form,
-                                    @RequestPart(name = "images") List<MultipartFile> images) {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity postTrade(@Validated @RequestPart RequestForm form,
+                                    @RequestPart(name = "images") List<MultipartFile> images, BindingResult bindingResult) {
         log.info("[postTrade]");
+
+        if (bindingResult.hasErrors()) {
+            throw new BasicException(ResponseStatus.VALIDATION_ERROR, bindingResult);
+        }
+
         Trade trade = tradeCommandService.createTrade(form, images);
 
         HttpHeaders headers = new HttpHeaders();

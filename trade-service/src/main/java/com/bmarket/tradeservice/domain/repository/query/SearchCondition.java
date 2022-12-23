@@ -11,7 +11,6 @@ import lombok.*;
 @Builder
 public class SearchCondition {
     private Category category;
-    private Boolean isShare;
     private Boolean isOffer;
     private TradeStatus status;
     private Integer addressCode;

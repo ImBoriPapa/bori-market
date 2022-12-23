@@ -117,7 +117,7 @@ asciidoctor {
 }
 
 asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
+    delete file('src/main/resources/static/docs/')
 }
 
 

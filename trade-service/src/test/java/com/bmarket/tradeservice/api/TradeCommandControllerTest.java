@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -27,6 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("dev")
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @Transactional
 @Slf4j
 class TradeCommandControllerTest {
@@ -120,7 +125,37 @@ class TradeCommandControllerTest {
                 .andExpect(jsonPath("result.memberId").value("member"))
                 .andExpect(jsonPath("result.createdAt").exists())
                 .andExpect(jsonPath("result.links").isArray())
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("createTrade",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestPartFields("form",
+                                fieldWithPath("memberId").description("멤버 아이디"),
+                                fieldWithPath("title").description("제목"),
+                                fieldWithPath("context").description("내용"),
+                                fieldWithPath("price").description("가격"),
+                                fieldWithPath("address.addressCode").description("주소 코드"),
+                                fieldWithPath("address.city").description("도시"),
+                                fieldWithPath("address.district").description("구"),
+                                fieldWithPath("address.town").description("마을"),
+                                fieldWithPath("category").description("카테고리"),
+                                fieldWithPath("isOffer").description("가격제안"),
+                                fieldWithPath("tradeType").description("판매 타입")
+                        ),
+                        requestPartBody("images"),
+                        responseFields(
+                                fieldWithPath("status").description("응답 상태"),
+                                fieldWithPath("code").description("응답 코드"),
+                                fieldWithPath("message").description("응답 메시지"),
+                                fieldWithPath("result").description("응답 결과"),
+                                fieldWithPath("result.tradeId").description(""),
+                                fieldWithPath("result.memberId").description(""),
+                                fieldWithPath("result.createdAt").description(""),
+                                fieldWithPath("result.links").description(""),
+                                fieldWithPath("result.links.[].rel").description(""),
+                                fieldWithPath("result.links.[].href").description("")
+                        )
+                ));
         //then
 
     }
@@ -163,6 +198,7 @@ class TradeCommandControllerTest {
                 .andExpect(jsonPath("result.links").isArray())
                 .andDo(print());
 
+
     }
 
     @Test
@@ -171,7 +207,7 @@ class TradeCommandControllerTest {
         //given
         Trade trade = tradeRepository.findByMemberId("testMember").get();
         //when
-        mockMvc.perform(patch("/trade/{memberId}/status",trade.getId())
+        mockMvc.perform(patch("/trade/{memberId}/status", trade.getId())
                         .param("set", TradeStatus.SOLD_OUT.name()))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))

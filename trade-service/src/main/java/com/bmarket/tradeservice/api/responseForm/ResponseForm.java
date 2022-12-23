@@ -33,13 +33,20 @@ public class ResponseForm<T> {
     @Getter
     public static class Error {
         private ResponseStatus status;
-        private String errorType;
+        private String requestPath;
         private int errorCode;
         private List<String> message;
 
-        public Error(BasicException ex) {
+        public Error(Exception ex, String request) {
+            this.status = ResponseStatus.ERROR;
+            this.requestPath = request;
+            this.errorCode = ResponseStatus.ERROR.getCode();
+            this.message = List.of(ResponseStatus.ERROR.getMessage());
+        }
+
+        public Error(BasicException ex, String request) {
             this.status = ex.getStatus();
-            this.errorType = ex.getErrorType();
+            this.requestPath = request;
             this.errorCode = ex.getErrorCode();
             this.message = ex.getErrorMessage();
         }

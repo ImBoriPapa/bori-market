@@ -13,16 +13,16 @@ import java.time.LocalDateTime;
 public class TradeListResult {
     private Long tradeId;
     private String title;
-    private String townName;
+    private String town;
     private int price;
     private String representativeImage;
     private LocalDateTime createdAt;
 
     @QueryProjection
-    public TradeListResult(Long tradeId, String title, String townName, int price, String representativeImage, LocalDateTime createdAt) {
+    public TradeListResult(Long tradeId, String title, String town, int price, String representativeImage, LocalDateTime createdAt) {
         this.tradeId = tradeId;
         this.title = title;
-        this.townName = townName;
+        this.town = town;
         this.price = price;
         this.representativeImage = representativeImage;
         this.createdAt = createdAt;

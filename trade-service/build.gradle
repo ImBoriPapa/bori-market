@@ -8,6 +8,8 @@ buildscript {
 }
 
 plugins {
+	// Asciidoctor 플러그인 적용
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	//querydsl 추가
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
@@ -59,6 +61,9 @@ dependencies {
 	testImplementation 'com.squareup.okhttp3:mockwebserver:5.0.0-alpha.10'
 	//Spring hateoas
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	//rest docs
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -96,6 +101,44 @@ configurations {
 	}
 	querydsl.extendsFrom compileClasspath
 }
+
+//spring docs
+ext {
+	snippetDir = file('build/generated-snippets')
+}
+
+test {
+	useJUnitPlatform()
+	outputs.dir snippetDir
+}
+
+asciidoctor {
+	dependsOn test
+	inputs.dir snippetDir
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+bootJar {
+	dependsOn asciidoctor
+	copy {
+		from "asciidoctor.outputDir"
+		into 'BOOT-INF/classes/static/docs'
+	}
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
+build {
+	dependsOn copyDocument
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()

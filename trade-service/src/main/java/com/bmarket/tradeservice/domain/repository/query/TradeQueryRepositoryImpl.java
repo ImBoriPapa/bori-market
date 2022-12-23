@@ -2,13 +2,11 @@ package com.bmarket.tradeservice.domain.repository.query;
 
 import com.bmarket.tradeservice.domain.entity.Category;
 import com.bmarket.tradeservice.domain.entity.TradeStatus;
-import com.bmarket.tradeservice.domain.repository.query.dto.QTradeDetailDto;
-import com.bmarket.tradeservice.domain.repository.query.dto.QTradeListResult;
-import com.bmarket.tradeservice.domain.repository.query.dto.TradeDetailDto;
-import com.bmarket.tradeservice.domain.repository.query.dto.TradeListResult;
+import com.bmarket.tradeservice.domain.repository.query.dto.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +20,7 @@ import static com.bmarket.tradeservice.domain.entity.QTradeImage.tradeImage;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class TradeQueryRepositoryImpl implements TradeQueryRepository {
     private final JPAQueryFactory queryFactory;
 
@@ -30,23 +29,27 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
      */
     @Override
     public Optional<TradeDetailDto> findTradeDetailById(Long tradeId) {
+        log.info("[findTradeDetailById]");
         TradeDetailDto tradeDetailDto = queryFactory
                 .select(new QTradeDetailDto(
                         trade.id,
-                        trade.accountId,
+                        trade.memberId,
                         trade.title,
                         trade.context,
+                        trade.price,
                         trade.category,
+                        trade.tradeStatus,
+                        trade.tradeType,
                         trade.address,
-                        trade.isShare,
-                        trade.isOffer
-                ))
+                        trade.isOffer,
+                        trade.createdAt))
                 .from(trade)
                 .where(trade.id.eq(tradeId))
                 .fetchOne();
 
-        List<String> images = queryFactory
-                .select(tradeImage.imagePath)
+        List<TradeImageDto> images = queryFactory
+                .select(new QTradeImageDto(tradeImage.originalFileName,
+                        tradeImage.fullPath))
                 .from(tradeImage)
                 .where(tradeImage.trade.id.eq(tradeId))
                 .fetch();
@@ -77,7 +80,6 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
                 .from(trade)
                 .where(cursor(lastIndex),
                         categoryEq(searchCondition.getCategory()),
-                        shareEp(searchCondition.getIsShare()),
                         offerEq(searchCondition.getIsOffer()),
                         statusEq(searchCondition.getStatus()),
                         addressSearchRange(searchCondition.getRange(), searchCondition.getAddressCode())
@@ -89,7 +91,6 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
         boolean hasNext = list.size() > size;
 
         return new TradeListDto(list.size(), hasNext, list);
-
     }
 
     private BooleanExpression cursor(Long tradeId) {
@@ -114,7 +115,7 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
     }
 
     private BooleanExpression statusEq(TradeStatus status) {
-        return status != null ? trade.status.eq(status) : trade.status.eq(TradeStatus.SALE);
+        return status != null ? trade.tradeStatus.eq(status) : trade.tradeStatus.eq(TradeStatus.SALE);
     }
 
     private BooleanExpression offerEq(Boolean isOffer) {
@@ -123,10 +124,6 @@ public class TradeQueryRepositoryImpl implements TradeQueryRepository {
 
     private BooleanExpression categoryEq(Category category) {
         return category != null ? trade.category.eq(category) : null;
-    }
-
-    private BooleanExpression shareEp(Boolean isShare) {
-        return isShare != null ? trade.isShare.eq(isShare) : null;
     }
 
 

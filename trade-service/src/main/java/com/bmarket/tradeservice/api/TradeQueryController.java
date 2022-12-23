@@ -25,7 +25,7 @@ public class TradeQueryController {
      */
     @GetMapping("/trade/{tradeId}")
     public ResponseEntity getTrade(@PathVariable Long tradeId) {
-        log.info("[]");
+        log.info("[getTrade]");
         TradeDetailDto tradeDetail = tradeQueryRepository.findTradeDetailById(tradeId)
                 .orElseThrow(() -> new IllegalArgumentException(ResponseStatus.NOTFOUND_TRADE.getMessage()));
 
@@ -43,16 +43,16 @@ public class TradeQueryController {
     @GetMapping("/trade")
     public ResponseEntity getTradeList(
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "l-idx", defaultValue = "0") Long lastIndex,
+            @RequestParam(name = "lastIdx", defaultValue = "0") Long lastIndex,
             @RequestParam(name = "category", required = false) Category category,
-            @RequestParam(name = "share", required = false) Boolean isShare,
             @RequestParam(name = "offer", required = false) Boolean isOffer,
             @RequestParam(name = "status", required = false) TradeStatus status,
             @RequestParam(name = "code") Integer addressCode,
             @RequestParam(name = "range", defaultValue = "ONLY") AddressRange range) {
+        log.info("[getTrade]");
+
         SearchCondition searchCondition = SearchCondition.builder()
                 .category(category)
-                .isShare(isShare)
                 .isOffer(isOffer)
                 .status(status)
                 .addressCode(addressCode)

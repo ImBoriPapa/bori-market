@@ -6,6 +6,9 @@ import lombok.Getter;
 public enum ResponseStatus {
 
     SUCCESS(1000,"요청에 성공했습니다."),
+    ERROR(1001,"서버에 문제가 발생했습니다."),
+
+    VALIDATION_ERROR(1002, "검증에 실패했습니다."),
     NOTFOUND_TRADE(2000, "판매글을 찾을수 없습니다,"),
     WRONG_FILE_ERROR(2001, "잘못된 파일 형식입니다."),
 

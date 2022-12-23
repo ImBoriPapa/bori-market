@@ -23,7 +23,6 @@ public class RequestForm {
     private String context;
     private Integer price;
     private Address address;
-    @NotBlank
     private Category category;
     private Boolean isOffer;
     private TradeType tradeType;

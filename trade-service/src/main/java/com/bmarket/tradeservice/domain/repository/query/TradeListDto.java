@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class TradeListDto {
-
     private Integer size;
     private Boolean hasNext;
     private List<TradeListResult> result = new ArrayList<>();
